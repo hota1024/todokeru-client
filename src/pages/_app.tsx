@@ -4,8 +4,14 @@ import { createEmotionCache } from '@/createEmotionCache'
 import { mainTheme } from '@/themes'
 import { CacheProvider, EmotionCache, ThemeProvider } from '@emotion/react'
 import { CssBaseline } from '@mui/material'
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
 
 const clientSideEmotionCache = createEmotionCache()
+const cache = new InMemoryCache()
+const client = new ApolloClient({
+  uri: process.env.NEXT_PUBLIC_GRAPHQL_URL,
+  cache,
+})
 
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache
@@ -22,7 +28,9 @@ function MyApp(props: MyAppProps) {
       <ThemeProvider theme={mainTheme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
-        <Component {...pageProps} />
+        <ApolloProvider client={client}>
+          <Component {...pageProps} />
+        </ApolloProvider>
       </ThemeProvider>
     </CacheProvider>
   )
