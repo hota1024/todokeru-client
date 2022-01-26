@@ -14,12 +14,15 @@
     "@emotion/react": "latest",
     "@emotion/server": "latest",
     "@emotion/styled": "latest",
+    "@hookform/resolvers": "^2.8.8",
     "@mui/icons-material": "latest",
     "@mui/material": "latest",
     "graphql": "^16.2.0",
     "next": "latest",
     "react": "latest",
-    "react-dom": "latest"
+    "react-dom": "latest",
+    "react-hook-form": "^7.25.1",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^2.4.0",
