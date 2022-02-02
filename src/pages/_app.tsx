@@ -5,6 +5,7 @@ import { mainTheme } from '@/themes'
 import { CacheProvider, EmotionCache, ThemeProvider } from '@emotion/react'
 import { CssBaseline } from '@mui/material'
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
+import { SetupContainer } from '@/components/SetupContainer'
 
 const clientSideEmotionCache = createEmotionCache()
 const cache = new InMemoryCache()
@@ -29,7 +30,9 @@ function MyApp(props: MyAppProps) {
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
         <ApolloProvider client={client}>
-          <Component {...pageProps} />
+          <SetupContainer>
+            <Component {...pageProps} />
+          </SetupContainer>
         </ApolloProvider>
       </ThemeProvider>
     </CacheProvider>
