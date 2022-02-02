@@ -124,6 +124,11 @@ export type MailAccountsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type MailAccountsQuery = { mailAccounts: Array<{ id: string, host: string, port: string, secure: boolean, user: string, isPrimary: boolean }> };
 
+export type HasPrimaryMailAccountQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type HasPrimaryMailAccountQuery = { hasPrimaryMailAccount: boolean };
+
 
 export const CreateFirstPrimaryMailAccountDocument = gql`
     mutation createFirstPrimaryMailAccount($data: CreateEmailAccountDto!) {
@@ -202,3 +207,35 @@ export function useMailAccountsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptio
 export type MailAccountsQueryHookResult = ReturnType<typeof useMailAccountsQuery>;
 export type MailAccountsLazyQueryHookResult = ReturnType<typeof useMailAccountsLazyQuery>;
 export type MailAccountsQueryResult = Apollo.QueryResult<MailAccountsQuery, MailAccountsQueryVariables>;
+export const HasPrimaryMailAccountDocument = gql`
+    query hasPrimaryMailAccount {
+  hasPrimaryMailAccount
+}
+    `;
+
+/**
+ * __useHasPrimaryMailAccountQuery__
+ *
+ * To run a query within a React component, call `useHasPrimaryMailAccountQuery` and pass it any options that fit your needs.
+ * When your component renders, `useHasPrimaryMailAccountQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useHasPrimaryMailAccountQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useHasPrimaryMailAccountQuery(baseOptions?: Apollo.QueryHookOptions<HasPrimaryMailAccountQuery, HasPrimaryMailAccountQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<HasPrimaryMailAccountQuery, HasPrimaryMailAccountQueryVariables>(HasPrimaryMailAccountDocument, options);
+      }
+export function useHasPrimaryMailAccountLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<HasPrimaryMailAccountQuery, HasPrimaryMailAccountQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<HasPrimaryMailAccountQuery, HasPrimaryMailAccountQueryVariables>(HasPrimaryMailAccountDocument, options);
+        }
+export type HasPrimaryMailAccountQueryHookResult = ReturnType<typeof useHasPrimaryMailAccountQuery>;
+export type HasPrimaryMailAccountLazyQueryHookResult = ReturnType<typeof useHasPrimaryMailAccountLazyQuery>;
+export type HasPrimaryMailAccountQueryResult = Apollo.QueryResult<HasPrimaryMailAccountQuery, HasPrimaryMailAccountQueryVariables>;
