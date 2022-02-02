@@ -48,14 +48,14 @@ export type MailAccount = {
 };
 
 export type Mutation = {
-  createFirstPrimaryAccount: MailAccount;
+  createFirstPrimaryMailAccount: MailAccount;
   createMailAccount: MailAccount;
   deleteMailAccount: Scalars['Boolean'];
   updateMailAccount: MailAccount;
 };
 
 
-export type MutationCreateFirstPrimaryAccountArgs = {
+export type MutationCreateFirstPrimaryMailAccountArgs = {
   data: CreateEmailAccountDto;
 };
 
@@ -112,16 +112,66 @@ export type User = {
   updatedAt: Scalars['DateTime'];
 };
 
+export type CreateFirstPrimaryMailAccountMutationVariables = Exact<{
+  data: CreateEmailAccountDto;
+}>;
+
+
+export type CreateFirstPrimaryMailAccountMutation = { createFirstPrimaryMailAccount: { id: string, host: string, port: string, secure: boolean, user: string, isPrimary: boolean } };
+
 export type MailAccountsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MailAccountsQuery = { mailAccounts: Array<{ id: string }> };
+export type MailAccountsQuery = { mailAccounts: Array<{ id: string, host: string, port: string, secure: boolean, user: string, isPrimary: boolean }> };
 
 
+export const CreateFirstPrimaryMailAccountDocument = gql`
+    mutation createFirstPrimaryMailAccount($data: CreateEmailAccountDto!) {
+  createFirstPrimaryMailAccount(data: $data) {
+    id
+    host
+    port
+    secure
+    user
+    isPrimary
+  }
+}
+    `;
+export type CreateFirstPrimaryMailAccountMutationFn = Apollo.MutationFunction<CreateFirstPrimaryMailAccountMutation, CreateFirstPrimaryMailAccountMutationVariables>;
+
+/**
+ * __useCreateFirstPrimaryMailAccountMutation__
+ *
+ * To run a mutation, you first call `useCreateFirstPrimaryMailAccountMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateFirstPrimaryMailAccountMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createFirstPrimaryMailAccountMutation, { data, loading, error }] = useCreateFirstPrimaryMailAccountMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useCreateFirstPrimaryMailAccountMutation(baseOptions?: Apollo.MutationHookOptions<CreateFirstPrimaryMailAccountMutation, CreateFirstPrimaryMailAccountMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateFirstPrimaryMailAccountMutation, CreateFirstPrimaryMailAccountMutationVariables>(CreateFirstPrimaryMailAccountDocument, options);
+      }
+export type CreateFirstPrimaryMailAccountMutationHookResult = ReturnType<typeof useCreateFirstPrimaryMailAccountMutation>;
+export type CreateFirstPrimaryMailAccountMutationResult = Apollo.MutationResult<CreateFirstPrimaryMailAccountMutation>;
+export type CreateFirstPrimaryMailAccountMutationOptions = Apollo.BaseMutationOptions<CreateFirstPrimaryMailAccountMutation, CreateFirstPrimaryMailAccountMutationVariables>;
 export const MailAccountsDocument = gql`
     query mailAccounts {
   mailAccounts {
     id
+    host
+    port
+    secure
+    user
+    isPrimary
   }
 }
     `;
