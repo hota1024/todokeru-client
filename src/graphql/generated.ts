@@ -48,9 +48,15 @@ export type MailAccount = {
 };
 
 export type Mutation = {
+  createFirstPrimaryAccount: MailAccount;
   createMailAccount: MailAccount;
   deleteMailAccount: Scalars['Boolean'];
   updateMailAccount: MailAccount;
+};
+
+
+export type MutationCreateFirstPrimaryAccountArgs = {
+  data: CreateEmailAccountDto;
 };
 
 
@@ -79,6 +85,7 @@ export type Otc = {
 };
 
 export type Query = {
+  hasPrimaryMailAccount: Scalars['Boolean'];
   mailAccount: MailAccount;
   mailAccounts: Array<MailAccount>;
   users: Array<User>;
