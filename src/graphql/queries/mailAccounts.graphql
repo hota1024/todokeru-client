@@ -1,5 +1,10 @@
 query mailAccounts {
   mailAccounts {
     id
+    host
+    port
+    secure
+    user
+    isPrimary
   }
 }
