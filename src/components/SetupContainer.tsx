@@ -1,5 +1,5 @@
 import { useHasPrimaryMailAccountQuery } from '@/graphql/generated'
-import { Setup } from '@/page-components/Setup/Setup'
+import { MailAccountSetup } from '@/page-components/Setup/MailAccountSetup'
 
 /**
  * SetupContainer props.
@@ -12,14 +12,20 @@ export type SetupContainerProps = {
  * SetupContainer component.
  */
 export const SetupContainer: React.VFC<SetupContainerProps> = (props) => {
-  const { loading, data } = useHasPrimaryMailAccountQuery()
+  const {
+    loading: hasPrimaryLoading,
+    data: hasPrimaryData,
+    refetch: refetchHasPrimary,
+  } = useHasPrimaryMailAccountQuery()
 
-  if (loading) {
+  if (hasPrimaryLoading) {
     return <>loading...</>
   }
 
-  if (!data?.hasPrimaryMailAccount) {
-    return <Setup />
+  if (!hasPrimaryData?.hasPrimaryMailAccount) {
+    return (
+      <MailAccountSetup firstPrimaryMailAccount onSetup={refetchHasPrimary} />
+    )
   }
 
   return <>{props.children}</>
