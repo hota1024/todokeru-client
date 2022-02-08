@@ -14,4 +14,4 @@ generates:
         Date: number
     hooks:
       afterOneFileWrite:
-        - yarn lint --fix
+        - yarn eslint --fix
