@@ -1,0 +1,14 @@
+mutation createTempUser {
+  createTempUser {
+    id
+    emails {
+      address
+      lastConfirmedAt
+      updatedAt
+      createdAt
+    }
+    role
+    createdAt
+    updatedAt
+  }
+}

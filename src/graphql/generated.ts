@@ -26,14 +26,19 @@ export type CreateEmailAccountDto = {
   user: Scalars['String'];
 };
 
+export type CreateTempEmailDto = {
+  address: Scalars['String'];
+  userId: Scalars['String'];
+};
+
 export type Email = {
   address: Scalars['String'];
+  codeExpiresIn?: Maybe<Scalars['DateTime']>;
   createdAt: Scalars['DateTime'];
   id: Scalars['ID'];
   lastConfirmedAt: Scalars['DateTime'];
-  otc?: Maybe<Otc>;
   updatedAt: Scalars['DateTime'];
-  user?: Maybe<User>;
+  user: User;
 };
 
 export type MailAccount = {
@@ -50,6 +55,8 @@ export type MailAccount = {
 export type Mutation = {
   createFirstPrimaryMailAccount: MailAccount;
   createMailAccount: MailAccount;
+  createTempEmail: Email;
+  createTempUser: User;
   deleteMailAccount: Scalars['Boolean'];
   updateMailAccount: MailAccount;
 };
@@ -65,6 +72,11 @@ export type MutationCreateMailAccountArgs = {
 };
 
 
+export type MutationCreateTempEmailArgs = {
+  data: CreateTempEmailDto;
+};
+
+
 export type MutationDeleteMailAccountArgs = {
   id: Scalars['String'];
 };
@@ -75,16 +87,8 @@ export type MutationUpdateMailAccountArgs = {
   id: Scalars['String'];
 };
 
-export type Otc = {
-  codeHash: Scalars['String'];
-  createdAt: Scalars['DateTime'];
-  email?: Maybe<Email>;
-  expiresIn: Scalars['DateTime'];
-  id: Scalars['ID'];
-  updateAt: Scalars['DateTime'];
-};
-
 export type Query = {
+  hasAdmin: Scalars['Boolean'];
   hasPrimaryMailAccount: Scalars['Boolean'];
   mailAccount: MailAccount;
   mailAccounts: Array<MailAccount>;
@@ -109,8 +113,27 @@ export type User = {
   createdAt: Scalars['DateTime'];
   emails: Array<Email>;
   id: Scalars['ID'];
+  role: UserRole;
   updatedAt: Scalars['DateTime'];
 };
+
+export enum UserRole {
+  Admin = 'Admin',
+  Normal = 'Normal',
+  Temp = 'Temp'
+}
+
+export type CreateTempEmailMutationVariables = Exact<{
+  data: CreateTempEmailDto;
+}>;
+
+
+export type CreateTempEmailMutation = { createTempEmail: { id: string, codeExpiresIn?: any | null | undefined } };
+
+export type CreateTempUserMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CreateTempUserMutation = { createTempUser: { id: string, role: UserRole, createdAt: any, updatedAt: any, emails: Array<{ address: string, lastConfirmedAt: any, updatedAt: any, createdAt: any }> } };
 
 export type CreateFirstPrimaryMailAccountMutationVariables = Exact<{
   data: CreateEmailAccountDto;
@@ -129,7 +152,87 @@ export type HasPrimaryMailAccountQueryVariables = Exact<{ [key: string]: never; 
 
 export type HasPrimaryMailAccountQuery = { hasPrimaryMailAccount: boolean };
 
+export type HasAdminQueryVariables = Exact<{ [key: string]: never; }>;
 
+
+export type HasAdminQuery = { hasAdmin: boolean };
+
+
+export const CreateTempEmailDocument = gql`
+    mutation createTempEmail($data: CreateTempEmailDto!) {
+  createTempEmail(data: $data) {
+    id
+    codeExpiresIn
+  }
+}
+    `;
+export type CreateTempEmailMutationFn = Apollo.MutationFunction<CreateTempEmailMutation, CreateTempEmailMutationVariables>;
+
+/**
+ * __useCreateTempEmailMutation__
+ *
+ * To run a mutation, you first call `useCreateTempEmailMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateTempEmailMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createTempEmailMutation, { data, loading, error }] = useCreateTempEmailMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useCreateTempEmailMutation(baseOptions?: Apollo.MutationHookOptions<CreateTempEmailMutation, CreateTempEmailMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateTempEmailMutation, CreateTempEmailMutationVariables>(CreateTempEmailDocument, options);
+      }
+export type CreateTempEmailMutationHookResult = ReturnType<typeof useCreateTempEmailMutation>;
+export type CreateTempEmailMutationResult = Apollo.MutationResult<CreateTempEmailMutation>;
+export type CreateTempEmailMutationOptions = Apollo.BaseMutationOptions<CreateTempEmailMutation, CreateTempEmailMutationVariables>;
+export const CreateTempUserDocument = gql`
+    mutation createTempUser {
+  createTempUser {
+    id
+    emails {
+      address
+      lastConfirmedAt
+      updatedAt
+      createdAt
+    }
+    role
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export type CreateTempUserMutationFn = Apollo.MutationFunction<CreateTempUserMutation, CreateTempUserMutationVariables>;
+
+/**
+ * __useCreateTempUserMutation__
+ *
+ * To run a mutation, you first call `useCreateTempUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateTempUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createTempUserMutation, { data, loading, error }] = useCreateTempUserMutation({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useCreateTempUserMutation(baseOptions?: Apollo.MutationHookOptions<CreateTempUserMutation, CreateTempUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateTempUserMutation, CreateTempUserMutationVariables>(CreateTempUserDocument, options);
+      }
+export type CreateTempUserMutationHookResult = ReturnType<typeof useCreateTempUserMutation>;
+export type CreateTempUserMutationResult = Apollo.MutationResult<CreateTempUserMutation>;
+export type CreateTempUserMutationOptions = Apollo.BaseMutationOptions<CreateTempUserMutation, CreateTempUserMutationVariables>;
 export const CreateFirstPrimaryMailAccountDocument = gql`
     mutation createFirstPrimaryMailAccount($data: CreateEmailAccountDto!) {
   createFirstPrimaryMailAccount(data: $data) {
@@ -239,3 +342,35 @@ export function useHasPrimaryMailAccountLazyQuery(baseOptions?: Apollo.LazyQuery
 export type HasPrimaryMailAccountQueryHookResult = ReturnType<typeof useHasPrimaryMailAccountQuery>;
 export type HasPrimaryMailAccountLazyQueryHookResult = ReturnType<typeof useHasPrimaryMailAccountLazyQuery>;
 export type HasPrimaryMailAccountQueryResult = Apollo.QueryResult<HasPrimaryMailAccountQuery, HasPrimaryMailAccountQueryVariables>;
+export const HasAdminDocument = gql`
+    query hasAdmin {
+  hasAdmin
+}
+    `;
+
+/**
+ * __useHasAdminQuery__
+ *
+ * To run a query within a React component, call `useHasAdminQuery` and pass it any options that fit your needs.
+ * When your component renders, `useHasAdminQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useHasAdminQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useHasAdminQuery(baseOptions?: Apollo.QueryHookOptions<HasAdminQuery, HasAdminQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<HasAdminQuery, HasAdminQueryVariables>(HasAdminDocument, options);
+      }
+export function useHasAdminLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<HasAdminQuery, HasAdminQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<HasAdminQuery, HasAdminQueryVariables>(HasAdminDocument, options);
+        }
+export type HasAdminQueryHookResult = ReturnType<typeof useHasAdminQuery>;
+export type HasAdminLazyQueryHookResult = ReturnType<typeof useHasAdminLazyQuery>;
+export type HasAdminQueryResult = Apollo.QueryResult<HasAdminQuery, HasAdminQueryVariables>;

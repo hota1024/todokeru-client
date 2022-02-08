@@ -1,0 +1,6 @@
+mutation createTempEmail($data: CreateTempEmailDto!) {
+  createTempEmail(data: $data) {
+    id
+    codeExpiresIn
+  }
+}
