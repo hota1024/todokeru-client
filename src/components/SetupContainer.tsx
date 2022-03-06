@@ -1,4 +1,8 @@
-import { useHasPrimaryMailAccountQuery } from '@/graphql/generated'
+import {
+  useHasAdminQuery,
+  useHasPrimaryMailAccountQuery,
+} from '@/graphql/generated'
+import { AdminUserSetup } from '@/page-components/Setup/AdminUserSetup'
 import { MailAccountSetup } from '@/page-components/Setup/MailAccountSetup'
 
 /**
@@ -18,7 +22,13 @@ export const SetupContainer: React.VFC<SetupContainerProps> = (props) => {
     refetch: refetchHasPrimary,
   } = useHasPrimaryMailAccountQuery()
 
-  if (hasPrimaryLoading) {
+  const {
+    loading: hasAdminLoading,
+    data: hasAdminData,
+    refetch: refetchHasAdmin,
+  } = useHasAdminQuery()
+
+  if (hasPrimaryLoading && hasAdminLoading) {
     return <>loading...</>
   }
 
@@ -26,6 +36,10 @@ export const SetupContainer: React.VFC<SetupContainerProps> = (props) => {
     return (
       <MailAccountSetup firstPrimaryMailAccount onSetup={refetchHasPrimary} />
     )
+  }
+
+  if (!hasAdminData?.hasAdmin) {
+    return <AdminUserSetup onSetup={refetchHasAdmin} />
   }
 
   return <>{props.children}</>

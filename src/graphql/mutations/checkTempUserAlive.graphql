@@ -1,0 +1,3 @@
+mutation checkTempUserAlive($id: String!) {
+  checkTempUserAlive(id: $id)
+}

@@ -1,0 +1,3 @@
+mutation validateEmailAuthCode($data: ValidateEmailAuthCodeDto!) {
+  validateEmailAuthCode(data: $data)
+}

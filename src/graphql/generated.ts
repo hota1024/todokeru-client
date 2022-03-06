@@ -53,12 +53,19 @@ export type MailAccount = {
 };
 
 export type Mutation = {
+  checkTempUserAlive: Scalars['Boolean'];
   createFirstPrimaryMailAccount: MailAccount;
   createMailAccount: MailAccount;
   createTempEmail: Email;
   createTempUser: User;
   deleteMailAccount: Scalars['Boolean'];
   updateMailAccount: MailAccount;
+  validateEmailAuthCode: Scalars['Boolean'];
+};
+
+
+export type MutationCheckTempUserAliveArgs = {
+  id: Scalars['String'];
 };
 
 
@@ -85,6 +92,11 @@ export type MutationDeleteMailAccountArgs = {
 export type MutationUpdateMailAccountArgs = {
   data: UpdateEmailAccountDto;
   id: Scalars['String'];
+};
+
+
+export type MutationValidateEmailAuthCodeArgs = {
+  data: ValidateEmailAuthCodeDto;
 };
 
 export type Query = {
@@ -123,6 +135,18 @@ export enum UserRole {
   Temp = 'Temp'
 }
 
+export type ValidateEmailAuthCodeDto = {
+  code: Scalars['String'];
+  id: Scalars['String'];
+};
+
+export type CheckTempUserAliveMutationVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type CheckTempUserAliveMutation = { checkTempUserAlive: boolean };
+
 export type CreateTempEmailMutationVariables = Exact<{
   data: CreateTempEmailDto;
 }>;
@@ -142,6 +166,13 @@ export type CreateFirstPrimaryMailAccountMutationVariables = Exact<{
 
 export type CreateFirstPrimaryMailAccountMutation = { createFirstPrimaryMailAccount: { id: string, host: string, port: string, secure: boolean, user: string, isPrimary: boolean } };
 
+export type ValidateEmailAuthCodeMutationVariables = Exact<{
+  data: ValidateEmailAuthCodeDto;
+}>;
+
+
+export type ValidateEmailAuthCodeMutation = { validateEmailAuthCode: boolean };
+
 export type MailAccountsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -158,6 +189,37 @@ export type HasAdminQueryVariables = Exact<{ [key: string]: never; }>;
 export type HasAdminQuery = { hasAdmin: boolean };
 
 
+export const CheckTempUserAliveDocument = gql`
+    mutation checkTempUserAlive($id: String!) {
+  checkTempUserAlive(id: $id)
+}
+    `;
+export type CheckTempUserAliveMutationFn = Apollo.MutationFunction<CheckTempUserAliveMutation, CheckTempUserAliveMutationVariables>;
+
+/**
+ * __useCheckTempUserAliveMutation__
+ *
+ * To run a mutation, you first call `useCheckTempUserAliveMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCheckTempUserAliveMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [checkTempUserAliveMutation, { data, loading, error }] = useCheckTempUserAliveMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useCheckTempUserAliveMutation(baseOptions?: Apollo.MutationHookOptions<CheckTempUserAliveMutation, CheckTempUserAliveMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CheckTempUserAliveMutation, CheckTempUserAliveMutationVariables>(CheckTempUserAliveDocument, options);
+      }
+export type CheckTempUserAliveMutationHookResult = ReturnType<typeof useCheckTempUserAliveMutation>;
+export type CheckTempUserAliveMutationResult = Apollo.MutationResult<CheckTempUserAliveMutation>;
+export type CheckTempUserAliveMutationOptions = Apollo.BaseMutationOptions<CheckTempUserAliveMutation, CheckTempUserAliveMutationVariables>;
 export const CreateTempEmailDocument = gql`
     mutation createTempEmail($data: CreateTempEmailDto!) {
   createTempEmail(data: $data) {
@@ -271,6 +333,37 @@ export function useCreateFirstPrimaryMailAccountMutation(baseOptions?: Apollo.Mu
 export type CreateFirstPrimaryMailAccountMutationHookResult = ReturnType<typeof useCreateFirstPrimaryMailAccountMutation>;
 export type CreateFirstPrimaryMailAccountMutationResult = Apollo.MutationResult<CreateFirstPrimaryMailAccountMutation>;
 export type CreateFirstPrimaryMailAccountMutationOptions = Apollo.BaseMutationOptions<CreateFirstPrimaryMailAccountMutation, CreateFirstPrimaryMailAccountMutationVariables>;
+export const ValidateEmailAuthCodeDocument = gql`
+    mutation validateEmailAuthCode($data: ValidateEmailAuthCodeDto!) {
+  validateEmailAuthCode(data: $data)
+}
+    `;
+export type ValidateEmailAuthCodeMutationFn = Apollo.MutationFunction<ValidateEmailAuthCodeMutation, ValidateEmailAuthCodeMutationVariables>;
+
+/**
+ * __useValidateEmailAuthCodeMutation__
+ *
+ * To run a mutation, you first call `useValidateEmailAuthCodeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useValidateEmailAuthCodeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [validateEmailAuthCodeMutation, { data, loading, error }] = useValidateEmailAuthCodeMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useValidateEmailAuthCodeMutation(baseOptions?: Apollo.MutationHookOptions<ValidateEmailAuthCodeMutation, ValidateEmailAuthCodeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ValidateEmailAuthCodeMutation, ValidateEmailAuthCodeMutationVariables>(ValidateEmailAuthCodeDocument, options);
+      }
+export type ValidateEmailAuthCodeMutationHookResult = ReturnType<typeof useValidateEmailAuthCodeMutation>;
+export type ValidateEmailAuthCodeMutationResult = Apollo.MutationResult<ValidateEmailAuthCodeMutation>;
+export type ValidateEmailAuthCodeMutationOptions = Apollo.BaseMutationOptions<ValidateEmailAuthCodeMutation, ValidateEmailAuthCodeMutationVariables>;
 export const MailAccountsDocument = gql`
     query mailAccounts {
   mailAccounts {
