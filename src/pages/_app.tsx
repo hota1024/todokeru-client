@@ -30,9 +30,7 @@ function MyApp(props: MyAppProps) {
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
         <ApolloProvider client={client}>
-          <SetupContainer>
-            <Component {...pageProps} />
-          </SetupContainer>
+          <Component {...pageProps} />
         </ApolloProvider>
       </ThemeProvider>
     </CacheProvider>
