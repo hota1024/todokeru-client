@@ -34,12 +34,10 @@ export const useRequiredAuth = (role: UserRole) => {
       }
     }
 
-    router.push('/login', {
-      query: {
-        to: router.asPath,
-      },
-    })
+    router.replace(`/login?to=${router.asPath}`)
   }, [currentUser, authChecking, router, role])
 
-  return authChecking
+  console.log(currentUser)
+
+  return authChecking || !currentUser
 }
