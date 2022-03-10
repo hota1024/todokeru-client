@@ -31,7 +31,7 @@ export const AdminUserSetup: React.VFC<AdminUserSetupProps> = (props) => {
   const [, setJWT] = useJWT()
   const [wait, waiting] = useWait()
   const [error, setError] = useState<string | null>()
-  const [emailId, setEmailId] = useState<string>()
+  const [codeId, setCodeId] = useState<string>()
   const [wasSentOtc, setWasSentOtc] = useState(false)
   const [emailConfirmed, setEmailConfirmed] = useState(false)
   const [createTempUserMutation, { loading: tempUserLoading }] =
@@ -70,7 +70,7 @@ export const AdminUserSetup: React.VFC<AdminUserSetupProps> = (props) => {
 
     try {
       const email = await createTempEmail({ variables: { data } })
-      setEmailId(email.data?.createTempEmail.id)
+      setCodeId(email.data?.createTempEmail.codeId)
       setWasSentOtc(true)
     } catch (e) {
       if (e instanceof Error) {
@@ -104,7 +104,7 @@ export const AdminUserSetup: React.VFC<AdminUserSetupProps> = (props) => {
   const checkCode = async (code: string) => {
     setError(null)
 
-    if (!emailId) {
+    if (!codeId) {
       setError('前回の操作から一定時間が経ったため、再度お試しください。')
       setTempUserId(void 0)
       return
@@ -116,7 +116,7 @@ export const AdminUserSetup: React.VFC<AdminUserSetupProps> = (props) => {
       const result = await validateEmailAuthCode({
         variables: {
           data: {
-            id: emailId,
+            codeId,
             code,
           },
         },

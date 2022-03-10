@@ -1,6 +1,6 @@
 mutation createTempEmail($data: CreateTempEmailDto!) {
   createTempEmail(data: $data) {
-    id
+    codeId
     codeExpiresIn
   }
 }

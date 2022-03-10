@@ -1,0 +1,6 @@
+mutation createOtc($data: CreateOtcDto!) {
+  createOtc(data: $data) {
+    codeId
+    codeExpiresIn
+  }
+}

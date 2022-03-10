@@ -26,6 +26,15 @@ export type CreateEmailAccountDto = {
   user: Scalars['String'];
 };
 
+export type CreateOtcDto = {
+  address: Scalars['String'];
+};
+
+export type CreateOtcResultDto = {
+  codeExpiresIn: Scalars['DateTime'];
+  codeId: Scalars['String'];
+};
+
 export type CreateTempEmailDto = {
   address: Scalars['String'];
   userId: Scalars['String'];
@@ -61,7 +70,8 @@ export type Mutation = {
   checkTempUserAlive: Scalars['Boolean'];
   createFirstPrimaryMailAccount: MailAccount;
   createMailAccount: MailAccount;
-  createTempEmail: Email;
+  createOtc: CreateOtcResultDto;
+  createTempEmail: CreateOtcResultDto;
   createTempUser: User;
   deleteMailAccount: Scalars['Boolean'];
   updateMailAccount: MailAccount;
@@ -81,6 +91,11 @@ export type MutationCreateFirstPrimaryMailAccountArgs = {
 
 export type MutationCreateMailAccountArgs = {
   data: CreateEmailAccountDto;
+};
+
+
+export type MutationCreateOtcArgs = {
+  data: CreateOtcDto;
 };
 
 
@@ -143,7 +158,7 @@ export enum UserRole {
 
 export type ValidateEmailAuthCodeDto = {
   code: Scalars['String'];
-  id: Scalars['String'];
+  codeId: Scalars['String'];
 };
 
 export type CheckTempUserAliveMutationVariables = Exact<{
@@ -153,12 +168,19 @@ export type CheckTempUserAliveMutationVariables = Exact<{
 
 export type CheckTempUserAliveMutation = { checkTempUserAlive: boolean };
 
+export type CreateOtcMutationVariables = Exact<{
+  data: CreateOtcDto;
+}>;
+
+
+export type CreateOtcMutation = { createOtc: { codeId: string, codeExpiresIn: any } };
+
 export type CreateTempEmailMutationVariables = Exact<{
   data: CreateTempEmailDto;
 }>;
 
 
-export type CreateTempEmailMutation = { createTempEmail: { id: string, codeExpiresIn?: any | null | undefined } };
+export type CreateTempEmailMutation = { createTempEmail: { codeId: string, codeExpiresIn: any } };
 
 export type CreateTempUserMutationVariables = Exact<{ [key: string]: never; }>;
 
@@ -231,10 +253,44 @@ export function useCheckTempUserAliveMutation(baseOptions?: Apollo.MutationHookO
 export type CheckTempUserAliveMutationHookResult = ReturnType<typeof useCheckTempUserAliveMutation>;
 export type CheckTempUserAliveMutationResult = Apollo.MutationResult<CheckTempUserAliveMutation>;
 export type CheckTempUserAliveMutationOptions = Apollo.BaseMutationOptions<CheckTempUserAliveMutation, CheckTempUserAliveMutationVariables>;
+export const CreateOtcDocument = gql`
+    mutation createOtc($data: CreateOtcDto!) {
+  createOtc(data: $data) {
+    codeId
+    codeExpiresIn
+  }
+}
+    `;
+export type CreateOtcMutationFn = Apollo.MutationFunction<CreateOtcMutation, CreateOtcMutationVariables>;
+
+/**
+ * __useCreateOtcMutation__
+ *
+ * To run a mutation, you first call `useCreateOtcMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateOtcMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createOtcMutation, { data, loading, error }] = useCreateOtcMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useCreateOtcMutation(baseOptions?: Apollo.MutationHookOptions<CreateOtcMutation, CreateOtcMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateOtcMutation, CreateOtcMutationVariables>(CreateOtcDocument, options);
+      }
+export type CreateOtcMutationHookResult = ReturnType<typeof useCreateOtcMutation>;
+export type CreateOtcMutationResult = Apollo.MutationResult<CreateOtcMutation>;
+export type CreateOtcMutationOptions = Apollo.BaseMutationOptions<CreateOtcMutation, CreateOtcMutationVariables>;
 export const CreateTempEmailDocument = gql`
     mutation createTempEmail($data: CreateTempEmailDto!) {
   createTempEmail(data: $data) {
-    id
+    codeId
     codeExpiresIn
   }
 }
