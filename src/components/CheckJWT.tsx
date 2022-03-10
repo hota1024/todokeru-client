@@ -1,6 +1,7 @@
-import { useJWT } from '@/atoms/auth'
+import { useAuthChecking, useCurrentUser, useJWT } from '@/atoms/auth'
 import { useMeLazyQuery } from '@/graphql/generated'
-import { parseCookies, setCookie } from 'nookies'
+import { useRouter } from 'next/router'
+import { destroyCookie, parseCookies, setCookie } from 'nookies'
 import { useCallback, useEffect } from 'react'
 
 /**
@@ -9,19 +10,33 @@ import { useCallback, useEffect } from 'react'
 export const CheckJWT: React.VFC = () => {
   const [jwt, setJWT] = useJWT()
   const [getMe] = useMeLazyQuery()
+  const [authChecking, setAuthChecking] = useAuthChecking()
+  const [, setCurrentUser] = useCurrentUser()
+  const router = useRouter()
 
   const checkJWTStatus = useCallback(async () => {
+    setAuthChecking(true)
+
     if (jwt) {
-      try {
-        await getMe()
-      } catch {
+      const { data } = await getMe()
+      console.log(data)
+      if (data) {
+        setCurrentUser(data.me)
+      } else {
         setJWT(null)
+        setCurrentUser(null)
       }
     }
-  }, [jwt, getMe, setJWT])
+
+    setAuthChecking(false)
+  }, [setAuthChecking, jwt, getMe, setCurrentUser, setJWT])
 
   // check cookie.
   useEffect(() => {
+    if (authChecking) {
+      return
+    }
+
     let newJWT = jwt
 
     if (jwt) {
@@ -29,11 +44,14 @@ export const CheckJWT: React.VFC = () => {
     } else {
       const cookie = parseCookies()
       newJWT = cookie.jwt ?? null
+      destroyCookie(null, 'jwt')
     }
 
     setJWT(newJWT)
     checkJWTStatus()
-  }, [checkJWTStatus, jwt, setJWT])
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [checkJWTStatus, jwt, setJWT, router.pathname])
 
   return <></>
 }
