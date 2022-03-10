@@ -34,7 +34,18 @@ export const useRequiredAuth = (role: UserRole) => {
       }
     }
 
-    router.replace(`/login?to=${router.asPath}`)
+    const to = router.asPath === '/' ? undefined : router.asPath
+
+    if (to) {
+      router.replace({
+        pathname: '/login',
+        query: {
+          to,
+        },
+      })
+    } else {
+      router.replace('/login')
+    }
   }, [currentUser, authChecking, router, role])
 
   console.log(currentUser)
