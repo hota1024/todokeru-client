@@ -1,3 +1,5 @@
 mutation validateEmailAuthCode($data: ValidateEmailAuthCodeDto!) {
-  validateEmailAuthCode(data: $data)
+  validateEmailAuthCode(data: $data) {
+    jwt
+  }
 }

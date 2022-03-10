@@ -41,6 +41,11 @@ export type Email = {
   user: User;
 };
 
+export type LoginResult = {
+  jwt: Scalars['String'];
+  user: User;
+};
+
 export type MailAccount = {
   createdAt: Scalars['DateTime'];
   host: Scalars['String'];
@@ -60,7 +65,7 @@ export type Mutation = {
   createTempUser: User;
   deleteMailAccount: Scalars['Boolean'];
   updateMailAccount: MailAccount;
-  validateEmailAuthCode: Scalars['Boolean'];
+  validateEmailAuthCode: LoginResult;
 };
 
 
@@ -171,7 +176,7 @@ export type ValidateEmailAuthCodeMutationVariables = Exact<{
 }>;
 
 
-export type ValidateEmailAuthCodeMutation = { validateEmailAuthCode: boolean };
+export type ValidateEmailAuthCodeMutation = { validateEmailAuthCode: { jwt: string } };
 
 export type MailAccountsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -335,7 +340,9 @@ export type CreateFirstPrimaryMailAccountMutationResult = Apollo.MutationResult<
 export type CreateFirstPrimaryMailAccountMutationOptions = Apollo.BaseMutationOptions<CreateFirstPrimaryMailAccountMutation, CreateFirstPrimaryMailAccountMutationVariables>;
 export const ValidateEmailAuthCodeDocument = gql`
     mutation validateEmailAuthCode($data: ValidateEmailAuthCodeDto!) {
-  validateEmailAuthCode(data: $data)
+  validateEmailAuthCode(data: $data) {
+    jwt
+  }
 }
     `;
 export type ValidateEmailAuthCodeMutationFn = Apollo.MutationFunction<ValidateEmailAuthCodeMutation, ValidateEmailAuthCodeMutationVariables>;
