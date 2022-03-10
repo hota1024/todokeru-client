@@ -18,6 +18,7 @@
     "@mui/icons-material": "latest",
     "@mui/material": "latest",
     "graphql": "^16.2.0",
+    "jotai": "^1.6.1",
     "next": "latest",
     "react": "latest",
     "react-dom": "latest",
