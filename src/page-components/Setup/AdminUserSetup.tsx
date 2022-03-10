@@ -1,3 +1,4 @@
+import { useJWT } from '@/atoms/auth'
 import {
   AdminUserSetupForm,
   AdminUserSetupFormProps,
@@ -27,6 +28,7 @@ export type AdminUserSetupProps = {
 export const AdminUserSetup: React.VFC<AdminUserSetupProps> = (props) => {
   const [tempUserId, setTempUserId] = useState<string>()
   const [checkingAlive, setCheckingAlive] = useState(false)
+  const [, setJWT] = useJWT()
   const [wait, waiting] = useWait()
   const [error, setError] = useState<string | null>()
   const [emailId, setEmailId] = useState<string>()
@@ -122,6 +124,7 @@ export const AdminUserSetup: React.VFC<AdminUserSetupProps> = (props) => {
 
       if (result.data?.validateEmailAuthCode) {
         setEmailConfirmed(true)
+        setJWT(result.data.validateEmailAuthCode.jwt)
       } else {
         setError('認証コードが間違っています。再度お試しください。')
       }
