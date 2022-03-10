@@ -10,7 +10,6 @@ import {
 } from '@/graphql/generated'
 import { useWait } from '@/hooks/useWait'
 import { SetupLayout } from '@/layouts/SetupLayout'
-import { useRouter } from 'next/router'
 import { useCallback, useEffect, useState } from 'react'
 
 const SETUP_TEMP_ADMIN_USER_ID_STORAGE_KEY = 'setup-temp-admin-user-id'
@@ -26,7 +25,6 @@ export type AdminUserSetupProps = {
  * AdminUserSetup component.
  */
 export const AdminUserSetup: React.VFC<AdminUserSetupProps> = (props) => {
-  const router = useRouter()
   const [tempUserId, setTempUserId] = useState<string>()
   const [checkingAlive, setCheckingAlive] = useState(false)
   const [wait, waiting] = useWait()
