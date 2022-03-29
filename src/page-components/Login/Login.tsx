@@ -1,4 +1,5 @@
 import { useCurrentUser, useJWT, useLogout } from '@/atoms/auth'
+import { CheckJWT } from '@/components/CheckJWT'
 import { FullscreenLoading } from '@/components/FullscreenLoading'
 import {
   useCreateOtcMutation,
@@ -81,11 +82,12 @@ export const Login: React.VFC = () => {
   }
 
   if (isValidating || success) {
-    return <FullscreenLoading />
+    return <FullscreenLoading type="authenticating" />
   }
 
   return (
     <Container maxWidth="sm">
+      <CheckJWT />
       <Box my={4}>
         {currentUser ? (
           <Card>
@@ -100,7 +102,9 @@ export const Login: React.VFC = () => {
                 <Button component="a">トップページに戻る</Button>
               </Link>
               <Box flexGrow={1} />
-              <Button onClick={logout}>ログアウト</Button>
+              <Button onClick={() => logout(() => router.reload())}>
+                ログアウト
+              </Button>
             </CardActions>
           </Card>
         ) : codeId === undefined ? (
