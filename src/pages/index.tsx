@@ -1,4 +1,4 @@
-import { AdminLayout } from '@/layouts/AdminLayout'
+import { AdminLayout } from '@/layouts/AdminLayout/AdminLayout'
 import { Box, Button, Typography } from '@mui/material'
 import { NextPage } from 'next'
 
