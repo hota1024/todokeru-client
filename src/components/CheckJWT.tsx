@@ -36,6 +36,10 @@ export const CheckJWT: React.VFC = () => {
           isValidating: false,
         })
       }
+    } else {
+      setCurrentUser({
+        isValidating: false,
+      })
     }
   }, [jwt, getMe, setCurrentUser, setJWT])
 
