@@ -1,3 +1,4 @@
+import { useCurrentUser } from '@/atoms/auth'
 import { FullscreenLoading } from '@/components/FullscreenLoading'
 import { UserRole } from '@/graphql/generated'
 import { useRequiredAuth } from '@/hooks/useRequriedAuth'
@@ -17,10 +18,11 @@ export type AdminLayoutProps = {
  */
 export const AdminLayout: React.VFC<AdminLayoutProps> = (props) => {
   const { children } = props
+  const [{ currentUser }] = useCurrentUser()
   const checking = useRequiredAuth(UserRole.Admin)
 
-  if (checking) {
-    return <FullscreenLoading />
+  if (checking || !currentUser) {
+    return <FullscreenLoading type="authenticating" />
   }
 
   return <>{children}</>
