@@ -1,3 +1,4 @@
+import { AdminLayout } from '@/layouts/AdminLayout'
 import { Box, Button, Typography } from '@mui/material'
 import { NextPage } from 'next'
 
@@ -7,10 +8,12 @@ import { NextPage } from 'next'
 export const HomePage: NextPage = () => {
   return (
     <>
-      <Box sx={{ p: 4 }}>
-        <Typography variant="h4">Template</Typography>
-        <Button>hello world</Button>
-      </Box>
+      <AdminLayout>
+        <Box sx={{ p: 4 }}>
+          <Typography variant="h4">Template</Typography>
+          <Button>hello world</Button>
+        </Box>
+      </AdminLayout>
     </>
   )
 }

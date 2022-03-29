@@ -1,4 +1,4 @@
-import { useAuthChecking, useCurrentUser } from '@/atoms/auth'
+import { useCurrentUser } from '@/atoms/auth'
 import { UserRole } from '@/graphql/generated'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
@@ -8,12 +8,11 @@ import { useEffect } from 'react'
  * @param role role.
  */
 export const useRequiredAuth = (role: UserRole) => {
-  const [authChecking] = useAuthChecking()
-  const [currentUser] = useCurrentUser()
+  const [{ currentUser, isValidating }] = useCurrentUser()
   const router = useRouter()
 
   useEffect(() => {
-    if (authChecking) {
+    if (isValidating) {
       // checking...
       return
     }
@@ -37,18 +36,16 @@ export const useRequiredAuth = (role: UserRole) => {
     const to = router.asPath === '/' ? undefined : router.asPath
 
     if (to) {
-      router.replace({
-        pathname: '/login',
-        query: {
-          to,
-        },
-      })
+      // router.replace({
+      //   pathname: '/login',
+      //   query: {
+      //     to,
+      //   },
+      // })
     } else {
-      router.replace('/login')
+      // router.replace('/login')
     }
-  }, [currentUser, authChecking, router, role])
+  }, [currentUser, isValidating, router, role])
 
-  console.log(currentUser)
-
-  return authChecking || !currentUser
+  return isValidating
 }

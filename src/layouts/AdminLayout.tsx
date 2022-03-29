@@ -1,3 +1,4 @@
+import { FullscreenLoading } from '@/components/FullscreenLoading'
 import { UserRole } from '@/graphql/generated'
 import { useRequiredAuth } from '@/hooks/useRequriedAuth'
 
@@ -19,7 +20,7 @@ export const AdminLayout: React.VFC<AdminLayoutProps> = (props) => {
   const checking = useRequiredAuth(UserRole.Admin)
 
   if (checking) {
-    return <>checking</>
+    return <FullscreenLoading />
   }
 
   return <>{children}</>
