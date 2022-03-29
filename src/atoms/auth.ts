@@ -8,9 +8,13 @@ export const useJWT = () => useAtom(jwtAtom)
 export const useLogout = () => {
   const [, setJWT] = useJWT()
 
-  return () => {
+  return (fn?: () => void) => {
     destroyCookie(null, 'jwt')
     setJWT(null)
+
+    if (fn) {
+      fn()
+    }
   }
 }
 
