@@ -1,9 +1,9 @@
 import { MeQuery } from '@/graphql/generated'
 import { atom, useAtom } from 'jotai'
-import { destroyCookie } from 'nookies'
+import { destroyCookie, parseCookies } from 'nookies'
 
 // jwt.
-const jwtAtom = atom<string | null>(null)
+const jwtAtom = atom<string | null>(parseCookies().jwt ?? null)
 export const useJWT = () => useAtom(jwtAtom)
 export const useLogout = () => {
   const [, setJWT] = useJWT()

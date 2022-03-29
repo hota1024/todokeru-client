@@ -1,8 +1,7 @@
 import { useCurrentUser, useJWT } from '@/atoms/auth'
 import { useMeLazyQuery } from '@/graphql/generated'
-import { useRouter } from 'next/router'
 import { destroyCookie, parseCookies, setCookie } from 'nookies'
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 /**
  * CheckJWT component.
@@ -11,7 +10,6 @@ export const CheckJWT: React.VFC = () => {
   const [jwt, setJWT] = useJWT()
   const [getMe] = useMeLazyQuery()
   const [, setCurrentUser] = useCurrentUser()
-  const router = useRouter()
 
   const checkJWTStatus = useCallback(async () => {
     setCurrentUser({
@@ -58,11 +56,13 @@ export const CheckJWT: React.VFC = () => {
       destroyCookie(null, 'jwt')
     }
 
-    setJWT(newJWT)
-    checkJWTStatus()
+    if (jwt !== newJWT) {
+      setJWT(newJWT)
+    }
 
+    checkJWTStatus()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [checkJWTStatus, jwt, setJWT, router.pathname])
+  }, [jwt])
 
   return <></>
 }
