@@ -19,6 +19,7 @@ import {
 } from '@mui/material'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { useSnackbar } from 'notistack'
 import { useState } from 'react'
 import { LoginEmailForm } from './LoginEmailForm'
 import { LoginOtcForm } from './LoginOtcForm'
@@ -32,6 +33,7 @@ export const Login: React.VFC = () => {
     useCreateOtcMutation()
   const [validateOtc, { loading: validating, error: validateError }] =
     useValidateEmailAuthCodeMutation()
+  const { enqueueSnackbar } = useSnackbar()
   const [codeId, setCodeId] = useState<string>()
   const [email, setEmail] = useState<string>('')
   const [success, setSuccess] = useState(false)
@@ -74,6 +76,8 @@ export const Login: React.VFC = () => {
       if (data) {
         setJWT(data.validateEmailAuthCode.jwt)
         setSuccess(true)
+
+        enqueueSnackbar('ログインしました', { variant: 'success' })
 
         const to = typeof router.query.to === 'string' ? router.query.to : '/'
         router.push(to)
