@@ -87,7 +87,6 @@ export const Login: React.VFC = () => {
 
   return (
     <Container maxWidth="sm">
-      <CheckJWT />
       <Box my={4}>
         {currentUser ? (
           <Card>
