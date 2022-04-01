@@ -1,5 +1,14 @@
-import { Menu } from '@mui/icons-material'
-import { AppBar, IconButton, Toolbar, Typography } from '@mui/material'
+import { useLogout } from '@/atoms/auth'
+import { Logout, Menu } from '@mui/icons-material'
+import {
+  AppBar,
+  Box,
+  Button,
+  IconButton,
+  Toolbar,
+  Typography,
+} from '@mui/material'
+import { useRouter } from 'next/router'
 
 /**
  * AdminToolbar props.
@@ -13,6 +22,8 @@ export type AdminToolbarProps = {
  */
 export const AdminToolbar: React.VFC<AdminToolbarProps> = (props) => {
   const { toggleDrawer } = props
+  const logout = useLogout()
+  const router = useRouter()
 
   return (
     <AppBar
@@ -29,6 +40,14 @@ export const AdminToolbar: React.VFC<AdminToolbarProps> = (props) => {
           <Menu />
         </IconButton>
         <Typography variant="h6">Todokeru</Typography>
+        <Box sx={{ flexGrow: 1 }} />
+        <Button
+          color="inherit"
+          startIcon={<Logout />}
+          onClick={() => logout(() => router.push('/login'))}
+        >
+          ログアウト
+        </Button>
       </Toolbar>
     </AppBar>
   )
