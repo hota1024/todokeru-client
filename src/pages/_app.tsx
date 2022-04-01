@@ -13,6 +13,7 @@ import {
 } from '@apollo/client'
 import { parseCookies } from 'nookies'
 import { CheckJWT } from '@/components/CheckJWT'
+import { SnackbarProvider } from 'notistack'
 
 const clientSideEmotionCache = createEmotionCache()
 const cache = new InMemoryCache()
@@ -53,8 +54,10 @@ function MyApp(props: MyAppProps) {
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
         <ApolloProvider client={client}>
-          <CheckJWT />
-          <Component {...pageProps} />
+          <SnackbarProvider maxSnack={5}>
+            <CheckJWT />
+            <Component {...pageProps} />
+          </SnackbarProvider>
         </ApolloProvider>
       </ThemeProvider>
     </CacheProvider>
