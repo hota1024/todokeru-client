@@ -1,4 +1,4 @@
-import { useCurrentUser, useJWT } from '@/atoms/auth'
+import { CurrentUserState, useCurrentUser, useJWT } from '@/atoms/auth'
 import { useMeLazyQuery } from '@/graphql/generated'
 import { destroyCookie, parseCookies, setCookie } from 'nookies'
 import { useCallback, useEffect, useState } from 'react'
@@ -9,36 +9,29 @@ import { useCallback, useEffect, useState } from 'react'
 export const CheckJWT: React.VFC = () => {
   const [jwt, setJWT] = useJWT()
   const [getMe] = useMeLazyQuery()
-  const [, setCurrentUser] = useCurrentUser()
+  const [state, setCurrentUser] = useCurrentUser()
 
   const checkJWTStatus = useCallback(async () => {
-    setCurrentUser({
+    let newState: CurrentUserState = {
       isValidating: true,
-    })
+    }
 
     if (jwt) {
       try {
         const { data } = await getMe()
         if (data) {
-          setCurrentUser({
-            currentUser: data.me,
-            isValidating: false,
-          })
+          newState.currentUser = data.me
         } else {
           throw ''
         }
       } catch {
         destroyCookie(null, 'jwt')
         setJWT(null)
-        setCurrentUser({
-          isValidating: false,
-        })
       }
-    } else {
-      setCurrentUser({
-        isValidating: false,
-      })
     }
+
+    newState.isValidating = false
+    setCurrentUser(newState)
   }, [jwt, getMe, setCurrentUser, setJWT])
 
   // check cookie.
