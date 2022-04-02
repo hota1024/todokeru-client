@@ -36,6 +36,7 @@
     "@graphql-codegen/typescript-operations": "^2.2.2",
     "@graphql-codegen/typescript-react-apollo": "^3.2.4",
     "@types/node": "16.11.10",
+    "@types/qrcode": "^1.4.2",
     "@types/react": "17.0.37",
     "@types/react-copy-to-clipboard": "^5.0.2",
     "eslint": "7",

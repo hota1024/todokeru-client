@@ -1290,6 +1290,13 @@
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.4.tgz#fcf7205c25dff795ee79af1e30da2c9790808f11"
   integrity sha512-rZ5drC/jWjrArrS8BR6SIr4cWpW09RNTYt9AMZo3Jwwif+iacXAqgVjm0B0Bv/S1jhDXKHqRVNCbACkJ89RAnQ==
 
+"@types/qrcode@^1.4.2":
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/@types/qrcode/-/qrcode-1.4.2.tgz#7d7142d6fa9921f195db342ed08b539181546c74"
+  integrity sha512-7uNT9L4WQTNJejHTSTdaJhfBSCN73xtXaHFyBJ8TSwiLhe4PRuTue7Iph0s2nG9R/ifUaSnGhLUOZavlBEqDWQ==
+  dependencies:
+    "@types/node" "*"
+
 "@types/react-copy-to-clipboard@^5.0.2":
   version "5.0.2"
   resolved "https://registry.yarnpkg.com/@types/react-copy-to-clipboard/-/react-copy-to-clipboard-5.0.2.tgz#c29690b472a54edff35916f0d1c6c797ad0fd34b"
