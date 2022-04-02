@@ -24,6 +24,7 @@
     "nookies": "^2.5.2",
     "notistack": "^2.0.3",
     "react": "^18.0.0-rc.3",
+    "react-copy-to-clipboard": "^5.0.4",
     "react-dom": "latest",
     "react-hook-form": "latest",
     "yup": "^0.32.11"
