@@ -11,7 +11,7 @@ generates:
     config:
       skipTypename: true
       scalars:
-        Date: number
+        DateTime: string
     hooks:
       afterOneFileWrite:
         - yarn eslint --fix

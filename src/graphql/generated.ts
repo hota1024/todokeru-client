@@ -14,7 +14,7 @@ export type Scalars = {
   Int: number;
   Float: number;
   /** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
-  DateTime: any;
+  DateTime: string;
 };
 
 export type CreateEmailAccountDto = {
@@ -196,19 +196,19 @@ export type CreateOtcMutationVariables = Exact<{
 }>;
 
 
-export type CreateOtcMutation = { createOtc: { codeId: string, codeExpiresIn: any } };
+export type CreateOtcMutation = { createOtc: { codeId: string, codeExpiresIn: string } };
 
 export type CreateTempEmailMutationVariables = Exact<{
   data: CreateTempEmailDto;
 }>;
 
 
-export type CreateTempEmailMutation = { createTempEmail: { codeId: string, codeExpiresIn: any } };
+export type CreateTempEmailMutation = { createTempEmail: { codeId: string, codeExpiresIn: string } };
 
 export type CreateTempUserMutationVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CreateTempUserMutation = { createTempUser: { id: string, role: UserRole, createdAt: any, updatedAt: any, emails: Array<{ address: string, lastConfirmedAt: any, updatedAt: any, createdAt: any }> } };
+export type CreateTempUserMutation = { createTempUser: { id: string, role: UserRole, createdAt: string, updatedAt: string, emails: Array<{ address: string, lastConfirmedAt: string, updatedAt: string, createdAt: string }> } };
 
 export type EndRegisterReceptionMutationVariables = Exact<{ [key: string]: never; }>;
 
@@ -266,7 +266,7 @@ export type HasPrimaryMailAccountQuery = { hasPrimaryMailAccount: boolean };
 export type RegisterationStatusQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type RegisterationStatusQuery = { registerationStatus: { isReceptable: boolean, token?: string | null, receptionStartedAt?: any | null, registeredStudents?: number | null, registeredEmails?: number | null } };
+export type RegisterationStatusQuery = { registerationStatus: { isReceptable: boolean, token?: string | null, receptionStartedAt?: string | null, registeredStudents?: number | null, registeredEmails?: number | null } };
 
 export type HasAdminQueryVariables = Exact<{ [key: string]: never; }>;
 
