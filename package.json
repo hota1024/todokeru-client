@@ -17,6 +17,7 @@
     "@hookform/resolvers": "^2.8.8",
     "@mui/icons-material": "latest",
     "@mui/material": "latest",
+    "apollo-link-scalars": "^4.0.1",
     "graphql": "^16.2.0",
     "jotai": "^1.6.1",
     "next": "latest",
