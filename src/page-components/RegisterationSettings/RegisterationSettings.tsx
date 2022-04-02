@@ -39,14 +39,10 @@ export const RegisterationSettings: React.VFC<RegisterationSettingsProps> = (
   props
 ) => {
   const { enqueueSnackbar } = useSnackbar()
-  const {
-    data: statusData,
-    loading: statusLoading,
-    refetch: refetchStatus,
-  } = useRegisterationStatusQuery()
-  const [startReception, { loading: starting }] =
-    useStartRegisterReceptionMutation()
-  const [endReception, { loading: ending }] = useEndRegisterReceptionMutation()
+  const { data: statusData, refetch: refetchStatus } =
+    useRegisterationStatusQuery()
+  const [startReception] = useStartRegisterReceptionMutation()
+  const [endReception] = useEndRegisterReceptionMutation()
   const { registerationStatus: status } = statusData || {}
   const [qrcodeUrl, setQrcodeUrl] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
