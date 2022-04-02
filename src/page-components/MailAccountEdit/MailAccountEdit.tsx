@@ -1,6 +1,8 @@
+import { useConfirm } from '@/atoms/confirm'
 import { FullscreenLoading } from '@/components/FullscreenLoading'
 import { MailAccountForm } from '@/components/mail-accounts/MailAccountForm'
 import {
+  useDeleteMailAccountMutation,
   useMailAccountLazyQuery,
   useUpdateMailAccountMutation,
 } from '@/graphql/generated'
@@ -24,9 +26,11 @@ export const MailAccountEdit: React.VFC<MailAccountEditProps> = (props) => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<Error | null>(null)
   const [updateAccount] = useUpdateMailAccountMutation()
+  const [deleteAccount] = useDeleteMailAccountMutation()
   const [fetchAccount, { data: accountData, refetch }] =
     useMailAccountLazyQuery()
   const router = useRouter()
+  const confirm = useConfirm()
 
   useEffect(() => {
     if (router.query.id) {
@@ -51,12 +55,37 @@ export const MailAccountEdit: React.VFC<MailAccountEditProps> = (props) => {
       })
       await refetch()
     } catch (error) {
-      console.log(error)
       if (error instanceof Error) {
         setError(error)
       }
     }
     setLoading(false)
+  }
+
+  const onDelete = async () => {
+    confirm({
+      title: '本当に削除しますか？',
+      description: 'このアカウントを削除しますか？',
+      confirmText: '削除する',
+      confirmColor: 'error',
+      async onConfirm() {
+        setError(null)
+        setLoading(true)
+        try {
+          await deleteAccount({
+            variables: {
+              id: accountData?.mailAccount.id!,
+            },
+          })
+          await router.push('/admin/settings/mail-accounts')
+        } catch (error) {
+          if (error instanceof Error) {
+            setError(error)
+          }
+        }
+        setLoading(false)
+      },
+    })
   }
 
   return (
@@ -72,6 +101,7 @@ export const MailAccountEdit: React.VFC<MailAccountEditProps> = (props) => {
           defaults={accountData.mailAccount}
           loading={loading}
           errorMessage={error?.message}
+          onDelete={onDelete}
         />
       ) : (
         <Skeleton height={400} />
