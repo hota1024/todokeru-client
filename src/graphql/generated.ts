@@ -217,6 +217,13 @@ export type CreateTempUserMutationVariables = Exact<{ [key: string]: never; }>;
 
 export type CreateTempUserMutation = { createTempUser: { id: string, role: UserRole, createdAt: string, updatedAt: string, emails: Array<{ address: string, lastConfirmedAt: string, updatedAt: string, createdAt: string }> } };
 
+export type DeleteMailAccountMutationVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type DeleteMailAccountMutation = { deleteMailAccount: boolean };
+
 export type EndRegisterReceptionMutationVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -474,6 +481,37 @@ export function useCreateTempUserMutation(baseOptions?: Apollo.MutationHookOptio
 export type CreateTempUserMutationHookResult = ReturnType<typeof useCreateTempUserMutation>;
 export type CreateTempUserMutationResult = Apollo.MutationResult<CreateTempUserMutation>;
 export type CreateTempUserMutationOptions = Apollo.BaseMutationOptions<CreateTempUserMutation, CreateTempUserMutationVariables>;
+export const DeleteMailAccountDocument = gql`
+    mutation deleteMailAccount($id: String!) {
+  deleteMailAccount(id: $id)
+}
+    `;
+export type DeleteMailAccountMutationFn = Apollo.MutationFunction<DeleteMailAccountMutation, DeleteMailAccountMutationVariables>;
+
+/**
+ * __useDeleteMailAccountMutation__
+ *
+ * To run a mutation, you first call `useDeleteMailAccountMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteMailAccountMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteMailAccountMutation, { data, loading, error }] = useDeleteMailAccountMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteMailAccountMutation(baseOptions?: Apollo.MutationHookOptions<DeleteMailAccountMutation, DeleteMailAccountMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteMailAccountMutation, DeleteMailAccountMutationVariables>(DeleteMailAccountDocument, options);
+      }
+export type DeleteMailAccountMutationHookResult = ReturnType<typeof useDeleteMailAccountMutation>;
+export type DeleteMailAccountMutationResult = Apollo.MutationResult<DeleteMailAccountMutation>;
+export type DeleteMailAccountMutationOptions = Apollo.BaseMutationOptions<DeleteMailAccountMutation, DeleteMailAccountMutationVariables>;
 export const EndRegisterReceptionDocument = gql`
     mutation endRegisterReception {
   endRegisterReception {
