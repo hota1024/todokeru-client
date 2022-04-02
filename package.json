@@ -23,8 +23,8 @@
     "nookies": "^2.5.2",
     "notistack": "^2.0.3",
     "react": "^18.0.0-rc.3",
-    "react-dom": "^18.0.0-rc.3",
-    "react-hook-form": "^7.25.1",
+    "react-dom": "latest",
+    "react-hook-form": "latest",
     "yup": "^0.32.11"
   },
   "devDependencies": {
