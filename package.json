@@ -16,6 +16,7 @@
     "@emotion/styled": "latest",
     "@hookform/resolvers": "^2.8.8",
     "@mui/icons-material": "latest",
+    "@mui/lab": "^5.0.0-alpha.75",
     "@mui/material": "latest",
     "apollo-link-scalars": "^4.0.1",
     "graphql": "^16.2.0",
