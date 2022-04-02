@@ -72,7 +72,7 @@ export const LoginEmailForm: React.VFC<LoginEmailFormProps> = (props) => {
           startIcon={<Send />}
           disabled={loading}
         >
-          認証コードを送信
+          {loading ? '処理中です...' : '認証コードを送信'}
         </Button>
       </CardActions>
     </Card>

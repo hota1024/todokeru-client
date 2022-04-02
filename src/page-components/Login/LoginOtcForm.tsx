@@ -53,7 +53,8 @@ export const LoginOtcForm: React.VFC<LoginOtcFormProps> = (props) => {
           </Alert>
         )}
         <Typography sx={{ mb: 2 }}>
-          {email} 宛に送信した認証コードを入力してください。
+          {email}{' '}
+          宛に送信した認証コードを送信しました。下のフォームに認証コードを入力しログインしてください。
         </Typography>
         <TextField
           label="認証コード"
