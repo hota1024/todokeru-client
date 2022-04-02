@@ -1,7 +1,4 @@
-import {
-  MailAccount,
-  useCreateFirstPrimaryMailAccountMutation,
-} from '@/graphql/generated'
+import { MailAccount } from '@/graphql/generated'
 import {
   MailAccountEditSchema,
   mailAccountEditSchema,
@@ -41,7 +38,7 @@ export type MailAccountFormProps = {
  * MailAccountForm component.
  */
 export const MailAccountForm: React.VFC<MailAccountFormProps> = (props) => {
-  const { defaults, onSubmit, loading, errorMessage } = props
+  const { defaults, onSubmit, loading, errorMessage, onDelete } = props
 
   const isNew = !defaults?.id
   const isFirstPrimary = isNew && !!defaults?.isPrimary
@@ -152,6 +149,11 @@ export const MailAccountForm: React.VFC<MailAccountFormProps> = (props) => {
         <Divider />
         <CardActions sx={{ display: 'flex' }}>
           <Box flex={1} />
+          {!isNew && onDelete && (
+            <Button color="error" onClick={onDelete}>
+              削除
+            </Button>
+          )}
           <Button
             variant="contained"
             disableElevation
