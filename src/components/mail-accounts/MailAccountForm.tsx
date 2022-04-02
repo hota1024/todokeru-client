@@ -3,6 +3,8 @@ import {
   useCreateFirstPrimaryMailAccountMutation,
 } from '@/graphql/generated'
 import {
+  MailAccountEditSchema,
+  mailAccountEditSchema,
   mailAccountSchema,
   MailAccountSchema,
 } from '@/schemas/mailAccountSchema'
@@ -32,6 +34,7 @@ export type MailAccountFormProps = {
   loading?: boolean
   errorMessage?: string
   onSubmit: SubmitHandler<MailAccountSchema>
+  onDelete?: () => void
 }
 
 /**
@@ -48,8 +51,8 @@ export const MailAccountForm: React.VFC<MailAccountFormProps> = (props) => {
     control,
     formState: { errors },
     handleSubmit,
-  } = useForm<MailAccountSchema>({
-    resolver: yupResolver(mailAccountSchema),
+  } = useForm<MailAccountSchema | MailAccountEditSchema>({
+    resolver: yupResolver(isNew ? mailAccountSchema : mailAccountEditSchema),
     defaultValues: {
       ...defaults,
     },
