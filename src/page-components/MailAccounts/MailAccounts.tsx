@@ -12,6 +12,7 @@ import {
   ListItemIcon,
   ListItemText,
   ListSubheader,
+  Skeleton,
 } from '@mui/material'
 import { Box } from '@mui/system'
 import Link from 'next/link'
@@ -26,7 +27,7 @@ export type MailAccountsProps = {}
  * MailAccounts component.
  */
 export const MailAccounts: React.VFC<MailAccountsProps> = (props) => {
-  const { data: accountsData } = useMailAccountsQuery()
+  const { data: accountsData, loading } = useMailAccountsQuery()
 
   const accounts = accountsData?.mailAccounts ?? []
 
@@ -39,6 +40,7 @@ export const MailAccounts: React.VFC<MailAccountsProps> = (props) => {
       />
       <Card variant="outlined">
         <List subheader={<ListSubheader>メールアカウント一覧</ListSubheader>}>
+          {loading && <Skeleton variant="rectangular" height={64} />}
           {accounts.map((account) => (
             <Link
               href={`/admin/settings/mail-accounts/${account.id}`}
