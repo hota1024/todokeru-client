@@ -1,0 +1,9 @@
+query registerationStatus {
+  registerationStatus {
+    isReceptable
+    token
+    receptionStartedAt
+    registeredStudents
+    registeredEmails
+  }
+}

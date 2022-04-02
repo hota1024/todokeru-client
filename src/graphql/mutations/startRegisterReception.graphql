@@ -1,0 +1,5 @@
+mutation startRegisterReception($token: String) {
+  startRegisterReception(token: $token) {
+    token
+  }
+}

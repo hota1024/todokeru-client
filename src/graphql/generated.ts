@@ -74,8 +74,11 @@ export type Mutation = {
   createTempEmail: CreateOtcResultDto;
   createTempUser: User;
   deleteMailAccount: Scalars['Boolean'];
+  endRegisterReception: RegisterationStatus;
+  startRegisterReception: RegisterationStatus;
   updateMailAccount: MailAccount;
   validateEmailAuthCode: LoginResult;
+  validateRegisterationToken: Scalars['Boolean'];
 };
 
 
@@ -109,6 +112,11 @@ export type MutationDeleteMailAccountArgs = {
 };
 
 
+export type MutationStartRegisterReceptionArgs = {
+  token?: InputMaybe<Scalars['String']>;
+};
+
+
 export type MutationUpdateMailAccountArgs = {
   data: UpdateEmailAccountDto;
   id: Scalars['String'];
@@ -119,18 +127,33 @@ export type MutationValidateEmailAuthCodeArgs = {
   data: ValidateEmailAuthCodeDto;
 };
 
+
+export type MutationValidateRegisterationTokenArgs = {
+  token: Scalars['String'];
+};
+
 export type Query = {
   hasAdmin: Scalars['Boolean'];
   hasPrimaryMailAccount: Scalars['Boolean'];
+  isRegisterationReceptable: Scalars['Boolean'];
   mailAccount: MailAccount;
   mailAccounts: Array<MailAccount>;
   me: User;
+  registerationStatus: RegisterationStatus;
   users: Array<User>;
 };
 
 
 export type QueryMailAccountArgs = {
   id: Scalars['String'];
+};
+
+export type RegisterationStatus = {
+  isReceptable: Scalars['Boolean'];
+  receptionStartedAt?: Maybe<Scalars['DateTime']>;
+  registeredEmails?: Maybe<Scalars['Float']>;
+  registeredStudents?: Maybe<Scalars['Float']>;
+  token?: Maybe<Scalars['String']>;
 };
 
 export type UpdateEmailAccountDto = {
@@ -187,6 +210,11 @@ export type CreateTempUserMutationVariables = Exact<{ [key: string]: never; }>;
 
 export type CreateTempUserMutation = { createTempUser: { id: string, role: UserRole, createdAt: any, updatedAt: any, emails: Array<{ address: string, lastConfirmedAt: any, updatedAt: any, createdAt: any }> } };
 
+export type EndRegisterReceptionMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type EndRegisterReceptionMutation = { endRegisterReception: { token?: string | null } };
+
 export type CreateFirstPrimaryMailAccountMutationVariables = Exact<{
   data: CreateEmailAccountDto;
 }>;
@@ -199,12 +227,31 @@ export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type MeQuery = { me: { id: string, role: UserRole } };
 
+export type StartRegisterReceptionMutationVariables = Exact<{
+  token?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type StartRegisterReceptionMutation = { startRegisterReception: { token?: string | null } };
+
 export type ValidateEmailAuthCodeMutationVariables = Exact<{
   data: ValidateEmailAuthCodeDto;
 }>;
 
 
 export type ValidateEmailAuthCodeMutation = { validateEmailAuthCode: { jwt: string } };
+
+export type ValidateRegisterationTokenMutationVariables = Exact<{
+  token: Scalars['String'];
+}>;
+
+
+export type ValidateRegisterationTokenMutation = { validateRegisterationToken: boolean };
+
+export type IsRegisterationReceptableQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type IsRegisterationReceptableQuery = { isRegisterationReceptable: boolean };
 
 export type MailAccountsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -215,6 +262,11 @@ export type HasPrimaryMailAccountQueryVariables = Exact<{ [key: string]: never; 
 
 
 export type HasPrimaryMailAccountQuery = { hasPrimaryMailAccount: boolean };
+
+export type RegisterationStatusQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type RegisterationStatusQuery = { registerationStatus: { isReceptable: boolean, token?: string | null, receptionStartedAt?: any | null, registeredStudents?: number | null, registeredEmails?: number | null } };
 
 export type HasAdminQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -362,6 +414,38 @@ export function useCreateTempUserMutation(baseOptions?: Apollo.MutationHookOptio
 export type CreateTempUserMutationHookResult = ReturnType<typeof useCreateTempUserMutation>;
 export type CreateTempUserMutationResult = Apollo.MutationResult<CreateTempUserMutation>;
 export type CreateTempUserMutationOptions = Apollo.BaseMutationOptions<CreateTempUserMutation, CreateTempUserMutationVariables>;
+export const EndRegisterReceptionDocument = gql`
+    mutation endRegisterReception {
+  endRegisterReception {
+    token
+  }
+}
+    `;
+export type EndRegisterReceptionMutationFn = Apollo.MutationFunction<EndRegisterReceptionMutation, EndRegisterReceptionMutationVariables>;
+
+/**
+ * __useEndRegisterReceptionMutation__
+ *
+ * To run a mutation, you first call `useEndRegisterReceptionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEndRegisterReceptionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [endRegisterReceptionMutation, { data, loading, error }] = useEndRegisterReceptionMutation({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useEndRegisterReceptionMutation(baseOptions?: Apollo.MutationHookOptions<EndRegisterReceptionMutation, EndRegisterReceptionMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<EndRegisterReceptionMutation, EndRegisterReceptionMutationVariables>(EndRegisterReceptionDocument, options);
+      }
+export type EndRegisterReceptionMutationHookResult = ReturnType<typeof useEndRegisterReceptionMutation>;
+export type EndRegisterReceptionMutationResult = Apollo.MutationResult<EndRegisterReceptionMutation>;
+export type EndRegisterReceptionMutationOptions = Apollo.BaseMutationOptions<EndRegisterReceptionMutation, EndRegisterReceptionMutationVariables>;
 export const CreateFirstPrimaryMailAccountDocument = gql`
     mutation createFirstPrimaryMailAccount($data: CreateEmailAccountDto!) {
   createFirstPrimaryMailAccount(data: $data) {
@@ -435,6 +519,39 @@ export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
+export const StartRegisterReceptionDocument = gql`
+    mutation startRegisterReception($token: String) {
+  startRegisterReception(token: $token) {
+    token
+  }
+}
+    `;
+export type StartRegisterReceptionMutationFn = Apollo.MutationFunction<StartRegisterReceptionMutation, StartRegisterReceptionMutationVariables>;
+
+/**
+ * __useStartRegisterReceptionMutation__
+ *
+ * To run a mutation, you first call `useStartRegisterReceptionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useStartRegisterReceptionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [startRegisterReceptionMutation, { data, loading, error }] = useStartRegisterReceptionMutation({
+ *   variables: {
+ *      token: // value for 'token'
+ *   },
+ * });
+ */
+export function useStartRegisterReceptionMutation(baseOptions?: Apollo.MutationHookOptions<StartRegisterReceptionMutation, StartRegisterReceptionMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<StartRegisterReceptionMutation, StartRegisterReceptionMutationVariables>(StartRegisterReceptionDocument, options);
+      }
+export type StartRegisterReceptionMutationHookResult = ReturnType<typeof useStartRegisterReceptionMutation>;
+export type StartRegisterReceptionMutationResult = Apollo.MutationResult<StartRegisterReceptionMutation>;
+export type StartRegisterReceptionMutationOptions = Apollo.BaseMutationOptions<StartRegisterReceptionMutation, StartRegisterReceptionMutationVariables>;
 export const ValidateEmailAuthCodeDocument = gql`
     mutation validateEmailAuthCode($data: ValidateEmailAuthCodeDto!) {
   validateEmailAuthCode(data: $data) {
@@ -468,6 +585,69 @@ export function useValidateEmailAuthCodeMutation(baseOptions?: Apollo.MutationHo
 export type ValidateEmailAuthCodeMutationHookResult = ReturnType<typeof useValidateEmailAuthCodeMutation>;
 export type ValidateEmailAuthCodeMutationResult = Apollo.MutationResult<ValidateEmailAuthCodeMutation>;
 export type ValidateEmailAuthCodeMutationOptions = Apollo.BaseMutationOptions<ValidateEmailAuthCodeMutation, ValidateEmailAuthCodeMutationVariables>;
+export const ValidateRegisterationTokenDocument = gql`
+    mutation validateRegisterationToken($token: String!) {
+  validateRegisterationToken(token: $token)
+}
+    `;
+export type ValidateRegisterationTokenMutationFn = Apollo.MutationFunction<ValidateRegisterationTokenMutation, ValidateRegisterationTokenMutationVariables>;
+
+/**
+ * __useValidateRegisterationTokenMutation__
+ *
+ * To run a mutation, you first call `useValidateRegisterationTokenMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useValidateRegisterationTokenMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [validateRegisterationTokenMutation, { data, loading, error }] = useValidateRegisterationTokenMutation({
+ *   variables: {
+ *      token: // value for 'token'
+ *   },
+ * });
+ */
+export function useValidateRegisterationTokenMutation(baseOptions?: Apollo.MutationHookOptions<ValidateRegisterationTokenMutation, ValidateRegisterationTokenMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ValidateRegisterationTokenMutation, ValidateRegisterationTokenMutationVariables>(ValidateRegisterationTokenDocument, options);
+      }
+export type ValidateRegisterationTokenMutationHookResult = ReturnType<typeof useValidateRegisterationTokenMutation>;
+export type ValidateRegisterationTokenMutationResult = Apollo.MutationResult<ValidateRegisterationTokenMutation>;
+export type ValidateRegisterationTokenMutationOptions = Apollo.BaseMutationOptions<ValidateRegisterationTokenMutation, ValidateRegisterationTokenMutationVariables>;
+export const IsRegisterationReceptableDocument = gql`
+    query isRegisterationReceptable {
+  isRegisterationReceptable
+}
+    `;
+
+/**
+ * __useIsRegisterationReceptableQuery__
+ *
+ * To run a query within a React component, call `useIsRegisterationReceptableQuery` and pass it any options that fit your needs.
+ * When your component renders, `useIsRegisterationReceptableQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useIsRegisterationReceptableQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useIsRegisterationReceptableQuery(baseOptions?: Apollo.QueryHookOptions<IsRegisterationReceptableQuery, IsRegisterationReceptableQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<IsRegisterationReceptableQuery, IsRegisterationReceptableQueryVariables>(IsRegisterationReceptableDocument, options);
+      }
+export function useIsRegisterationReceptableLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<IsRegisterationReceptableQuery, IsRegisterationReceptableQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<IsRegisterationReceptableQuery, IsRegisterationReceptableQueryVariables>(IsRegisterationReceptableDocument, options);
+        }
+export type IsRegisterationReceptableQueryHookResult = ReturnType<typeof useIsRegisterationReceptableQuery>;
+export type IsRegisterationReceptableLazyQueryHookResult = ReturnType<typeof useIsRegisterationReceptableLazyQuery>;
+export type IsRegisterationReceptableQueryResult = Apollo.QueryResult<IsRegisterationReceptableQuery, IsRegisterationReceptableQueryVariables>;
 export const MailAccountsDocument = gql`
     query mailAccounts {
   mailAccounts {
@@ -539,6 +719,44 @@ export function useHasPrimaryMailAccountLazyQuery(baseOptions?: Apollo.LazyQuery
 export type HasPrimaryMailAccountQueryHookResult = ReturnType<typeof useHasPrimaryMailAccountQuery>;
 export type HasPrimaryMailAccountLazyQueryHookResult = ReturnType<typeof useHasPrimaryMailAccountLazyQuery>;
 export type HasPrimaryMailAccountQueryResult = Apollo.QueryResult<HasPrimaryMailAccountQuery, HasPrimaryMailAccountQueryVariables>;
+export const RegisterationStatusDocument = gql`
+    query registerationStatus {
+  registerationStatus {
+    isReceptable
+    token
+    receptionStartedAt
+    registeredStudents
+    registeredEmails
+  }
+}
+    `;
+
+/**
+ * __useRegisterationStatusQuery__
+ *
+ * To run a query within a React component, call `useRegisterationStatusQuery` and pass it any options that fit your needs.
+ * When your component renders, `useRegisterationStatusQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useRegisterationStatusQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useRegisterationStatusQuery(baseOptions?: Apollo.QueryHookOptions<RegisterationStatusQuery, RegisterationStatusQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<RegisterationStatusQuery, RegisterationStatusQueryVariables>(RegisterationStatusDocument, options);
+      }
+export function useRegisterationStatusLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<RegisterationStatusQuery, RegisterationStatusQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<RegisterationStatusQuery, RegisterationStatusQueryVariables>(RegisterationStatusDocument, options);
+        }
+export type RegisterationStatusQueryHookResult = ReturnType<typeof useRegisterationStatusQuery>;
+export type RegisterationStatusLazyQueryHookResult = ReturnType<typeof useRegisterationStatusLazyQuery>;
+export type RegisterationStatusQueryResult = Apollo.QueryResult<RegisterationStatusQuery, RegisterationStatusQueryVariables>;
 export const HasAdminDocument = gql`
     query hasAdmin {
   hasAdmin

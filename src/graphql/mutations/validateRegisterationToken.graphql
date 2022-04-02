@@ -1,0 +1,3 @@
+mutation validateRegisterationToken($token: String!) {
+  validateRegisterationToken(token: $token)
+}
