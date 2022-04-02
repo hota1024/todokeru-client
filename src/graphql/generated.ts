@@ -191,6 +191,13 @@ export type CheckTempUserAliveMutationVariables = Exact<{
 
 export type CheckTempUserAliveMutation = { checkTempUserAlive: boolean };
 
+export type CreateMailAccountMutationVariables = Exact<{
+  data: CreateEmailAccountDto;
+}>;
+
+
+export type CreateMailAccountMutation = { createMailAccount: { id: string, host: string, port: string, secure: boolean, user: string, isPrimary: boolean } };
+
 export type CreateOtcMutationVariables = Exact<{
   data: CreateOtcDto;
 }>;
@@ -312,6 +319,44 @@ export function useCheckTempUserAliveMutation(baseOptions?: Apollo.MutationHookO
 export type CheckTempUserAliveMutationHookResult = ReturnType<typeof useCheckTempUserAliveMutation>;
 export type CheckTempUserAliveMutationResult = Apollo.MutationResult<CheckTempUserAliveMutation>;
 export type CheckTempUserAliveMutationOptions = Apollo.BaseMutationOptions<CheckTempUserAliveMutation, CheckTempUserAliveMutationVariables>;
+export const CreateMailAccountDocument = gql`
+    mutation createMailAccount($data: CreateEmailAccountDto!) {
+  createMailAccount(data: $data) {
+    id
+    host
+    port
+    secure
+    user
+    isPrimary
+  }
+}
+    `;
+export type CreateMailAccountMutationFn = Apollo.MutationFunction<CreateMailAccountMutation, CreateMailAccountMutationVariables>;
+
+/**
+ * __useCreateMailAccountMutation__
+ *
+ * To run a mutation, you first call `useCreateMailAccountMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateMailAccountMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createMailAccountMutation, { data, loading, error }] = useCreateMailAccountMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useCreateMailAccountMutation(baseOptions?: Apollo.MutationHookOptions<CreateMailAccountMutation, CreateMailAccountMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateMailAccountMutation, CreateMailAccountMutationVariables>(CreateMailAccountDocument, options);
+      }
+export type CreateMailAccountMutationHookResult = ReturnType<typeof useCreateMailAccountMutation>;
+export type CreateMailAccountMutationResult = Apollo.MutationResult<CreateMailAccountMutation>;
+export type CreateMailAccountMutationOptions = Apollo.BaseMutationOptions<CreateMailAccountMutation, CreateMailAccountMutationVariables>;
 export const CreateOtcDocument = gql`
     mutation createOtc($data: CreateOtcDto!) {
   createOtc(data: $data) {

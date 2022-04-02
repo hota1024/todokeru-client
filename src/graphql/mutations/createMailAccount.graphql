@@ -1,0 +1,10 @@
+mutation createMailAccount($data: CreateEmailAccountDto!) {
+  createMailAccount(data: $data) {
+    id
+    host
+    port
+    secure
+    user
+    isPrimary
+  }
+}
