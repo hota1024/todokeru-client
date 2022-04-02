@@ -47,5 +47,5 @@ export const useRequiredAuth = (role: UserRole) => {
     }
   }, [currentUser, isValidating, router, role])
 
-  return isValidating
+  return isValidating || !currentUser
 }
