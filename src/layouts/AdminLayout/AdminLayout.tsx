@@ -2,7 +2,7 @@ import { useCurrentUser } from '@/atoms/auth'
 import { FullscreenLoading } from '@/components/FullscreenLoading'
 import { UserRole } from '@/graphql/generated'
 import { useRequiredAuth } from '@/hooks/useRequriedAuth'
-import { Box, Toolbar } from '@mui/material'
+import { Box, Container, Toolbar } from '@mui/material'
 import { useState } from 'react'
 import { AdminDrawer } from './AdminDrawer'
 import { AdminMain } from './AdminMain'
@@ -37,7 +37,7 @@ export const AdminLayout: React.VFC<AdminLayoutProps> = (props) => {
       <AdminDrawer open={drawerOpen} />
       <AdminMain open={drawerOpen}>
         <Toolbar />
-        {children}
+        <Container>{children}</Container>
       </AdminMain>
     </Box>
   )
