@@ -6,6 +6,21 @@ query mailAccounts {
     secure
     user
     isPrimary
+    updatedAt
+    createdAt
+  }
+}
+
+query mailAccount($id: String!) {
+  mailAccount(id: $id) {
+    id
+    host
+    port
+    secure
+    user
+    isPrimary
+    updatedAt
+    createdAt
   }
 }
 
