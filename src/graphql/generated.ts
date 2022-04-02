@@ -241,6 +241,14 @@ export type StartRegisterReceptionMutationVariables = Exact<{
 
 export type StartRegisterReceptionMutation = { startRegisterReception: { token?: string | null } };
 
+export type UpdateMailAccountMutationVariables = Exact<{
+  id: Scalars['String'];
+  data: UpdateEmailAccountDto;
+}>;
+
+
+export type UpdateMailAccountMutation = { updateMailAccount: { id: string, host: string, port: string, secure: boolean, user: string, isPrimary: boolean } };
+
 export type ValidateEmailAuthCodeMutationVariables = Exact<{
   data: ValidateEmailAuthCodeDto;
 }>;
@@ -604,6 +612,45 @@ export function useStartRegisterReceptionMutation(baseOptions?: Apollo.MutationH
 export type StartRegisterReceptionMutationHookResult = ReturnType<typeof useStartRegisterReceptionMutation>;
 export type StartRegisterReceptionMutationResult = Apollo.MutationResult<StartRegisterReceptionMutation>;
 export type StartRegisterReceptionMutationOptions = Apollo.BaseMutationOptions<StartRegisterReceptionMutation, StartRegisterReceptionMutationVariables>;
+export const UpdateMailAccountDocument = gql`
+    mutation updateMailAccount($id: String!, $data: UpdateEmailAccountDto!) {
+  updateMailAccount(id: $id, data: $data) {
+    id
+    host
+    port
+    secure
+    user
+    isPrimary
+  }
+}
+    `;
+export type UpdateMailAccountMutationFn = Apollo.MutationFunction<UpdateMailAccountMutation, UpdateMailAccountMutationVariables>;
+
+/**
+ * __useUpdateMailAccountMutation__
+ *
+ * To run a mutation, you first call `useUpdateMailAccountMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateMailAccountMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateMailAccountMutation, { data, loading, error }] = useUpdateMailAccountMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useUpdateMailAccountMutation(baseOptions?: Apollo.MutationHookOptions<UpdateMailAccountMutation, UpdateMailAccountMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateMailAccountMutation, UpdateMailAccountMutationVariables>(UpdateMailAccountDocument, options);
+      }
+export type UpdateMailAccountMutationHookResult = ReturnType<typeof useUpdateMailAccountMutation>;
+export type UpdateMailAccountMutationResult = Apollo.MutationResult<UpdateMailAccountMutation>;
+export type UpdateMailAccountMutationOptions = Apollo.BaseMutationOptions<UpdateMailAccountMutation, UpdateMailAccountMutationVariables>;
 export const ValidateEmailAuthCodeDocument = gql`
     mutation validateEmailAuthCode($data: ValidateEmailAuthCodeDto!) {
   validateEmailAuthCode(data: $data) {

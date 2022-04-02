@@ -1,0 +1,10 @@
+mutation updateMailAccount($id: String!, $data: UpdateEmailAccountDto!) {
+  updateMailAccount(id: $id, data: $data) {
+    id
+    host
+    port
+    secure
+    user
+    isPrimary
+  }
+}
