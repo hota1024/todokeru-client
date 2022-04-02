@@ -27,7 +27,9 @@ export type MailAccountsProps = {}
  * MailAccounts component.
  */
 export const MailAccounts: React.VFC<MailAccountsProps> = (props) => {
-  const { data: accountsData, loading } = useMailAccountsQuery()
+  const { data: accountsData, loading } = useMailAccountsQuery({
+    fetchPolicy: 'no-cache',
+  })
 
   const accounts = accountsData?.mailAccounts ?? []
 
