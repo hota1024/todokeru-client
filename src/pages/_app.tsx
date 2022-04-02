@@ -14,6 +14,7 @@ import {
 import { parseCookies } from 'nookies'
 import { CheckJWT } from '@/components/CheckJWT'
 import { SnackbarProvider } from 'notistack'
+import { ConfirmDialog } from '@/components/ConfirmDialog/ConfirmDialog'
 
 const clientSideEmotionCache = createEmotionCache()
 const cache = new InMemoryCache()
@@ -57,6 +58,7 @@ function MyApp(props: MyAppProps) {
           <SnackbarProvider maxSnack={5}>
             <CheckJWT />
             <Component {...pageProps} />
+            <ConfirmDialog />
           </SnackbarProvider>
         </ApolloProvider>
       </ThemeProvider>
