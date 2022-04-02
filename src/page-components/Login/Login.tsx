@@ -29,8 +29,8 @@ import { LoginOtcForm } from './LoginOtcForm'
  */
 export const Login: React.VFC = () => {
   const [, setJWT] = useJWT()
-  const [createOtc, { loading: creating, error: createError }] =
-    useCreateOtcMutation()
+  const [createOtc, { error: createError }] = useCreateOtcMutation()
+  const [creating, setCreating] = useState(false)
   const [validateOtc, { loading: validating, error: validateError }] =
     useValidateEmailAuthCodeMutation()
   const { enqueueSnackbar } = useSnackbar()
@@ -43,6 +43,8 @@ export const Login: React.VFC = () => {
 
   const handleEmailSubmit = async ({ email }: LoginEmailSchema) => {
     setEmail(email)
+    setCreating(true)
+
     try {
       const { data } = await createOtc({
         variables: {
@@ -55,7 +57,11 @@ export const Login: React.VFC = () => {
       if (data) {
         setCodeId(data.createOtc.codeId)
       }
-    } catch {}
+    } catch (error) {
+      console.error(error)
+    }
+
+    setCreating(false)
   }
 
   const handleOtcSubmit = async ({ code }: AuthCodeSchema) => {
@@ -89,6 +95,8 @@ export const Login: React.VFC = () => {
     return <FullscreenLoading type="authenticating" />
   }
 
+  console.log(creating, codeId)
+
   return (
     <Container maxWidth="sm">
       <Box my={4}>
@@ -114,7 +122,7 @@ export const Login: React.VFC = () => {
           <LoginEmailForm
             onSubmit={handleEmailSubmit}
             error={createError?.message}
-            loading={creating || creating}
+            loading={creating}
           />
         ) : (
           <LoginOtcForm
