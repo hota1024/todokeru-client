@@ -6,7 +6,6 @@ import {
   useUpdateGroupMutation,
 } from '@/graphql/generated'
 import { AdminLayout } from '@/layouts/AdminLayout/AdminLayout'
-import register from '@/pages/register'
 import { GroupSchema } from '@/schemas/groupSchema'
 import { LoadingButton } from '@mui/lab'
 import {
