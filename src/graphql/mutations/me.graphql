@@ -2,5 +2,10 @@ query me {
   me {
     id
     role
+    emails {
+      id
+      address
+      lastConfirmedAt
+    }
   }
 }
