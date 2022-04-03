@@ -26,6 +26,10 @@ export type CreateEmailAccountDto = {
   user: Scalars['String'];
 };
 
+export type CreateGroupDto = {
+  name: Scalars['String'];
+};
+
 export type CreateOtcDto = {
   address: Scalars['String'];
 };
@@ -33,6 +37,12 @@ export type CreateOtcDto = {
 export type CreateOtcResultDto = {
   codeExpiresIn: Scalars['DateTime'];
   codeId: Scalars['String'];
+};
+
+export type CreateStudentDto = {
+  groupId: Scalars['String'];
+  name: Scalars['String'];
+  surname: Scalars['String'];
 };
 
 export type CreateTempEmailDto = {
@@ -48,6 +58,14 @@ export type Email = {
   lastConfirmedAt: Scalars['DateTime'];
   updatedAt: Scalars['DateTime'];
   user: User;
+};
+
+export type Group = {
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  students: Array<Student>;
+  updatedAt: Scalars['DateTime'];
 };
 
 export type LoginResult = {
@@ -69,14 +87,20 @@ export type MailAccount = {
 export type Mutation = {
   checkTempUserAlive: Scalars['Boolean'];
   createFirstPrimaryMailAccount: MailAccount;
+  createGroup: Group;
   createMailAccount: MailAccount;
   createOtc: CreateOtcResultDto;
+  createStudent: Student;
   createTempEmail: CreateOtcResultDto;
   createTempUser: User;
+  deleteGroup: Scalars['Boolean'];
   deleteMailAccount: Scalars['Boolean'];
+  deleteStudent: Scalars['Boolean'];
   endRegisterReception: RegisterationStatus;
   startRegisterReception: RegisterationStatus;
+  updateGroup: Group;
   updateMailAccount: MailAccount;
+  updateStudent: Student;
   validateEmailAuthCode: LoginResult;
   validateRegisterationToken: Scalars['Boolean'];
 };
@@ -92,6 +116,11 @@ export type MutationCreateFirstPrimaryMailAccountArgs = {
 };
 
 
+export type MutationCreateGroupArgs = {
+  data: CreateGroupDto;
+};
+
+
 export type MutationCreateMailAccountArgs = {
   data: CreateEmailAccountDto;
 };
@@ -102,12 +131,27 @@ export type MutationCreateOtcArgs = {
 };
 
 
+export type MutationCreateStudentArgs = {
+  data: CreateStudentDto;
+};
+
+
 export type MutationCreateTempEmailArgs = {
   data: CreateTempEmailDto;
 };
 
 
+export type MutationDeleteGroupArgs = {
+  id: Scalars['String'];
+};
+
+
 export type MutationDeleteMailAccountArgs = {
+  id: Scalars['String'];
+};
+
+
+export type MutationDeleteStudentArgs = {
   id: Scalars['String'];
 };
 
@@ -117,8 +161,20 @@ export type MutationStartRegisterReceptionArgs = {
 };
 
 
+export type MutationUpdateGroupArgs = {
+  data: UpdateGroupDto;
+  id: Scalars['String'];
+};
+
+
 export type MutationUpdateMailAccountArgs = {
   data: UpdateEmailAccountDto;
+  id: Scalars['String'];
+};
+
+
+export type MutationUpdateStudentArgs = {
+  data: UpdateStudentDto;
   id: Scalars['String'];
 };
 
@@ -133,6 +189,8 @@ export type MutationValidateRegisterationTokenArgs = {
 };
 
 export type Query = {
+  group: Group;
+  groups: Array<Group>;
   hasAdmin: Scalars['Boolean'];
   hasPrimaryMailAccount: Scalars['Boolean'];
   isRegisterationReceptable: Scalars['Boolean'];
@@ -140,11 +198,23 @@ export type Query = {
   mailAccounts: Array<MailAccount>;
   me: User;
   registerationStatus: RegisterationStatus;
+  student: Student;
+  students: Array<Student>;
   users: Array<User>;
 };
 
 
+export type QueryGroupArgs = {
+  id: Scalars['String'];
+};
+
+
 export type QueryMailAccountArgs = {
+  id: Scalars['String'];
+};
+
+
+export type QueryStudentArgs = {
   id: Scalars['String'];
 };
 
@@ -156,6 +226,14 @@ export type RegisterationStatus = {
   token?: Maybe<Scalars['String']>;
 };
 
+export type Student = {
+  group: Group;
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  surname: Scalars['String'];
+  user: User;
+};
+
 export type UpdateEmailAccountDto = {
   host?: InputMaybe<Scalars['String']>;
   isPrimary?: InputMaybe<Scalars['Boolean']>;
@@ -165,11 +243,22 @@ export type UpdateEmailAccountDto = {
   user?: InputMaybe<Scalars['String']>;
 };
 
+export type UpdateGroupDto = {
+  name: Scalars['String'];
+};
+
+export type UpdateStudentDto = {
+  groupId: Scalars['String'];
+  name: Scalars['String'];
+  surname: Scalars['String'];
+};
+
 export type User = {
   createdAt: Scalars['DateTime'];
   emails: Array<Email>;
   id: Scalars['ID'];
   role: UserRole;
+  students: Array<Student>;
   updatedAt: Scalars['DateTime'];
 };
 
@@ -229,6 +318,28 @@ export type EndRegisterReceptionMutationVariables = Exact<{ [key: string]: never
 
 export type EndRegisterReceptionMutation = { endRegisterReception: { token?: string | null } };
 
+export type CreateGroupMutationVariables = Exact<{
+  data: CreateGroupDto;
+}>;
+
+
+export type CreateGroupMutation = { createGroup: { id: string, name: string, createdAt: string, updatedAt: string } };
+
+export type UpdateGroupMutationVariables = Exact<{
+  id: Scalars['String'];
+  data: UpdateGroupDto;
+}>;
+
+
+export type UpdateGroupMutation = { updateGroup: { id: string, name: string, createdAt: string, updatedAt: string } };
+
+export type DeleteGroupMutationVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type DeleteGroupMutation = { deleteGroup: boolean };
+
 export type CreateFirstPrimaryMailAccountMutationVariables = Exact<{
   data: CreateEmailAccountDto;
 }>;
@@ -269,6 +380,18 @@ export type ValidateRegisterationTokenMutationVariables = Exact<{
 
 
 export type ValidateRegisterationTokenMutation = { validateRegisterationToken: boolean };
+
+export type GroupsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GroupsQuery = { groups: Array<{ id: string, name: string, createdAt: string, updatedAt: string }> };
+
+export type GroupQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type GroupQuery = { group: { id: string, name: string, createdAt: string, updatedAt: string, students: Array<{ id: string, name: string, surname: string }> } };
 
 export type IsRegisterationReceptableQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -544,6 +667,110 @@ export function useEndRegisterReceptionMutation(baseOptions?: Apollo.MutationHoo
 export type EndRegisterReceptionMutationHookResult = ReturnType<typeof useEndRegisterReceptionMutation>;
 export type EndRegisterReceptionMutationResult = Apollo.MutationResult<EndRegisterReceptionMutation>;
 export type EndRegisterReceptionMutationOptions = Apollo.BaseMutationOptions<EndRegisterReceptionMutation, EndRegisterReceptionMutationVariables>;
+export const CreateGroupDocument = gql`
+    mutation createGroup($data: CreateGroupDto!) {
+  createGroup(data: $data) {
+    id
+    name
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export type CreateGroupMutationFn = Apollo.MutationFunction<CreateGroupMutation, CreateGroupMutationVariables>;
+
+/**
+ * __useCreateGroupMutation__
+ *
+ * To run a mutation, you first call `useCreateGroupMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateGroupMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createGroupMutation, { data, loading, error }] = useCreateGroupMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useCreateGroupMutation(baseOptions?: Apollo.MutationHookOptions<CreateGroupMutation, CreateGroupMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateGroupMutation, CreateGroupMutationVariables>(CreateGroupDocument, options);
+      }
+export type CreateGroupMutationHookResult = ReturnType<typeof useCreateGroupMutation>;
+export type CreateGroupMutationResult = Apollo.MutationResult<CreateGroupMutation>;
+export type CreateGroupMutationOptions = Apollo.BaseMutationOptions<CreateGroupMutation, CreateGroupMutationVariables>;
+export const UpdateGroupDocument = gql`
+    mutation updateGroup($id: String!, $data: UpdateGroupDto!) {
+  updateGroup(id: $id, data: $data) {
+    id
+    name
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export type UpdateGroupMutationFn = Apollo.MutationFunction<UpdateGroupMutation, UpdateGroupMutationVariables>;
+
+/**
+ * __useUpdateGroupMutation__
+ *
+ * To run a mutation, you first call `useUpdateGroupMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateGroupMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateGroupMutation, { data, loading, error }] = useUpdateGroupMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useUpdateGroupMutation(baseOptions?: Apollo.MutationHookOptions<UpdateGroupMutation, UpdateGroupMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateGroupMutation, UpdateGroupMutationVariables>(UpdateGroupDocument, options);
+      }
+export type UpdateGroupMutationHookResult = ReturnType<typeof useUpdateGroupMutation>;
+export type UpdateGroupMutationResult = Apollo.MutationResult<UpdateGroupMutation>;
+export type UpdateGroupMutationOptions = Apollo.BaseMutationOptions<UpdateGroupMutation, UpdateGroupMutationVariables>;
+export const DeleteGroupDocument = gql`
+    mutation deleteGroup($id: String!) {
+  deleteGroup(id: $id)
+}
+    `;
+export type DeleteGroupMutationFn = Apollo.MutationFunction<DeleteGroupMutation, DeleteGroupMutationVariables>;
+
+/**
+ * __useDeleteGroupMutation__
+ *
+ * To run a mutation, you first call `useDeleteGroupMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteGroupMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteGroupMutation, { data, loading, error }] = useDeleteGroupMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteGroupMutation(baseOptions?: Apollo.MutationHookOptions<DeleteGroupMutation, DeleteGroupMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteGroupMutation, DeleteGroupMutationVariables>(DeleteGroupDocument, options);
+      }
+export type DeleteGroupMutationHookResult = ReturnType<typeof useDeleteGroupMutation>;
+export type DeleteGroupMutationResult = Apollo.MutationResult<DeleteGroupMutation>;
+export type DeleteGroupMutationOptions = Apollo.BaseMutationOptions<DeleteGroupMutation, DeleteGroupMutationVariables>;
 export const CreateFirstPrimaryMailAccountDocument = gql`
     mutation createFirstPrimaryMailAccount($data: CreateEmailAccountDto!) {
   createFirstPrimaryMailAccount(data: $data) {
@@ -753,6 +980,86 @@ export function useValidateRegisterationTokenMutation(baseOptions?: Apollo.Mutat
 export type ValidateRegisterationTokenMutationHookResult = ReturnType<typeof useValidateRegisterationTokenMutation>;
 export type ValidateRegisterationTokenMutationResult = Apollo.MutationResult<ValidateRegisterationTokenMutation>;
 export type ValidateRegisterationTokenMutationOptions = Apollo.BaseMutationOptions<ValidateRegisterationTokenMutation, ValidateRegisterationTokenMutationVariables>;
+export const GroupsDocument = gql`
+    query groups {
+  groups {
+    id
+    name
+    createdAt
+    updatedAt
+  }
+}
+    `;
+
+/**
+ * __useGroupsQuery__
+ *
+ * To run a query within a React component, call `useGroupsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGroupsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGroupsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGroupsQuery(baseOptions?: Apollo.QueryHookOptions<GroupsQuery, GroupsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GroupsQuery, GroupsQueryVariables>(GroupsDocument, options);
+      }
+export function useGroupsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GroupsQuery, GroupsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GroupsQuery, GroupsQueryVariables>(GroupsDocument, options);
+        }
+export type GroupsQueryHookResult = ReturnType<typeof useGroupsQuery>;
+export type GroupsLazyQueryHookResult = ReturnType<typeof useGroupsLazyQuery>;
+export type GroupsQueryResult = Apollo.QueryResult<GroupsQuery, GroupsQueryVariables>;
+export const GroupDocument = gql`
+    query group($id: String!) {
+  group(id: $id) {
+    id
+    name
+    createdAt
+    updatedAt
+    students {
+      id
+      name
+      surname
+    }
+  }
+}
+    `;
+
+/**
+ * __useGroupQuery__
+ *
+ * To run a query within a React component, call `useGroupQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGroupQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGroupQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGroupQuery(baseOptions: Apollo.QueryHookOptions<GroupQuery, GroupQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GroupQuery, GroupQueryVariables>(GroupDocument, options);
+      }
+export function useGroupLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GroupQuery, GroupQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GroupQuery, GroupQueryVariables>(GroupDocument, options);
+        }
+export type GroupQueryHookResult = ReturnType<typeof useGroupQuery>;
+export type GroupLazyQueryHookResult = ReturnType<typeof useGroupLazyQuery>;
+export type GroupQueryResult = Apollo.QueryResult<GroupQuery, GroupQueryVariables>;
 export const IsRegisterationReceptableDocument = gql`
     query isRegisterationReceptable {
   isRegisterationReceptable

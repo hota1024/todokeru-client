@@ -1,0 +1,21 @@
+mutation createGroup($data: CreateGroupDto!) {
+  createGroup(data: $data) {
+    id
+    name
+    createdAt
+    updatedAt
+  }
+}
+
+mutation updateGroup($id: String!, $data: UpdateGroupDto!) {
+  updateGroup(id: $id, data: $data) {
+    id
+    name
+    createdAt
+    updatedAt
+  }
+}
+
+mutation deleteGroup($id: String!) {
+  deleteGroup(id: $id)
+}

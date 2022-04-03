@@ -1,0 +1,22 @@
+query groups {
+  groups {
+    id
+    name
+    createdAt
+    updatedAt
+  }
+}
+
+query group($id: String!) {
+  group(id: $id) {
+    id
+    name
+    createdAt
+    updatedAt
+    students {
+      id
+      name
+      surname
+    }
+  }
+}
