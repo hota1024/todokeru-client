@@ -406,7 +406,7 @@ export type ValidateRegisterationTokenMutation = { validateRegisterationToken: b
 export type GroupsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GroupsQuery = { groups: Array<{ id: string, name: string, createdAt: string, updatedAt: string }> };
+export type GroupsQuery = { groups: Array<{ id: string, name: string, students: Array<{ id: string }> }> };
 
 export type GroupQueryVariables = Exact<{
   id: Scalars['String'];
@@ -1117,8 +1117,9 @@ export const GroupsDocument = gql`
   groups {
     id
     name
-    createdAt
-    updatedAt
+    students {
+      id
+    }
   }
 }
     `;

@@ -2,8 +2,9 @@ query groups {
   groups {
     id
     name
-    createdAt
-    updatedAt
+    students {
+      id
+    }
   }
 }
 
