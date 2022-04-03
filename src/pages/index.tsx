@@ -40,7 +40,7 @@ export const HomePage: NextPage = () => {
       icon: <Settings />,
       text: '受け取り設定',
       description: 'メールアドレスの設定やクラスの設定をすることが出来ます。',
-      href: '/mail-settings',
+      href: '/settings',
     },
     {
       icon: <Logout />,
