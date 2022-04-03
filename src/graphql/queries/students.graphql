@@ -1,0 +1,29 @@
+query students {
+  students {
+    id
+    name
+    surname
+    group {
+      id
+      name
+    }
+    user {
+      id
+    }
+  }
+}
+
+query student($id: String!) {
+  student(id: $id) {
+    id
+    name
+    surname
+    group {
+      id
+      name
+    }
+    user {
+      id
+    }
+  }
+}

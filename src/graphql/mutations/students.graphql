@@ -1,0 +1,15 @@
+mutation createStudent($data: CreateStudentDto!) {
+  createStudent(data: $data) {
+    id
+  }
+}
+
+mutation updateStudent($id: String!, $data: UpdateStudentDto!) {
+  updateStudent(id: $id, data: $data) {
+    id
+  }
+}
+
+mutation deleteStudent($id: String!) {
+  deleteStudent(id: $id)
+}
