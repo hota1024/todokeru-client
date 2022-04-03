@@ -24,7 +24,9 @@ export type GroupsProps = {}
  * Groups component.
  */
 export const Groups: React.VFC<GroupsProps> = (props) => {
-  const { data: groupsData, loading: loadingData } = useGroupsQuery()
+  const { data: groupsData, loading: loadingData } = useGroupsQuery({
+    fetchPolicy: 'no-cache',
+  })
 
   const groups = groupsData?.groups ?? []
 
