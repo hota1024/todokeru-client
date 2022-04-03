@@ -1,20 +1,14 @@
 import { useCurrentUser, useLogout } from '@/atoms/auth'
-import { FullscreenLoading } from '@/components/FullscreenLoading'
 import { UserRole } from '@/graphql/generated'
-import { useRequiredAuth } from '@/hooks/useRequriedAuth'
-import { AdminLayout } from '@/layouts/AdminLayout/AdminLayout'
+import { UserLayout } from '@/layouts/UserLayout/UserLayout'
 import { Dashboard, Logout, Mail, Settings } from '@mui/icons-material'
 import {
   Card,
-  CardHeader,
-  Container,
-  Divider,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
   ListSubheader,
-  Typography,
 } from '@mui/material'
 import { NextPage } from 'next'
 import Link from 'next/link'
@@ -24,7 +18,6 @@ import { useRouter } from 'next/router'
  * HomePage component.
  */
 export const HomePage: NextPage = () => {
-  const checking = useRequiredAuth(UserRole.Normal)
   const [{ currentUser }] = useCurrentUser()
   const logout = useLogout()
   const router = useRouter()
@@ -51,12 +44,8 @@ export const HomePage: NextPage = () => {
     },
   ]
 
-  if (checking) {
-    return <FullscreenLoading type="authenticating" />
-  }
-
   return (
-    <Container maxWidth="sm" sx={{ pt: 4 }}>
+    <UserLayout>
       <Card>
         <List subheader={<ListSubheader>ユーザーメニュー</ListSubheader>}>
           {menuItems.map((item) => (
@@ -87,7 +76,7 @@ export const HomePage: NextPage = () => {
           </List>
         )}
       </Card>
-    </Container>
+    </UserLayout>
   )
 }
 
