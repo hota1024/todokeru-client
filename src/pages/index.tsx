@@ -1,9 +1,9 @@
-import { useCurrentUser } from '@/atoms/auth'
+import { useCurrentUser, useLogout } from '@/atoms/auth'
 import { FullscreenLoading } from '@/components/FullscreenLoading'
 import { UserRole } from '@/graphql/generated'
 import { useRequiredAuth } from '@/hooks/useRequriedAuth'
 import { AdminLayout } from '@/layouts/AdminLayout/AdminLayout'
-import { Dashboard, Mail, Settings } from '@mui/icons-material'
+import { Dashboard, Logout, Mail, Settings } from '@mui/icons-material'
 import {
   Card,
   CardHeader,
@@ -18,6 +18,7 @@ import {
 } from '@mui/material'
 import { NextPage } from 'next'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 /**
  * HomePage component.
@@ -25,6 +26,8 @@ import Link from 'next/link'
 export const HomePage: NextPage = () => {
   const checking = useRequiredAuth(UserRole.Normal)
   const [{ currentUser }] = useCurrentUser()
+  const logout = useLogout()
+  const router = useRouter()
 
   const menuItems = [
     {
@@ -36,8 +39,15 @@ export const HomePage: NextPage = () => {
     {
       icon: <Settings />,
       text: '受け取り設定',
-      description: '受け取り設定やクラス設定をすることが出来ます。',
+      description: 'メールアドレスの設定やクラスの設定をすることが出来ます。',
       href: '/mail-settings',
+    },
+    {
+      icon: <Logout />,
+      text: 'ログアウト',
+      description: 'ログアウトはこちら。',
+      href: '#',
+      onClick: () => logout(() => router.push('login')),
     },
   ]
 
@@ -51,7 +61,7 @@ export const HomePage: NextPage = () => {
         <List subheader={<ListSubheader>ユーザーメニュー</ListSubheader>}>
           {menuItems.map((item) => (
             <Link href={item.href} passHref key={item.href}>
-              <ListItem component="a" button>
+              <ListItem component="a" button onClick={item.onClick}>
                 <ListItemIcon>{item.icon}</ListItemIcon>
                 <ListItemText
                   primary={item.text}
@@ -68,7 +78,10 @@ export const HomePage: NextPage = () => {
                 <ListItemIcon>
                   <Dashboard />
                 </ListItemIcon>
-                <ListItemText>ダッシュボード</ListItemText>
+                <ListItemText
+                  primary="ダッシュボード"
+                  secondary="管理者用ページはこちらから。"
+                />
               </ListItem>
             </Link>
           </List>
