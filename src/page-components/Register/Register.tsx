@@ -8,6 +8,7 @@ import { Alert, Button, Container } from '@mui/material'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import { RegisterContent } from './RegisterContent'
 
 /**
  * Register props.
@@ -24,6 +25,7 @@ export const Register: React.VFC<RegisterProps> = (props) => {
     useIsRegisterationReceptableQuery()
   const [validatingToken, setValidatingToken] = useState(false)
   const [validateSuccess, setValidateSuccess] = useState(false)
+  const [registered, setRegistered] = useState(false)
   const [validateToken] = useValidateRegisterationTokenMutation()
 
   useEffect(() => {
@@ -44,7 +46,7 @@ export const Register: React.VFC<RegisterProps> = (props) => {
     return <FullscreenLoading />
   }
 
-  if (currentUser) {
+  if (currentUser && !registered) {
     return (
       <Container maxWidth="sm" sx={{ pt: 4 }}>
         <Alert
@@ -97,7 +99,7 @@ export const Register: React.VFC<RegisterProps> = (props) => {
 
   return (
     <>
-      <h1>test</h1>
+      <RegisterContent onRegistered={() => setRegistered(true)} />
     </>
   )
 }

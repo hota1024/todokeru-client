@@ -40,7 +40,9 @@ export const RegisterationSettings: React.VFC<RegisterationSettingsProps> = (
 ) => {
   const { enqueueSnackbar } = useSnackbar()
   const { data: statusData, refetch: refetchStatus } =
-    useRegisterationStatusQuery()
+    useRegisterationStatusQuery({
+      fetchPolicy: 'no-cache',
+    })
   const [startReception] = useStartRegisterReceptionMutation()
   const [endReception] = useEndRegisterReceptionMutation()
   const { registerationStatus: status } = statusData || {}
