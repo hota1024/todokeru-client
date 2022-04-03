@@ -33,7 +33,7 @@ export const AdminDrawer: React.VFC<AdminDrawerProps> = (props) => {
     {
       icon: <Groups />,
       text: 'クラス',
-      href: '/admin/classes',
+      href: '/admin/groups',
     },
     {
       icon: <People />,
