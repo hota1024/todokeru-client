@@ -13,6 +13,8 @@ import {
   Divider,
   TextField,
 } from '@mui/material'
+import { useRouter } from 'next/router'
+import { useSnackbar } from 'notistack'
 import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { AdminHeader } from '../AdminHeader'
@@ -36,15 +38,24 @@ export const GroupNew: React.VFC<GroupNewProps> = (props) => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<Error | null>(null)
   const [createGroup] = useCreateGroupMutation()
+  const router = useRouter()
+  const { enqueueSnackbar } = useSnackbar()
 
   const onSubmit: SubmitHandler<GroupSchema> = async (data) => {
     setLoading(true)
     setError(null)
 
     try {
-      await createGroup({
+      const { data: created } = await createGroup({
         variables: { data },
       })
+      enqueueSnackbar(
+        `「${created?.createGroup.name}」クラスを追加しました。`,
+        {
+          variant: 'success',
+        }
+      )
+      await router.push(`/admin/groups/${created?.createGroup.id}`)
     } catch (error) {
       if (error instanceof Error) {
         setError(error)
