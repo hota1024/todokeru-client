@@ -363,7 +363,7 @@ export type CreateFirstPrimaryMailAccountMutation = { createFirstPrimaryMailAcco
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { me: { id: string, role: UserRole, emails: Array<{ id: string, address: string, lastConfirmedAt?: string | null }> } };
+export type MeQuery = { me: { id: string, role: UserRole, emails: Array<{ id: string, address: string, lastConfirmedAt?: string | null }>, students: Array<{ id: string, surname: string, name: string, group: { name: string } }> } };
 
 export type StartRegisterReceptionMutationVariables = Exact<{
   token?: InputMaybe<Scalars['String']>;
@@ -896,6 +896,14 @@ export const MeDocument = gql`
       id
       address
       lastConfirmedAt
+    }
+    students {
+      id
+      surname
+      name
+      group {
+        name
+      }
     }
   }
 }

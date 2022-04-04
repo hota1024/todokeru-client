@@ -7,5 +7,13 @@ query me {
       address
       lastConfirmedAt
     }
+    students {
+      id
+      surname
+      name
+      group {
+        name
+      }
+    }
   }
 }
