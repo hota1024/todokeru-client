@@ -23,6 +23,7 @@ import {
   ListSubheader,
 } from '@mui/material'
 import { NextPage } from 'next'
+import Link from 'next/link'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
 
@@ -114,9 +115,16 @@ export const SettingsPage: NextPage = () => {
         <Divider />
         <CardActions>
           <Box flexGrow={1} />
-          <LoadingButton variant="contained" disableElevation loading={loading}>
-            メールアドレスを追加する
-          </LoadingButton>
+          <Link href="/settings/add-email" passHref>
+            <LoadingButton
+              component="a"
+              variant="contained"
+              disableElevation
+              loading={loading}
+            >
+              メールアドレスを追加する
+            </LoadingButton>
+          </Link>
         </CardActions>
       </Card>
     </UserLayout>
