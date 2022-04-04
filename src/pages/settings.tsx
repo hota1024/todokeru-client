@@ -21,6 +21,7 @@ import {
   ListItemIcon,
   ListItemText,
   ListSubheader,
+  Stack,
 } from '@mui/material'
 import { NextPage } from 'next'
 import Link from 'next/link'
@@ -75,7 +76,8 @@ export const SettingsPage: NextPage = () => {
     })
   }
 
-  const emails = meData?.me?.emails || []
+  const emails = meData?.me?.emails ?? []
+  const students = meData?.me?.students ?? []
 
   return (
     <UserLayout>
@@ -84,52 +86,91 @@ export const SettingsPage: NextPage = () => {
         previousText="ユーザーメニューへ"
         previousHref="/"
       />
-      <Card variant="outlined">
-        <List subheader={<ListSubheader>メールアドレス一覧</ListSubheader>}>
+      <Stack spacing={2}>
+        <Card variant="outlined">
+          <List subheader={<ListSubheader>メールアドレス一覧</ListSubheader>}>
+            <Divider />
+            {!meData && <LinearProgress />}
+            {emails.map((email) => (
+              <ListItem
+                key={email.id}
+                secondaryAction={
+                  <LoadingButton
+                    color="error"
+                    onClick={() => deleteEmail(email)}
+                    loading={loading}
+                  >
+                    削除
+                  </LoadingButton>
+                }
+              >
+                <ListItemIcon>
+                  <Mail />
+                </ListItemIcon>
+                <ListItemText
+                  primary={email.address}
+                  secondary={`最後の認証日時 ${
+                    email.lastConfirmedAt
+                      ? formatDateTime(new Date(email.lastConfirmedAt))
+                      : 'まだ認証されていません。'
+                  }`}
+                />
+              </ListItem>
+            ))}
+          </List>
           <Divider />
-          {!meData && <LinearProgress />}
-          {emails.map((email) => (
-            <ListItem
-              key={email.id}
-              secondaryAction={
-                <LoadingButton
-                  color="error"
-                  onClick={() => deleteEmail(email)}
-                  loading={loading}
-                >
-                  削除
-                </LoadingButton>
-              }
-            >
-              <ListItemIcon>
-                <Mail />
-              </ListItemIcon>
-              <ListItemText
-                primary={email.address}
-                secondary={`最後の認証日時 ${
-                  email.lastConfirmedAt
-                    ? formatDateTime(new Date(email.lastConfirmedAt))
-                    : 'まだ認証されていません。'
-                }`}
-              />
-            </ListItem>
-          ))}
-        </List>
-        <Divider />
-        <CardActions>
-          <Box flexGrow={1} />
-          <Link href="/settings/add-email" passHref>
-            <LoadingButton
-              component="a"
-              variant="contained"
-              disableElevation
-              loading={loading}
-            >
-              メールアドレスを追加する
-            </LoadingButton>
-          </Link>
-        </CardActions>
-      </Card>
+          <CardActions>
+            <Box flexGrow={1} />
+            <Link href="/settings/add-email" passHref>
+              <LoadingButton
+                component="a"
+                variant="contained"
+                disableElevation
+                loading={loading}
+              >
+                メールアドレスを追加する
+              </LoadingButton>
+            </Link>
+          </CardActions>
+        </Card>
+
+        <Card variant="outlined">
+          <List subheader={<ListSubheader>生徒一覧</ListSubheader>}>
+            <Divider />
+            {!meData && <LinearProgress />}
+            {students.length === 0 && (
+              <ListItem>
+                <ListItemText>まだ生徒が追加されていません。</ListItemText>
+              </ListItem>
+            )}
+            {students.map((student) => (
+              <ListItem key={student.id}>
+                <ListItemIcon>
+                  <Mail />
+                </ListItemIcon>
+                <ListItemText
+                  primary={`${student.surname} ${student.name}`}
+                  secondary={student.group.name}
+                />
+              </ListItem>
+            ))}
+          </List>
+          <Divider />
+          <CardActions>
+            <Box flexGrow={1} />
+            <Link href="/settings/students/new" passHref>
+              <LoadingButton
+                component="a"
+                variant="contained"
+                disableElevation
+                loading={loading}
+              >
+                生徒を追加する
+              </LoadingButton>
+            </Link>
+          </CardActions>
+        </Card>
+      </Stack>
     </UserLayout>
   )
 }
