@@ -35,7 +35,9 @@ export const SettingsPage: NextPage = () => {
   const [deleteEmailMut] = useDeleteUserEmailMutation()
 
   // queries
-  const { data: meData } = useMeQuery()
+  const { data: meData, refetch: refetchMe } = useMeQuery({
+    fetchPolicy: 'no-cache',
+  })
 
   // hooks
   const confirm = useConfirm()
@@ -59,6 +61,7 @@ export const SettingsPage: NextPage = () => {
               id: email.id,
             },
           })
+          await refetchMe()
         } catch (error) {
           if (error instanceof Error) {
             enqueueSnackbar(error.message, {
