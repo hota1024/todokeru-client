@@ -90,7 +90,7 @@ export const Login: React.VFC = () => {
         enqueueSnackbar('ログインしました', { variant: 'success' })
 
         const to = typeof router.query.to === 'string' ? router.query.to : '/'
-        router.push(to)
+        await router.push(to)
       }
     } catch {}
   }
@@ -98,8 +98,6 @@ export const Login: React.VFC = () => {
   if (isValidating || success) {
     return <FullscreenLoading type="authenticating" />
   }
-
-  console.log(creating, codeId)
 
   return (
     <Container maxWidth="sm">
