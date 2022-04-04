@@ -145,15 +145,21 @@ export const SettingsPage: NextPage = () => {
               </ListItem>
             )}
             {students.map((student) => (
-              <ListItem key={student.id}>
-                <ListItemIcon>
-                  <Person />
-                </ListItemIcon>
-                <ListItemText
-                  primary={`${student.surname} ${student.name}`}
-                  secondary={student.group.name}
-                />
-              </ListItem>
+              <Link
+                href={`/settings/students/${student.id}`}
+                passHref
+                key={student.id}
+              >
+                <ListItem component="a" button key={student.id}>
+                  <ListItemIcon>
+                    <Person />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={`${student.surname} ${student.name}`}
+                    secondary={student.group.name}
+                  />
+                </ListItem>
+              </Link>
             ))}
           </List>
           <Divider />
