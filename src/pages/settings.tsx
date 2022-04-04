@@ -7,7 +7,7 @@ import {
 import { UserLayout } from '@/layouts/UserLayout/UserLayout'
 import { AdminHeader } from '@/page-components/AdminHeader'
 import { formatDateTime } from '@/utils/formatDateTime'
-import { Mail } from '@mui/icons-material'
+import { Mail, Person } from '@mui/icons-material'
 import { LoadingButton } from '@mui/lab'
 import {
   Box,
@@ -78,6 +78,7 @@ export const SettingsPage: NextPage = () => {
 
   const emails = meData?.me?.emails ?? []
   const students = meData?.me?.students ?? []
+  const surname = students[0] ? students[0].surname : ''
 
   return (
     <UserLayout>
@@ -135,18 +136,18 @@ export const SettingsPage: NextPage = () => {
         </Card>
 
         <Card variant="outlined">
-          <List subheader={<ListSubheader>生徒一覧</ListSubheader>}>
+          <List subheader={<ListSubheader>お子様一覧</ListSubheader>}>
             <Divider />
             {!meData && <LinearProgress />}
-            {students.length === 0 && (
+            {students.length === 0 && meData && (
               <ListItem>
-                <ListItemText>まだ生徒が追加されていません。</ListItemText>
+                <ListItemText>まだ登録されていません。</ListItemText>
               </ListItem>
             )}
             {students.map((student) => (
               <ListItem key={student.id}>
                 <ListItemIcon>
-                  <Mail />
+                  <Person />
                 </ListItemIcon>
                 <ListItemText
                   primary={`${student.surname} ${student.name}`}
@@ -158,14 +159,19 @@ export const SettingsPage: NextPage = () => {
           <Divider />
           <CardActions>
             <Box flexGrow={1} />
-            <Link href="/settings/students/new" passHref>
+            <Link
+              href={`/settings/students/new${
+                surname ? `?surname=${surname}` : ''
+              }`}
+              passHref
+            >
               <LoadingButton
                 component="a"
                 variant="contained"
                 disableElevation
                 loading={loading}
               >
-                生徒を追加する
+                お子様を登録する
               </LoadingButton>
             </Link>
           </CardActions>
