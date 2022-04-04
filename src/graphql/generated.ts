@@ -55,7 +55,7 @@ export type Email = {
   codeExpiresIn?: Maybe<Scalars['DateTime']>;
   createdAt: Scalars['DateTime'];
   id: Scalars['ID'];
-  lastConfirmedAt: Scalars['DateTime'];
+  lastConfirmedAt?: Maybe<Scalars['DateTime']>;
   updatedAt: Scalars['DateTime'];
   user: User;
 };
@@ -310,7 +310,7 @@ export type CreateTempEmailMutation = { createTempEmail: { codeId: string, codeE
 export type CreateTempUserMutationVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CreateTempUserMutation = { createTempUser: { id: string, role: UserRole, createdAt: string, updatedAt: string, emails: Array<{ address: string, lastConfirmedAt: string, updatedAt: string, createdAt: string }> } };
+export type CreateTempUserMutation = { createTempUser: { id: string, role: UserRole, createdAt: string, updatedAt: string, emails: Array<{ address: string, lastConfirmedAt?: string | null, updatedAt: string, createdAt: string }> } };
 
 export type DeleteMailAccountMutationVariables = Exact<{
   id: Scalars['String'];
@@ -363,7 +363,7 @@ export type CreateFirstPrimaryMailAccountMutation = { createFirstPrimaryMailAcco
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { me: { id: string, role: UserRole, emails: Array<{ id: string, address: string, lastConfirmedAt: string }> } };
+export type MeQuery = { me: { id: string, role: UserRole, emails: Array<{ id: string, address: string, lastConfirmedAt?: string | null }> } };
 
 export type StartRegisterReceptionMutationVariables = Exact<{
   token?: InputMaybe<Scalars['String']>;
