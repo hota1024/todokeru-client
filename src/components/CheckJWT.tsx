@@ -24,7 +24,11 @@ export const CheckJWT: React.VFC = () => {
         } else {
           throw ''
         }
-      } catch {
+      } catch (error) {
+        if (error instanceof Error) {
+          console.log(error)
+        }
+
         destroyCookie(null, 'jwt')
         setJWT(null)
       }
