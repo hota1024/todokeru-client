@@ -58,7 +58,11 @@ export const Login: React.VFC = () => {
         setCodeId(data.createOtc.codeId)
       }
     } catch (error) {
-      console.error(error)
+      if (error instanceof Error) {
+        enqueueSnackbar(error.message, {
+          variant: 'error',
+        })
+      }
     }
 
     setCreating(false)
