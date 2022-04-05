@@ -136,7 +136,7 @@ export const SettingsPage: NextPage = () => {
         </Card>
 
         <Card variant="outlined">
-          <List subheader={<ListSubheader>お子様一覧</ListSubheader>}>
+          <List subheader={<ListSubheader>お子さん一覧</ListSubheader>}>
             <Divider />
             {!meData && <LinearProgress />}
             {students.length === 0 && meData && (
@@ -177,7 +177,7 @@ export const SettingsPage: NextPage = () => {
                 disableElevation
                 loading={loading}
               >
-                お子様を登録する
+                お子さんを登録する
               </LoadingButton>
             </Link>
           </CardActions>

@@ -83,7 +83,7 @@ export const StudentEditPage: NextPage = () => {
 
   const onDelete = async () => {
     confirm({
-      title: 'お子様の情報を削除しますか？',
+      title: 'お子さんの情報を削除しますか？',
       description: `${studentData?.student?.surname} ${studentData?.student?.name} を本当に削除しますか？`,
       confirmText: '削除する',
       confirmColor: 'error',
@@ -113,7 +113,7 @@ export const StudentEditPage: NextPage = () => {
   return (
     <UserLayout>
       <AdminHeader
-        title="お子様の情報編集"
+        title="お子さんの情報の編集"
         previousText="受け取り設定へ"
         previousHref="/settings"
       />

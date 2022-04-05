@@ -56,7 +56,7 @@ export const StudentNewPage: NextPage = () => {
   return (
     <UserLayout>
       <AdminHeader
-        title="お子様の登録"
+        title="お子さんの登録"
         previousText="受け取り設定へ"
         previousHref="/settings"
       />

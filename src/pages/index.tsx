@@ -23,12 +23,12 @@ export const HomePage: NextPage = () => {
   const router = useRouter()
 
   const menuItems = [
-    {
-      icon: <Mail />,
-      text: '受信トレイ',
-      description: '受け取ったメールを見ることが出来ます。',
-      href: '/inbox',
-    },
+    // {
+    //   icon: <Mail />,
+    //   text: '受信トレイ',
+    //   description: '受け取ったメールを見ることが出来ます。',
+    //   href: '/inbox',
+    // },
     {
       icon: <Settings />,
       text: '受け取り設定',

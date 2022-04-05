@@ -56,7 +56,7 @@ export const StudentForm: React.VFC<StudentFormProps> = (props) => {
 
   return (
     <Card variant="outlined" component="form" onSubmit={handleSubmit(onSubmit)}>
-      <CardHeader title={isNew ? 'お子様の登録' : 'お子様の情報編集'} />
+      <CardHeader title={isNew ? 'お子さんの登録' : 'お子さんの情報を編集'} />
       <Divider />
       <CardContent>
         <Stack spacing={2}>
@@ -118,7 +118,7 @@ export const StudentForm: React.VFC<StudentFormProps> = (props) => {
             loading={loading}
             onClick={() => onDelete()}
           >
-            削除
+            お子さんの情報を削除
           </LoadingButton>
         )}
         <LoadingButton
