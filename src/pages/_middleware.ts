@@ -6,6 +6,7 @@ import { getServerApolloClient } from '@/utils/serverApollo'
 import { NextFetchEvent, NextRequest, NextResponse } from 'next/server'
 
 export async function middleware(req: NextRequest, ev: NextFetchEvent) {
+  const { origin } = req.nextUrl
   const client = getServerApolloClient()
   const [hasPrimaryMailAccountQuery, hasAdminQuery] = await Promise.all([
     client.query({
@@ -24,7 +25,7 @@ export async function middleware(req: NextRequest, ev: NextFetchEvent) {
 
   if (isSetupComplete) {
     if (isSetupPage) {
-      return NextResponse.redirect('/')
+      return NextResponse.redirect(origin)
     }
 
     return NextResponse.next()
@@ -34,5 +35,5 @@ export async function middleware(req: NextRequest, ev: NextFetchEvent) {
     return NextResponse.next()
   }
 
-  return NextResponse.redirect('/setup')
+  return NextResponse.redirect(`${origin}/setup`)
 }
