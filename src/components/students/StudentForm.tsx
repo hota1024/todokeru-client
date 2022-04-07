@@ -84,7 +84,7 @@ export const StudentForm: React.VFC<StudentFormProps> = (props) => {
             </Grid>
           </Grid>
           <FormControl fullWidth>
-            <InputLabel id="student-group-label">組</InputLabel>
+            <InputLabel id="student-group-label">組・学年</InputLabel>
             <Controller
               control={control}
               name="groupId"
@@ -93,7 +93,7 @@ export const StudentForm: React.VFC<StudentFormProps> = (props) => {
                 <Select
                   id="groupId"
                   labelId="student-group-label"
-                  label="組"
+                  label="組・学年"
                   disabled={loading}
                   defaultValue={defaults?.groupId}
                   error={!!errors.groupId}
