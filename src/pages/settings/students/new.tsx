@@ -3,7 +3,7 @@ import { useCreateStudentMutation, useGroupsQuery } from '@/graphql/generated'
 import { UserLayout } from '@/layouts/UserLayout/UserLayout'
 import { AdminHeader } from '@/page-components/AdminHeader'
 import { StudentSchema } from '@/schemas/studentSchema'
-import { LinearProgress } from '@mui/material'
+import { Alert, LinearProgress } from '@mui/material'
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useSnackbar } from 'notistack'
@@ -61,13 +61,19 @@ export const StudentNewPage: NextPage = () => {
         previousHref="/settings"
       />
       {groupsData ? (
-        <StudentForm
-          groups={groups}
-          loading={loading}
-          errorMessage={error}
-          defaults={{ surname, groupId: group.id }}
-          onSubmit={onSubmit}
-        />
+        groups.length === 0 ? (
+          <Alert severity="error">
+            このシステムにはお子さんが所属する組が登録されていません。管理者が操作を完了するまでしばらくお待ち下さい。
+          </Alert>
+        ) : (
+          <StudentForm
+            groups={groups}
+            loading={loading}
+            errorMessage={error}
+            defaults={{ surname, groupId: group.id }}
+            onSubmit={onSubmit}
+          />
+        )
       ) : (
         <LinearProgress />
       )}
