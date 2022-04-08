@@ -49,9 +49,7 @@ export const RegisterationSettings: React.VFC<RegisterationSettingsProps> = (
   const [qrcodeUrl, setQrcodeUrl] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const confirm = useConfirm()
-  const url = status?.token
-    ? `${process.env.NEXT_PUBLIC_HOST}/r/${status.token}`
-    : null
+  const url = status?.token ? `${location.origin}/r/${status.token}` : null
 
   const toggleReceptionStatus = async () => {
     if (!status) {
