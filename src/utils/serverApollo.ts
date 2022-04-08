@@ -18,7 +18,7 @@ export const getServerApolloClient = (req: NextRequest): typeof client => {
 
   client = new ApolloClient({
     ssrMode: true,
-    uri: getGraphQlEndpoint(req.url),
+    uri: getGraphQlEndpoint(req.headers.get('Origin') ?? req.url),
     cache: new InMemoryCache().restore({}),
   })
 
