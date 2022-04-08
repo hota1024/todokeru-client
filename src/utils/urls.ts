@@ -1,7 +1,11 @@
 /**
  * returns GraphQL endpoint.
  */
-export const getGraphQlEndpoint = (): string => {
+export const getGraphQlEndpoint = (origin?: string): string => {
+  if (!origin && typeof location !== 'undefined') {
+    origin = location.origin
+  }
+
   if (process.env.NEXT_PUBLIC_CLIENT_TYPE === 'standalone') {
     const url = process.env.NEXT_PUBLIC_GRAPHQL_URL
 
@@ -13,7 +17,7 @@ export const getGraphQlEndpoint = (): string => {
   }
 
   if (process.env.NEXT_PUBLIC_CLIENT_TYPE === 'shared') {
-    const subdomain = getSubdomain(location.origin)
+    const subdomain = getSubdomain(origin!)
 
     if (!subdomain) {
       throw new Error('you should access this site via todokeru.info')

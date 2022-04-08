@@ -7,7 +7,7 @@ import { NextFetchEvent, NextRequest, NextResponse } from 'next/server'
 
 export async function middleware(req: NextRequest, ev: NextFetchEvent) {
   const { origin } = req.nextUrl
-  const client = getServerApolloClient()
+  const client = getServerApolloClient(req)
   const [hasPrimaryMailAccountQuery, hasAdminQuery] = await Promise.all([
     client.query({
       query: HasPrimaryMailAccountDocument,
