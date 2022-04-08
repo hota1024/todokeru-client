@@ -3,6 +3,7 @@ import {
   InMemoryCache,
   NormalizedCacheObject,
 } from '@apollo/client'
+import { getGraphQlEndpoint } from './urls'
 
 let client: ApolloClient<NormalizedCacheObject>
 
@@ -16,7 +17,7 @@ export const getServerApolloClient = (): typeof client => {
 
   client = new ApolloClient({
     ssrMode: true,
-    uri: process.env.NEXT_PUBLIC_GRAPHQL_URL,
+    uri: getGraphQlEndpoint(),
     cache: new InMemoryCache().restore({}),
   })
 
