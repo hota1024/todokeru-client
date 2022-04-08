@@ -19,10 +19,7 @@ export const getServerApolloClient = (req: NextRequest): typeof client => {
   client = new ApolloClient({
     ssrMode: true,
     uri: getGraphQlEndpoint(
-      req.headers.get('Origin') ??
-        (req.headers.has('Host')
-          ? `https://${req.headers.get('Host')}`
-          : null) ??
+      (req.headers.has('Host') ? `https://${req.headers.get('Host')}` : null) ??
         req.url
     ),
     cache: new InMemoryCache().restore({}),
