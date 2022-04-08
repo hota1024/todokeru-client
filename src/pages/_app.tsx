@@ -20,7 +20,7 @@ import { getGraphQlEndpoint } from '@/utils/urls'
 const clientSideEmotionCache = createEmotionCache()
 const cache = new InMemoryCache()
 const httpLink = createHttpLink({
-  uri: getGraphQlEndpoint(),
+  uri: typeof location === 'undefined' ? '' : getGraphQlEndpoint(),
 })
 const authLink = new ApolloLink((operation, forward) => {
   const { jwt } = parseCookies()
