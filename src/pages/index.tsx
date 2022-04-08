@@ -1,7 +1,8 @@
 import { useCurrentUser, useLogout } from '@/atoms/auth'
 import { UserRole } from '@/graphql/generated'
 import { UserLayout } from '@/layouts/UserLayout/UserLayout'
-import { Dashboard, Logout, Mail, Settings } from '@mui/icons-material'
+import { getSubdomain } from '@/utils/urls'
+import { Dashboard, Logout, Settings } from '@mui/icons-material'
 import {
   Card,
   List,
