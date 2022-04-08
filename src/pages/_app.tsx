@@ -15,11 +15,12 @@ import { parseCookies } from 'nookies'
 import { CheckJWT } from '@/components/CheckJWT'
 import { SnackbarProvider } from 'notistack'
 import { ConfirmDialog } from '@/components/ConfirmDialog/ConfirmDialog'
+import { getGraphQlEndpoint } from '@/utils/urls'
 
 const clientSideEmotionCache = createEmotionCache()
 const cache = new InMemoryCache()
 const httpLink = createHttpLink({
-  uri: process.env.NEXT_PUBLIC_GRAPHQL_URL,
+  uri: getGraphQlEndpoint(),
 })
 const authLink = new ApolloLink((operation, forward) => {
   const { jwt } = parseCookies()
