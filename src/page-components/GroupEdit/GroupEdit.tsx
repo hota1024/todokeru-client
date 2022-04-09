@@ -89,13 +89,21 @@ export const GroupEdit: React.VFC<GroupEdit> = (props) => {
       confirmText: '削除する',
       confirmColor: 'error',
       async onConfirm() {
-        await deleteGroup({
-          variables: {
-            id: groupData.group.id,
-          },
-        })
-        router.push('/admin/groups')
-        enqueueSnackbar('削除しました。', { variant: 'success' })
+        try {
+          await deleteGroup({
+            variables: {
+              id: groupData.group.id,
+            },
+          })
+          await router.push('/admin/groups')
+          enqueueSnackbar('削除しました。', { variant: 'success' })
+        } catch (error) {
+          if (error instanceof Error) {
+            enqueueSnackbar(`エラーが発生しました: ${error.message}`, {
+              variant: 'error',
+            })
+          }
+        }
       },
     })
   }
