@@ -72,6 +72,7 @@ export type Group = {
   id: Scalars['ID'];
   mails: Array<Mail>;
   name: Scalars['String'];
+  order: Scalars['Float'];
   students: Array<Student>;
   updatedAt: Scalars['DateTime'];
 };
@@ -120,6 +121,7 @@ export type Mutation = {
   endRegisterReception: RegisterationStatus;
   startRegisterReception: RegisterationStatus;
   updateGroup: Group;
+  updateGroupOrder: Scalars['Boolean'];
   updateMailAccount: MailAccount;
   updateStudent: Student;
   validateEmailAuthCode: LoginResult;
@@ -194,6 +196,12 @@ export type MutationStartRegisterReceptionArgs = {
 
 export type MutationUpdateGroupArgs = {
   data: UpdateGroupDto;
+  id: Scalars['String'];
+};
+
+
+export type MutationUpdateGroupOrderArgs = {
+  data: UpdateGroupOrderDto;
   id: Scalars['String'];
 };
 
@@ -279,6 +287,10 @@ export type UpdateEmailAccountDto = {
 
 export type UpdateGroupDto = {
   name: Scalars['String'];
+};
+
+export type UpdateGroupOrderDto = {
+  order: Scalars['Float'];
 };
 
 export type UpdateStudentDto = {
@@ -374,6 +386,14 @@ export type UpdateGroupMutationVariables = Exact<{
 
 export type UpdateGroupMutation = { updateGroup: { id: string, name: string, createdAt: string, updatedAt: string } };
 
+export type UpdateGroupOrderMutationVariables = Exact<{
+  id: Scalars['String'];
+  data: UpdateGroupOrderDto;
+}>;
+
+
+export type UpdateGroupOrderMutation = { updateGroupOrder: boolean };
+
 export type DeleteGroupMutationVariables = Exact<{
   id: Scalars['String'];
 }>;
@@ -447,14 +467,14 @@ export type ValidateRegisterationTokenMutation = { validateRegisterationToken: b
 export type GroupsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GroupsQuery = { groups: Array<{ id: string, name: string, students: Array<{ id: string }> }> };
+export type GroupsQuery = { groups: Array<{ id: string, name: string, order: number, students: Array<{ id: string }> }> };
 
 export type GroupQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
 
 
-export type GroupQuery = { group: { id: string, name: string, createdAt: string, updatedAt: string, students: Array<{ id: string, name: string, surname: string }> } };
+export type GroupQuery = { group: { id: string, name: string, createdAt: string, updatedAt: string, order: number, students: Array<{ id: string, name: string, surname: string }> } };
 
 export type IsRegisterationReceptableQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -846,6 +866,38 @@ export function useUpdateGroupMutation(baseOptions?: Apollo.MutationHookOptions<
 export type UpdateGroupMutationHookResult = ReturnType<typeof useUpdateGroupMutation>;
 export type UpdateGroupMutationResult = Apollo.MutationResult<UpdateGroupMutation>;
 export type UpdateGroupMutationOptions = Apollo.BaseMutationOptions<UpdateGroupMutation, UpdateGroupMutationVariables>;
+export const UpdateGroupOrderDocument = gql`
+    mutation updateGroupOrder($id: String!, $data: UpdateGroupOrderDto!) {
+  updateGroupOrder(id: $id, data: $data)
+}
+    `;
+export type UpdateGroupOrderMutationFn = Apollo.MutationFunction<UpdateGroupOrderMutation, UpdateGroupOrderMutationVariables>;
+
+/**
+ * __useUpdateGroupOrderMutation__
+ *
+ * To run a mutation, you first call `useUpdateGroupOrderMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateGroupOrderMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateGroupOrderMutation, { data, loading, error }] = useUpdateGroupOrderMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useUpdateGroupOrderMutation(baseOptions?: Apollo.MutationHookOptions<UpdateGroupOrderMutation, UpdateGroupOrderMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateGroupOrderMutation, UpdateGroupOrderMutationVariables>(UpdateGroupOrderDocument, options);
+      }
+export type UpdateGroupOrderMutationHookResult = ReturnType<typeof useUpdateGroupOrderMutation>;
+export type UpdateGroupOrderMutationResult = Apollo.MutationResult<UpdateGroupOrderMutation>;
+export type UpdateGroupOrderMutationOptions = Apollo.BaseMutationOptions<UpdateGroupOrderMutation, UpdateGroupOrderMutationVariables>;
 export const DeleteGroupDocument = gql`
     mutation deleteGroup($id: String!) {
   deleteGroup(id: $id)
@@ -1202,6 +1254,7 @@ export const GroupsDocument = gql`
   groups {
     id
     name
+    order
     students {
       id
     }
@@ -1242,6 +1295,7 @@ export const GroupDocument = gql`
     name
     createdAt
     updatedAt
+    order
     students {
       id
       name

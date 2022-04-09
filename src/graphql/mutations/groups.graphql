@@ -16,6 +16,10 @@ mutation updateGroup($id: String!, $data: UpdateGroupDto!) {
   }
 }
 
+mutation updateGroupOrder($id: String!, $data: UpdateGroupOrderDto!) {
+  updateGroupOrder(id: $id, data: $data)
+}
+
 mutation deleteGroup($id: String!) {
   deleteGroup(id: $id)
 }
