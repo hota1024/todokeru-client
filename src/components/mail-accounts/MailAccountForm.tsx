@@ -16,6 +16,7 @@ import {
   Checkbox,
   Divider,
   FormControlLabel,
+  InputAdornment,
   LinearProgress,
   Stack,
   TextField,
@@ -146,6 +147,22 @@ export const MailAccountForm: React.VFC<MailAccountFormProps> = (props) => {
                   disabled={isFirstPrimary || loading}
                 />
               )}
+            />
+            <TextField
+              label="送信レート"
+              type="number"
+              error={!!errors.sendRate}
+              helperText={
+                errors.sendRate?.message ??
+                'このレートで指定された秒数ごとに1回メールが送信されるように設定されます。'
+              }
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">秒ごとに送信</InputAdornment>
+                ),
+              }}
+              disabled={loading}
+              {...register('sendRate')}
             />
           </Stack>
         </CardContent>

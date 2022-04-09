@@ -10,6 +10,7 @@ export const mailAccountSchema = yup.object({
   isPrimary: yup.boolean().required('入力してください。'),
   user: yup.string().required('入力してください。'),
   password: yup.string().required('入力してください。'),
+  sendRate: yup.number().required('入力してください。'),
 })
 
 export type MailAccountSchema = yup.InferType<typeof mailAccountSchema>
@@ -23,6 +24,10 @@ export const mailAccountEditSchema = yup.object({
   secure: yup.boolean().required('入力してください。'),
   isPrimary: yup.boolean().required('入力してください。'),
   user: yup.string().required('入力してください。'),
+  sendRate: yup
+    .number()
+    .min(0.1, '最小値は0.1秒です。')
+    .required('入力してください。'),
 })
 
 export type MailAccountEditSchema = yup.InferType<typeof mailAccountSchema>

@@ -23,11 +23,18 @@ export type CreateEmailAccountDto = {
   password: Scalars['String'];
   port: Scalars['String'];
   secure: Scalars['Boolean'];
+  sendRate: Scalars['Float'];
   user: Scalars['String'];
 };
 
 export type CreateGroupDto = {
   name: Scalars['String'];
+};
+
+export type CreateMailDto = {
+  body: Scalars['String'];
+  groupIds: Array<Scalars['String']>;
+  subject: Scalars['String'];
 };
 
 export type CreateOtcDto = {
@@ -63,6 +70,7 @@ export type Email = {
 export type Group = {
   createdAt: Scalars['DateTime'];
   id: Scalars['ID'];
+  mails: Array<Mail>;
   name: Scalars['String'];
   students: Array<Student>;
   updatedAt: Scalars['DateTime'];
@@ -73,6 +81,16 @@ export type LoginResult = {
   user: User;
 };
 
+export type Mail = {
+  body: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  groups: Array<Group>;
+  id: Scalars['ID'];
+  subject: Scalars['String'];
+  udpatedAt: Scalars['DateTime'];
+  wasSent: Scalars['Boolean'];
+};
+
 export type MailAccount = {
   createdAt: Scalars['DateTime'];
   host: Scalars['String'];
@@ -80,6 +98,7 @@ export type MailAccount = {
   isPrimary: Scalars['Boolean'];
   port: Scalars['String'];
   secure: Scalars['Boolean'];
+  sendRate: Scalars['Float'];
   updatedAt: Scalars['DateTime'];
   user: Scalars['String'];
 };
@@ -88,6 +107,7 @@ export type Mutation = {
   checkTempUserAlive: Scalars['Boolean'];
   createFirstPrimaryMailAccount: MailAccount;
   createGroup: Group;
+  createMail: Mail;
   createMailAccount: MailAccount;
   createOtc: CreateOtcResultDto;
   createStudent: Student;
@@ -119,6 +139,11 @@ export type MutationCreateFirstPrimaryMailAccountArgs = {
 
 export type MutationCreateGroupArgs = {
   data: CreateGroupDto;
+};
+
+
+export type MutationCreateMailArgs = {
+  data: CreateMailDto;
 };
 
 
@@ -195,6 +220,8 @@ export type MutationValidateRegisterationTokenArgs = {
 };
 
 export type Query = {
+  find: Array<Mail>;
+  findOne: Mail;
   group: Group;
   groups: Array<Group>;
   hasAdmin: Scalars['Boolean'];
@@ -246,6 +273,7 @@ export type UpdateEmailAccountDto = {
   password?: InputMaybe<Scalars['String']>;
   port?: InputMaybe<Scalars['String']>;
   secure?: InputMaybe<Scalars['Boolean']>;
+  sendRate?: InputMaybe<Scalars['Float']>;
   user?: InputMaybe<Scalars['String']>;
 };
 
@@ -436,14 +464,14 @@ export type IsRegisterationReceptableQuery = { isRegisterationReceptable: boolea
 export type MailAccountsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MailAccountsQuery = { mailAccounts: Array<{ id: string, host: string, port: string, secure: boolean, user: string, isPrimary: boolean, updatedAt: string, createdAt: string }> };
+export type MailAccountsQuery = { mailAccounts: Array<{ id: string, host: string, port: string, secure: boolean, user: string, isPrimary: boolean, sendRate: number, updatedAt: string, createdAt: string }> };
 
 export type MailAccountQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
 
 
-export type MailAccountQuery = { mailAccount: { id: string, host: string, port: string, secure: boolean, user: string, isPrimary: boolean, updatedAt: string, createdAt: string } };
+export type MailAccountQuery = { mailAccount: { id: string, host: string, port: string, secure: boolean, user: string, isPrimary: boolean, sendRate: number, updatedAt: string, createdAt: string } };
 
 export type HasPrimaryMailAccountQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1291,6 +1319,7 @@ export const MailAccountsDocument = gql`
     secure
     user
     isPrimary
+    sendRate
     updatedAt
     createdAt
   }
@@ -1332,6 +1361,7 @@ export const MailAccountDocument = gql`
     secure
     user
     isPrimary
+    sendRate
     updatedAt
     createdAt
   }
