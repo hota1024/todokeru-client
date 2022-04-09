@@ -150,7 +150,12 @@ export const SettingsPage: NextPage = () => {
                 passHref
                 key={student.id}
               >
-                <ListItem component="a" button key={student.id}>
+                <ListItem
+                  component="a"
+                  button
+                  key={student.id}
+                  secondaryAction={<Button color="success">編集</Button>}
+                >
                   <ListItemIcon>
                     <Person />
                   </ListItemIcon>
@@ -177,7 +182,7 @@ export const SettingsPage: NextPage = () => {
                 disableElevation
                 loading={loading}
               >
-                お子さんを登録する
+                お子さんを追加する
               </LoadingButton>
             </Link>
           </CardActions>
