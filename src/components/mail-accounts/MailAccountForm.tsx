@@ -120,7 +120,10 @@ export const MailAccountForm: React.VFC<MailAccountFormProps> = (props) => {
               label="パスワード"
               type="password"
               error={!!errors.password}
-              helperText={errors.password?.message}
+              helperText={
+                errors.password?.message ??
+                (isNew ? '' : '編集するとパスワードが変更されます')
+              }
               disabled={loading}
               {...register('password')}
             />
