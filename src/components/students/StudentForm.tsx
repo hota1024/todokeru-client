@@ -89,7 +89,7 @@ export const StudentForm: React.VFC<StudentFormProps> = (props) => {
               control={control}
               name="groupId"
               defaultValue={defaults?.groupId}
-              render={() => (
+              render={({ field: { value, onChange } }) => (
                 <Select
                   id="groupId"
                   labelId="student-group-label"
@@ -97,6 +97,8 @@ export const StudentForm: React.VFC<StudentFormProps> = (props) => {
                   disabled={loading}
                   defaultValue={defaults?.groupId}
                   error={!!errors.groupId}
+                  onChange={onChange}
+                  value={value}
                 >
                   {groups.map((group) => (
                     <MenuItem key={group.id} value={group.id}>
