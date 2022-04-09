@@ -44,7 +44,7 @@ export const AdminToolbar: React.VFC<AdminToolbarProps> = (props) => {
         <Button
           color="inherit"
           startIcon={<Logout />}
-          onClick={() => logout(() => router.push('/login'))}
+          onClick={() => logout(() => location.reload())}
         >
           ログアウト
         </Button>
