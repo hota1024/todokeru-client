@@ -71,6 +71,7 @@ export const StudentEditPage: NextPage = () => {
           },
         },
       })
+      await router.push('/settings')
       enqueueSnackbar('更新しました', { variant: 'success' })
     } catch (e) {
       if (e instanceof Error) {
