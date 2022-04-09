@@ -41,7 +41,7 @@ export const HomePage: NextPage = () => {
       text: 'ログアウト',
       description: 'ログアウトはこちら。',
       href: '#',
-      onClick: () => logout(() => router.push('login')),
+      onClick: () => logout(() => router.push('/login')),
     },
   ]
 
