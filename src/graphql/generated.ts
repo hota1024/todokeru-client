@@ -28,6 +28,7 @@ export type CreateEmailAccountDto = {
 };
 
 export type CreateGroupDto = {
+  isPrivate: Scalars['Boolean'];
   name: Scalars['String'];
 };
 
@@ -70,6 +71,7 @@ export type Email = {
 export type Group = {
   createdAt: Scalars['DateTime'];
   id: Scalars['ID'];
+  isPrivate: Scalars['Boolean'];
   mails: Array<Mail>;
   name: Scalars['String'];
   order: Scalars['Float'];
@@ -286,6 +288,7 @@ export type UpdateEmailAccountDto = {
 };
 
 export type UpdateGroupDto = {
+  isPrivate: Scalars['Boolean'];
   name: Scalars['String'];
 };
 
@@ -467,14 +470,14 @@ export type ValidateRegisterationTokenMutation = { validateRegisterationToken: b
 export type GroupsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GroupsQuery = { groups: Array<{ id: string, name: string, order: number, students: Array<{ id: string }> }> };
+export type GroupsQuery = { groups: Array<{ id: string, name: string, order: number, isPrivate: boolean, students: Array<{ id: string }> }> };
 
 export type GroupQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
 
 
-export type GroupQuery = { group: { id: string, name: string, createdAt: string, updatedAt: string, order: number, students: Array<{ id: string, name: string, surname: string }> } };
+export type GroupQuery = { group: { id: string, name: string, createdAt: string, updatedAt: string, order: number, isPrivate: boolean, students: Array<{ id: string, name: string, surname: string }> } };
 
 export type IsRegisterationReceptableQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1255,6 +1258,7 @@ export const GroupsDocument = gql`
     id
     name
     order
+    isPrivate
     students {
       id
     }
@@ -1296,6 +1300,7 @@ export const GroupDocument = gql`
     createdAt
     updatedAt
     order
+    isPrivate
     students {
       id
       name

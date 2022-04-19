@@ -1,3 +1,4 @@
+import { GroupForm } from '@/components/groups/GroupForm'
 import { useCreateGroupMutation } from '@/graphql/generated'
 import { AdminLayout } from '@/layouts/AdminLayout/AdminLayout'
 import { groupSchema, GroupSchema } from '@/schemas/groupSchema'
@@ -28,15 +29,8 @@ export type GroupNewProps = {}
  * GroupNew component.
  */
 export const GroupNew: React.VFC<GroupNewProps> = (props) => {
-  const {
-    register,
-    formState: { errors },
-    handleSubmit,
-  } = useForm<GroupSchema>({
-    resolver: yupResolver(groupSchema),
-  })
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<Error | null>(null)
+  const [error, setError] = useState<string | null>(null)
   const [createGroup] = useCreateGroupMutation()
   const router = useRouter()
   const { enqueueSnackbar } = useSnackbar()
@@ -58,7 +52,7 @@ export const GroupNew: React.VFC<GroupNewProps> = (props) => {
       await router.push(`/admin/groups/${created?.createGroup.id}`)
     } catch (error) {
       if (error instanceof Error) {
-        setError(error)
+        setError(error.message)
       }
     }
 
@@ -72,35 +66,7 @@ export const GroupNew: React.VFC<GroupNewProps> = (props) => {
         previousText="クラスの管理へ"
         previousHref="/admin/groups"
       />
-      <Card
-        component="form"
-        variant="outlined"
-        sx={{ maxWidth: 400 }}
-        onSubmit={handleSubmit(onSubmit)}
-      >
-        <CardContent>
-          <TextField
-            label="クラス名"
-            fullWidth
-            {...register('name')}
-            error={!!errors.name}
-            helperText={errors.name?.message}
-            disabled={loading}
-          />
-        </CardContent>
-        <Divider />
-        <CardActions>
-          <Box flexGrow={1} />
-          <LoadingButton
-            type="submit"
-            variant="contained"
-            disableElevation
-            loading={loading}
-          >
-            追加
-          </LoadingButton>
-        </CardActions>
-      </Card>
+      <GroupForm onSubmit={onSubmit} errorMessage={error} loading={loading} />
     </AdminLayout>
   )
 }

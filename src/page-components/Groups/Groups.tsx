@@ -133,7 +133,9 @@ export const Groups: React.VFC<GroupsProps> = (props) => {
                 <ListItem component="a" button>
                   <ListItemText
                     primary={group.name}
-                    secondary={`${group.students.length}人が所属中`}
+                    secondary={`${group.students.length}人が所属中・${
+                      group.isPrivate ? '非公開クラス' : '公開クラス'
+                    }`}
                   />
                 </ListItem>
               </Link>

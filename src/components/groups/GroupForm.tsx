@@ -9,13 +9,15 @@ import {
   CardActions,
   CardContent,
   CardHeader,
+  Checkbox,
   Divider,
+  FormControlLabel,
   TextField,
 } from '@mui/material'
 import { useRouter } from 'next/router'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 
 /**
  * GroupForm props.
@@ -25,7 +27,7 @@ export type GroupFormProps = {
   onSubmit: SubmitHandler<GroupSchema>
   onDelete?(): void
   loading: boolean
-  errorMessage?: string
+  errorMessage?: string | null
 }
 
 /**
@@ -35,6 +37,7 @@ export const GroupForm: React.VFC<GroupFormProps> = (props) => {
   const { defaults, onSubmit, onDelete, loading, errorMessage } = props
   const {
     register,
+    control,
     formState: { errors },
     handleSubmit,
   } = useForm<GroupSchema>({
@@ -59,6 +62,24 @@ export const GroupForm: React.VFC<GroupFormProps> = (props) => {
           error={!!errors.name}
           helperText={errors.name?.message}
           disabled={loading}
+        />
+        <Controller
+          control={control}
+          defaultValue={false}
+          name="isPrivate"
+          render={({ field }) => (
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={field.value}
+                  onChange={(e) => field.onChange(e.target.checked)}
+                  color="primary"
+                />
+              }
+              label="非公開クラスにする"
+              disabled={loading}
+            />
+          )}
         />
       </CardContent>
       <Divider />

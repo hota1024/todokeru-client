@@ -3,6 +3,7 @@ query groups {
     id
     name
     order
+    isPrivate
     students {
       id
     }
@@ -16,6 +17,7 @@ query group($id: String!) {
     createdAt
     updatedAt
     order
+    isPrivate
     students {
       id
       name
