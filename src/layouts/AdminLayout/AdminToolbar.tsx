@@ -1,5 +1,5 @@
 import { useLogout } from '@/atoms/auth'
-import { Logout, Menu } from '@mui/icons-material'
+import { Add, Logout, Menu } from '@mui/icons-material'
 import {
   AppBar,
   Box,
@@ -8,6 +8,7 @@ import {
   Toolbar,
   Typography,
 } from '@mui/material'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 /**
@@ -40,6 +41,18 @@ export const AdminToolbar: React.VFC<AdminToolbarProps> = (props) => {
           <Menu />
         </IconButton>
         <Typography variant="h6">Todokeru</Typography>
+        <Box sx={{ margin: 2 }} />
+        <Link href="/admin/mails/new" passHref>
+          <Button
+            component="a"
+            variant="contained"
+            disableElevation
+            style={{ background: 'rgba(0, 0, 0, 0.1)' }}
+            startIcon={<Add />}
+          >
+            メールを作成
+          </Button>
+        </Link>
         <Box sx={{ flexGrow: 1 }} />
         <Button
           color="inherit"
