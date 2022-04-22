@@ -1,0 +1,5 @@
+mutation createMail($data: CreateMailDto!) {
+  createMail(data: $data) {
+    id
+  }
+}
