@@ -124,6 +124,7 @@ export type Mutation = {
   startRegisterReception: RegisterationStatus;
   updateGroup: Group;
   updateGroupOrder: Scalars['Boolean'];
+  updateMail: Mail;
   updateMailAccount: MailAccount;
   updateStudent: Student;
   validateEmailAuthCode: LoginResult;
@@ -208,6 +209,12 @@ export type MutationUpdateGroupOrderArgs = {
 };
 
 
+export type MutationUpdateMailArgs = {
+  data: UpdateMailDto;
+  id: Scalars['String'];
+};
+
+
 export type MutationUpdateMailAccountArgs = {
   data: UpdateEmailAccountDto;
   id: Scalars['String'];
@@ -248,6 +255,11 @@ export type Query = {
 
 
 export type QueryGroupArgs = {
+  id: Scalars['String'];
+};
+
+
+export type QueryMailArgs = {
   id: Scalars['String'];
 };
 
@@ -294,6 +306,12 @@ export type UpdateGroupDto = {
 
 export type UpdateGroupOrderDto = {
   order: Scalars['Float'];
+};
+
+export type UpdateMailDto = {
+  body: Scalars['String'];
+  groupIds: Array<Scalars['String']>;
+  subject: Scalars['String'];
 };
 
 export type UpdateStudentDto = {
@@ -418,6 +436,14 @@ export type CreateMailMutationVariables = Exact<{
 
 export type CreateMailMutation = { createMail: { id: string } };
 
+export type UpdateMailMutationVariables = Exact<{
+  id: Scalars['String'];
+  data: UpdateMailDto;
+}>;
+
+
+export type UpdateMailMutation = { updateMail: { id: string } };
+
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -512,6 +538,13 @@ export type MailsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type MailsQuery = { mails: Array<{ id: string, subject: string, body: string, wasSent: boolean, groups: Array<{ id: string, name: string }> }> };
+
+export type MailQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type MailQuery = { mail: { id: string, subject: string, body: string, wasSent: boolean, groups: Array<{ id: string, name: string }> } };
 
 export type RegisterationStatusQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1015,6 +1048,40 @@ export function useCreateMailMutation(baseOptions?: Apollo.MutationHookOptions<C
 export type CreateMailMutationHookResult = ReturnType<typeof useCreateMailMutation>;
 export type CreateMailMutationResult = Apollo.MutationResult<CreateMailMutation>;
 export type CreateMailMutationOptions = Apollo.BaseMutationOptions<CreateMailMutation, CreateMailMutationVariables>;
+export const UpdateMailDocument = gql`
+    mutation updateMail($id: String!, $data: UpdateMailDto!) {
+  updateMail(id: $id, data: $data) {
+    id
+  }
+}
+    `;
+export type UpdateMailMutationFn = Apollo.MutationFunction<UpdateMailMutation, UpdateMailMutationVariables>;
+
+/**
+ * __useUpdateMailMutation__
+ *
+ * To run a mutation, you first call `useUpdateMailMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateMailMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateMailMutation, { data, loading, error }] = useUpdateMailMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useUpdateMailMutation(baseOptions?: Apollo.MutationHookOptions<UpdateMailMutation, UpdateMailMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateMailMutation, UpdateMailMutationVariables>(UpdateMailDocument, options);
+      }
+export type UpdateMailMutationHookResult = ReturnType<typeof useUpdateMailMutation>;
+export type UpdateMailMutationResult = Apollo.MutationResult<UpdateMailMutation>;
+export type UpdateMailMutationOptions = Apollo.BaseMutationOptions<UpdateMailMutation, UpdateMailMutationVariables>;
 export const MeDocument = gql`
     query me {
   me {
@@ -1572,6 +1639,48 @@ export function useMailsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Mail
 export type MailsQueryHookResult = ReturnType<typeof useMailsQuery>;
 export type MailsLazyQueryHookResult = ReturnType<typeof useMailsLazyQuery>;
 export type MailsQueryResult = Apollo.QueryResult<MailsQuery, MailsQueryVariables>;
+export const MailDocument = gql`
+    query mail($id: String!) {
+  mail(id: $id) {
+    id
+    subject
+    body
+    groups {
+      id
+      name
+    }
+    wasSent
+  }
+}
+    `;
+
+/**
+ * __useMailQuery__
+ *
+ * To run a query within a React component, call `useMailQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMailQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMailQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useMailQuery(baseOptions: Apollo.QueryHookOptions<MailQuery, MailQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<MailQuery, MailQueryVariables>(MailDocument, options);
+      }
+export function useMailLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MailQuery, MailQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<MailQuery, MailQueryVariables>(MailDocument, options);
+        }
+export type MailQueryHookResult = ReturnType<typeof useMailQuery>;
+export type MailLazyQueryHookResult = ReturnType<typeof useMailLazyQuery>;
+export type MailQueryResult = Apollo.QueryResult<MailQuery, MailQueryVariables>;
 export const RegisterationStatusDocument = gql`
     query registerationStatus {
   registerationStatus {

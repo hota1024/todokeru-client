@@ -10,3 +10,16 @@ query mails {
     wasSent
   }
 }
+
+query mail($id: String!) {
+  mail(id: $id) {
+    id
+    subject
+    body
+    groups {
+      id
+      name
+    }
+    wasSent
+  }
+}

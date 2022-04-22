@@ -3,6 +3,7 @@ import { MailSchema, mailSchema } from '@/schemas/mailSchema'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { LoadingButton } from '@mui/lab'
 import {
+  Alert,
   Autocomplete,
   Button,
   Card,
@@ -20,7 +21,12 @@ import { FieldError, SubmitHandler, useForm } from 'react-hook-form'
  * MailForm props.
  */
 export type MailFormProps = {
-  defaults?: Partial<Mail>
+  defaults?: Partial<{
+    id: string
+    subject: string
+    body: string
+    groupIds: string[]
+  }>
   groups: GroupsQuery['groups']
   onSubmit: SubmitHandler<MailSchema>
   loading?: boolean
@@ -40,11 +46,7 @@ export const MailForm: React.VFC<MailFormProps> = (props) => {
     formState: { errors },
     handleSubmit,
   } = useForm<MailSchema>({
-    defaultValues: {
-      subject: defaults?.subject,
-      body: defaults?.body,
-      groupIds: defaults?.groups?.map((g) => g.id) ?? [],
-    },
+    defaultValues: defaults,
     resolver: yupResolver(mailSchema),
   })
 
@@ -54,6 +56,7 @@ export const MailForm: React.VFC<MailFormProps> = (props) => {
       <Divider />
       <CardContent>
         <Stack spacing={2}>
+          {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
           <TextField
             label="件名"
             variant="filled"
@@ -67,8 +70,11 @@ export const MailForm: React.VFC<MailFormProps> = (props) => {
             getOptionLabel={(g) => `${g.name}(${g.students.length}人が所属中)`}
             multiple
             onChange={(_, v) =>
-              setValue('groupIds', v ? v.map((g) => g.id) : [])
+              setValue('groupIds', v ? v.map((g) => g!.id) : [])
             }
+            defaultValue={defaults?.groupIds?.map(
+              (g) => groups.find(({ id }) => id === g)!
+            )}
             renderInput={(params) => (
               <TextField
                 {...params}

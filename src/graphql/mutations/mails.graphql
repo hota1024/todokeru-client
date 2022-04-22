@@ -3,3 +3,9 @@ mutation createMail($data: CreateMailDto!) {
     id
   }
 }
+
+mutation updateMail($id: String!, $data: UpdateMailDto!) {
+  updateMail(id: $id, data: $data) {
+    id
+  }
+}
