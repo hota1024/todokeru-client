@@ -1,0 +1,12 @@
+query mails {
+  mails {
+    id
+    subject
+    body
+    groups {
+      id
+      name
+    }
+    wasSent
+  }
+}

@@ -230,15 +230,15 @@ export type MutationValidateRegisterationTokenArgs = {
 };
 
 export type Query = {
-  find: Array<Mail>;
-  findOne: Mail;
   group: Group;
   groups: Array<Group>;
   hasAdmin: Scalars['Boolean'];
   hasPrimaryMailAccount: Scalars['Boolean'];
   isRegisterationReceptable: Scalars['Boolean'];
+  mail: Mail;
   mailAccount: MailAccount;
   mailAccounts: Array<MailAccount>;
+  mails: Array<Mail>;
   me: User;
   registerationStatus: RegisterationStatus;
   student: Student;
@@ -507,6 +507,11 @@ export type HasPrimaryMailAccountQueryVariables = Exact<{ [key: string]: never; 
 
 
 export type HasPrimaryMailAccountQuery = { hasPrimaryMailAccount: boolean };
+
+export type MailsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MailsQuery = { mails: Array<{ id: string, subject: string, body: string, wasSent: boolean, groups: Array<{ id: string, name: string }> }> };
 
 export type RegisterationStatusQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1526,6 +1531,47 @@ export function useHasPrimaryMailAccountLazyQuery(baseOptions?: Apollo.LazyQuery
 export type HasPrimaryMailAccountQueryHookResult = ReturnType<typeof useHasPrimaryMailAccountQuery>;
 export type HasPrimaryMailAccountLazyQueryHookResult = ReturnType<typeof useHasPrimaryMailAccountLazyQuery>;
 export type HasPrimaryMailAccountQueryResult = Apollo.QueryResult<HasPrimaryMailAccountQuery, HasPrimaryMailAccountQueryVariables>;
+export const MailsDocument = gql`
+    query mails {
+  mails {
+    id
+    subject
+    body
+    groups {
+      id
+      name
+    }
+    wasSent
+  }
+}
+    `;
+
+/**
+ * __useMailsQuery__
+ *
+ * To run a query within a React component, call `useMailsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMailsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMailsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMailsQuery(baseOptions?: Apollo.QueryHookOptions<MailsQuery, MailsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<MailsQuery, MailsQueryVariables>(MailsDocument, options);
+      }
+export function useMailsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MailsQuery, MailsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<MailsQuery, MailsQueryVariables>(MailsDocument, options);
+        }
+export type MailsQueryHookResult = ReturnType<typeof useMailsQuery>;
+export type MailsLazyQueryHookResult = ReturnType<typeof useMailsLazyQuery>;
+export type MailsQueryResult = Apollo.QueryResult<MailsQuery, MailsQueryVariables>;
 export const RegisterationStatusDocument = gql`
     query registerationStatus {
   registerationStatus {
