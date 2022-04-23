@@ -9,3 +9,7 @@ mutation updateMail($id: String!, $data: UpdateMailDto!) {
     id
   }
 }
+
+mutation deleteMail($id: String!) {
+  deleteMail(id: $id)
+}

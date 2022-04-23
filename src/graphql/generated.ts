@@ -117,6 +117,7 @@ export type Mutation = {
   createTempEmail: CreateOtcResultDto;
   createTempUser: User;
   deleteGroup: Scalars['Boolean'];
+  deleteMail: Scalars['Boolean'];
   deleteMailAccount: Scalars['Boolean'];
   deleteStudent: Scalars['Boolean'];
   deleteUserEmail: Scalars['Boolean'];
@@ -173,6 +174,11 @@ export type MutationCreateTempEmailArgs = {
 
 
 export type MutationDeleteGroupArgs = {
+  id: Scalars['String'];
+};
+
+
+export type MutationDeleteMailArgs = {
   id: Scalars['String'];
 };
 
@@ -443,6 +449,13 @@ export type UpdateMailMutationVariables = Exact<{
 
 
 export type UpdateMailMutation = { updateMail: { id: string } };
+
+export type DeleteMailMutationVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type DeleteMailMutation = { deleteMail: boolean };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1082,6 +1095,37 @@ export function useUpdateMailMutation(baseOptions?: Apollo.MutationHookOptions<U
 export type UpdateMailMutationHookResult = ReturnType<typeof useUpdateMailMutation>;
 export type UpdateMailMutationResult = Apollo.MutationResult<UpdateMailMutation>;
 export type UpdateMailMutationOptions = Apollo.BaseMutationOptions<UpdateMailMutation, UpdateMailMutationVariables>;
+export const DeleteMailDocument = gql`
+    mutation deleteMail($id: String!) {
+  deleteMail(id: $id)
+}
+    `;
+export type DeleteMailMutationFn = Apollo.MutationFunction<DeleteMailMutation, DeleteMailMutationVariables>;
+
+/**
+ * __useDeleteMailMutation__
+ *
+ * To run a mutation, you first call `useDeleteMailMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteMailMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteMailMutation, { data, loading, error }] = useDeleteMailMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteMailMutation(baseOptions?: Apollo.MutationHookOptions<DeleteMailMutation, DeleteMailMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteMailMutation, DeleteMailMutationVariables>(DeleteMailDocument, options);
+      }
+export type DeleteMailMutationHookResult = ReturnType<typeof useDeleteMailMutation>;
+export type DeleteMailMutationResult = Apollo.MutationResult<DeleteMailMutation>;
+export type DeleteMailMutationOptions = Apollo.BaseMutationOptions<DeleteMailMutation, DeleteMailMutationVariables>;
 export const MeDocument = gql`
     query me {
   me {

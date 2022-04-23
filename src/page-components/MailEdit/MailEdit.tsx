@@ -1,5 +1,7 @@
+import { useConfirm } from '@/atoms/confirm'
 import { MailForm } from '@/components/mails/MailForm'
 import {
+  useDeleteMailMutation,
   useGroupsQuery,
   useMailLazyQuery,
   useMailQuery,
@@ -32,7 +34,9 @@ export const MailEdit: React.VFC<MailEditProps> = (props) => {
   const [fetchMail, { data: mailData, loading: mailLoading }] =
     useMailLazyQuery()
   const [updateMail] = useUpdateMailMutation()
+  const [deleteMail] = useDeleteMailMutation()
   const { enqueueSnackbar } = useSnackbar()
+  const confirm = useConfirm()
 
   const router = useRouter()
   const mail = mailData ? mailData.mail : null
@@ -81,6 +85,40 @@ export const MailEdit: React.VFC<MailEditProps> = (props) => {
     setLoading(false)
   }
 
+  const onDelete = async () => {
+    confirm({
+      title: 'メールを削除しますか？',
+      description: `本当に「${mail?.subject}」を削除しますか？`,
+      confirmText: '削除する',
+      confirmColor: 'error',
+      async onConfirm() {
+        if (typeof router.query.id !== 'string') {
+          return
+        }
+
+        setLoading(true)
+
+        try {
+          await deleteMail({
+            variables: {
+              id: router.query.id,
+            },
+          })
+
+          enqueueSnackbar('削除しました。', { variant: 'success' })
+          await router.push('/admin/mails')
+        } catch (e) {
+          if (e instanceof Error) {
+            setError(e.message)
+          }
+        }
+
+        setError(null)
+        setLoading(false)
+      },
+    })
+  }
+
   return (
     <AdminLayout>
       <AdminHeader
@@ -94,6 +132,7 @@ export const MailEdit: React.VFC<MailEditProps> = (props) => {
           groups={groups}
           errorMessage={error}
           onSubmit={onSubmit}
+          onDelete={onDelete}
           loading={loading}
         />
       ) : (

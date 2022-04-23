@@ -8,6 +8,7 @@ import {
   CardHeader,
   Chip,
   Divider,
+  Grid,
   List,
   ListItem,
   ListItemAvatar,
@@ -16,6 +17,7 @@ import {
   Typography,
 } from '@mui/material'
 import { Box } from '@mui/system'
+import { group } from 'console'
 import Link from 'next/link'
 import { AdminHeader } from '../AdminHeader'
 
@@ -56,39 +58,29 @@ export const Mails: React.VFC<MailsProps> = (props) => {
           {mails.map((mail, i) => (
             <div key={mail.id}>
               <Link href={`/admin/mails/${mail.id}`} passHref>
-                <ListItem component="a" button alignItems="flex-start">
-                  <ListItemAvatar>
-                    <Avatar>
-                      <Mail />
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={
-                      <>
-                        <Typography variant="h6" display="inline">
-                          {mail.subject}
-                        </Typography>
-                      </>
-                    }
-                    secondary={
-                      <>
-                        <Box pt={1}>
-                          To:{' '}
-                          {mail.groups.map((g) => (
-                            <Chip key={g.id} label={g.name} sx={{ mr: 1 }} />
-                          ))}
+                <ListItem component="a" button>
+                  <Grid container spacing={2} alignItems="center">
+                    <Grid item xs={1}>
+                      <Chip label={mail.wasSent ? '送信済み' : '未送信'} />
+                    </Grid>
+                    <Grid item xs={5}>
+                      <Typography>{mail.subject}</Typography>
+                    </Grid>
+                    <Grid item xs={4}>
+                      To:{' '}
+                      {mail.groups.map((group) => (
+                        <Box mr={1} display="inline" key={group.id}>
+                          <Chip label={group.name} />
                         </Box>
-                        <Box pt={1}>
-                          状態:{' '}
-                          <Chip label={mail.wasSent ? '送信済み' : '未送信'} />
-                        </Box>
-                        <Typography sx={{ py: 1 }}>
-                          {mail.body.slice(0, 100) +
-                            `${mail.body.length > 100 ? '...' : ''}`}
-                        </Typography>
-                      </>
-                    }
-                  />
+                      ))}
+                    </Grid>
+                    <Grid item xs={2}>
+                      <Typography>
+                        {mail.body.slice(0, 20)}
+                        {mail.body.length > 20 && '...'}
+                      </Typography>
+                    </Grid>
+                  </Grid>
                 </ListItem>
               </Link>
               {i !== mails.length - 1 && <Divider />}

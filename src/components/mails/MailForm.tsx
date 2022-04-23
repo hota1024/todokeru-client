@@ -31,13 +31,14 @@ export type MailFormProps = {
   onSubmit: SubmitHandler<MailSchema>
   loading?: boolean
   errorMessage?: string | null
+  onDelete?(): void
 }
 
 /**
  * MailForm component.
  */
 export const MailForm: React.VFC<MailFormProps> = (props) => {
-  const { defaults, groups, onSubmit, loading, errorMessage } = props
+  const { defaults, groups, onSubmit, loading, errorMessage, onDelete } = props
   const isNew = !defaults?.id
 
   const {
@@ -67,7 +68,7 @@ export const MailForm: React.VFC<MailFormProps> = (props) => {
           />
           <Autocomplete
             options={groups}
-            getOptionLabel={(g) => `${g.name}(${g.students.length}人が所属中)`}
+            getOptionLabel={(g) => `${g.name}(${g.students.length}人)`}
             multiple
             onChange={(_, v) =>
               setValue('groupIds', v ? v.map((g) => g!.id) : [])
@@ -105,6 +106,17 @@ export const MailForm: React.VFC<MailFormProps> = (props) => {
       <Divider />
       <CardActions>
         <Box flexGrow={1} />
+        {onDelete && (
+          <LoadingButton
+            color="error"
+            variant="contained"
+            disableElevation
+            loading={loading}
+            onClick={onDelete}
+          >
+            削除
+          </LoadingButton>
+        )}
         <LoadingButton
           type="submit"
           variant="contained"
