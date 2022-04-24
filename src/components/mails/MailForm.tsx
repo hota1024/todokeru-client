@@ -79,7 +79,7 @@ export const MailForm: React.VFC<MailFormProps> = (props) => {
             renderInput={(params) => (
               <TextField
                 {...params}
-                label="送信先"
+                label="配信先"
                 variant="filled"
                 error={!!errors.groupIds}
                 helperText={
@@ -123,7 +123,7 @@ export const MailForm: React.VFC<MailFormProps> = (props) => {
           disableElevation
           loading={loading}
         >
-          保存する(送信はされません)
+          保存する(配信はされません)
         </LoadingButton>
       </CardActions>
     </Card>

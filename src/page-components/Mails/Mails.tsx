@@ -90,7 +90,7 @@ export const Mails: React.VFC<MailsProps> = (props) => {
                 variant="contained"
                 disableElevation
               >
-                送信状況
+                配信状況
               </Button>
             </Link>
           ) : (
@@ -101,7 +101,7 @@ export const Mails: React.VFC<MailsProps> = (props) => {
                 variant="contained"
                 disableElevation
               >
-                送信を始める
+                配信を始める
               </Button>
             </Link>
           )}

@@ -7,7 +7,7 @@ export const mailSchema = yup.object({
     .array()
     .of(yup.string().required('入力してください。'))
     .required('入力してください。')
-    .min(1, '最低1つは送信先を指定してください。'),
+    .min(1, '最低1つは配信先を指定してください。'),
 })
 
 export type MailSchema = yup.InferType<typeof mailSchema>
