@@ -15,6 +15,7 @@ import {
   TextField,
 } from '@mui/material'
 import { Box } from '@mui/system'
+import Link from 'next/link'
 import { FieldError, SubmitHandler, useForm } from 'react-hook-form'
 
 /**
@@ -27,6 +28,7 @@ export type MailFormProps = {
     body: string
     groupIds: string[]
   }>
+  wasSent?: boolean
   groups: GroupsQuery['groups']
   onSubmit: SubmitHandler<MailSchema>
   loading?: boolean
@@ -38,7 +40,15 @@ export type MailFormProps = {
  * MailForm component.
  */
 export const MailForm: React.VFC<MailFormProps> = (props) => {
-  const { defaults, groups, onSubmit, loading, errorMessage, onDelete } = props
+  const {
+    defaults,
+    groups,
+    onSubmit,
+    loading,
+    errorMessage,
+    onDelete,
+    wasSent,
+  } = props
   const isNew = !defaults?.id
 
   const {
@@ -105,17 +115,31 @@ export const MailForm: React.VFC<MailFormProps> = (props) => {
       </CardContent>
       <Divider />
       <CardActions>
-        <Box flexGrow={1} />
         {onDelete && (
           <LoadingButton
             color="error"
             variant="contained"
             disableElevation
             loading={loading}
+            disabled={wasSent}
             onClick={onDelete}
           >
             削除
           </LoadingButton>
+        )}
+        <Box flexGrow={1} />
+        {!wasSent && (
+          <Link href={`/admin/mails/${defaults?.id}/send`} passHref>
+            <LoadingButton
+              component="a"
+              variant="contained"
+              disableElevation
+              color="secondary"
+              loading={loading}
+            >
+              配信を始める
+            </LoadingButton>
+          </Link>
         )}
         <LoadingButton
           type="submit"
