@@ -550,14 +550,14 @@ export type HasPrimaryMailAccountQuery = { hasPrimaryMailAccount: boolean };
 export type MailsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MailsQuery = { mails: Array<{ id: string, subject: string, body: string, wasSent: boolean, groups: Array<{ id: string, name: string }> }> };
+export type MailsQuery = { mails: Array<{ id: string, subject: string, body: string, wasSent: boolean, createdAt: string, groups: Array<{ id: string, name: string }> }> };
 
 export type MailQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
 
 
-export type MailQuery = { mail: { id: string, subject: string, body: string, wasSent: boolean, groups: Array<{ id: string, name: string }> } };
+export type MailQuery = { mail: { id: string, subject: string, body: string, wasSent: boolean, createdAt: string, groups: Array<{ id: string, name: string }> } };
 
 export type RegisterationStatusQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1653,6 +1653,7 @@ export const MailsDocument = gql`
       name
     }
     wasSent
+    createdAt
   }
 }
     `;
@@ -1694,6 +1695,7 @@ export const MailDocument = gql`
       name
     }
     wasSent
+    createdAt
   }
 }
     `;

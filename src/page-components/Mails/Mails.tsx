@@ -1,5 +1,6 @@
 import { useMailsQuery } from '@/graphql/generated'
 import { AdminLayout } from '@/layouts/AdminLayout/AdminLayout'
+import { formatDateTime } from '@/utils/formatDateTime'
 import { Mail } from '@mui/icons-material'
 import {
   Avatar,
@@ -17,6 +18,7 @@ import {
   Typography,
 } from '@mui/material'
 import { Box } from '@mui/system'
+import { DataGrid, GridColDef } from '@mui/x-data-grid'
 import { group } from 'console'
 import Link from 'next/link'
 import { AdminHeader } from '../AdminHeader'
@@ -36,58 +38,89 @@ export const Mails: React.VFC<MailsProps> = (props) => {
 
   const mails = mailsData?.mails ?? []
 
+  const columns: GridColDef<typeof mails[number]>[] = [
+    {
+      field: 'edit',
+      headerName: '編集',
+      renderCell: (p) => (
+        <>
+          <Link href={`/admin/mails/${p.row.id}`} passHref>
+            <Button component="a" color="success">
+              編集
+            </Button>
+          </Link>
+        </>
+      ),
+    },
+    {
+      field: 'subject',
+      headerName: '件名',
+      width: 200,
+    },
+    {
+      field: 'body',
+      headerName: '本文',
+      width: 200,
+    },
+    {
+      field: 'groups',
+      headerName: '送り先',
+      width: 400,
+      renderCell: (p) => (
+        <>
+          {p.row.groups.map((g) => (
+            <Link key={g.id} href={`/admin/groups/${g.id}`} passHref>
+              <Chip component="a" label={g.name} sx={{ mr: 1 }} />
+            </Link>
+          ))}
+        </>
+      ),
+    },
+    {
+      field: 'buttons',
+      headerName: '操作',
+      width: 160,
+      renderCell: (p) => (
+        <>
+          {p.row.wasSent ? (
+            <Link href={`/admin/mails/${p.row.id}/status`} passHref>
+              <Button
+                component="a"
+                color="secondary"
+                variant="contained"
+                disableElevation
+              >
+                送信状況
+              </Button>
+            </Link>
+          ) : (
+            <Link href={`/admin/mails/${p.row.id}/send`} passHref>
+              <Button
+                component="a"
+                color="primary"
+                variant="contained"
+                disableElevation
+              >
+                送信を始める
+              </Button>
+            </Link>
+          )}
+        </>
+      ),
+    },
+  ]
+
   return (
     <AdminLayout>
       <AdminHeader title="メール" />
-      <Card variant="outlined">
-        <CardHeader
-          title="メール一覧"
-          subheader={
-            <Link href="/admin/mails/new" passHref>
-              <Button component="a">メールを作成</Button>
-            </Link>
-          }
+      <Box width="100%" height={600}>
+        <DataGrid
+          rows={mails}
+          columns={columns}
+          pageSize={50}
+          rowsPerPageOptions={[50]}
         />
-        <Divider />
-        <List>
-          {mailsLoading && (
-            <ListItem>
-              <ListItemText primary={<Skeleton variant="text" />} />
-            </ListItem>
-          )}
-          {mails.map((mail, i) => (
-            <div key={mail.id}>
-              <Link href={`/admin/mails/${mail.id}`} passHref>
-                <ListItem component="a" button>
-                  <Grid container spacing={2} alignItems="center">
-                    <Grid item xs={1}>
-                      <Chip label={mail.wasSent ? '送信済み' : '未送信'} />
-                    </Grid>
-                    <Grid item xs={5}>
-                      <Typography>{mail.subject}</Typography>
-                    </Grid>
-                    <Grid item xs={4}>
-                      To:{' '}
-                      {mail.groups.map((group) => (
-                        <Box mr={1} display="inline" key={group.id}>
-                          <Chip label={group.name} />
-                        </Box>
-                      ))}
-                    </Grid>
-                    <Grid item xs={2}>
-                      <Typography>
-                        {mail.body.slice(0, 20)}
-                        {mail.body.length > 20 && '...'}
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                </ListItem>
-              </Link>
-              {i !== mails.length - 1 && <Divider />}
-            </div>
-          ))}
-        </List>
-      </Card>
+      </Box>
     </AdminLayout>
   )
 }
