@@ -13,3 +13,7 @@ mutation updateMail($id: String!, $data: UpdateMailDto!) {
 mutation deleteMail($id: String!) {
   deleteMail(id: $id)
 }
+
+mutation sendMail($id: String!) {
+  sendMail(id: $id)
+}

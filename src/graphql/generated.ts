@@ -90,6 +90,7 @@ export type Mail = {
   groups: Array<Group>;
   id: Scalars['ID'];
   subject: Scalars['String'];
+  transports: Array<Transport>;
   udpatedAt: Scalars['DateTime'];
   wasSent: Scalars['Boolean'];
 };
@@ -99,9 +100,11 @@ export type MailAccount = {
   host: Scalars['String'];
   id: Scalars['ID'];
   isPrimary: Scalars['Boolean'];
+  lastSentAt?: Maybe<Scalars['DateTime']>;
   port: Scalars['String'];
   secure: Scalars['Boolean'];
   sendRate: Scalars['Float'];
+  transports: Array<Transport>;
   updatedAt: Scalars['DateTime'];
   user: Scalars['String'];
 };
@@ -122,6 +125,7 @@ export type Mutation = {
   deleteStudent: Scalars['Boolean'];
   deleteUserEmail: Scalars['Boolean'];
   endRegisterReception: RegisterationStatus;
+  sendMail: Scalars['Boolean'];
   startRegisterReception: RegisterationStatus;
   updateGroup: Group;
   updateGroupOrder: Scalars['Boolean'];
@@ -194,6 +198,11 @@ export type MutationDeleteStudentArgs = {
 
 
 export type MutationDeleteUserEmailArgs = {
+  id: Scalars['String'];
+};
+
+
+export type MutationSendMailArgs = {
   id: Scalars['String'];
 };
 
@@ -292,8 +301,30 @@ export type Student = {
   id: Scalars['ID'];
   name: Scalars['String'];
   surname: Scalars['String'];
+  transports: Array<Transport>;
   user: User;
 };
+
+export type Transport = {
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
+  mail: Mail;
+  mailAccount: MailAccount;
+  readAt?: Maybe<Scalars['DateTime']>;
+  rejectedReason?: Maybe<Scalars['String']>;
+  sendStartedAt?: Maybe<Scalars['DateTime']>;
+  sentAt?: Maybe<Scalars['DateTime']>;
+  status: TransportStatus;
+  students: Array<Student>;
+  updatedAt: Scalars['DateTime'];
+};
+
+export enum TransportStatus {
+  Queued = 'Queued',
+  Rejected = 'Rejected',
+  Sending = 'Sending',
+  Sent = 'Sent'
+}
 
 export type UpdateEmailAccountDto = {
   host?: InputMaybe<Scalars['String']>;
@@ -456,6 +487,13 @@ export type DeleteMailMutationVariables = Exact<{
 
 
 export type DeleteMailMutation = { deleteMail: boolean };
+
+export type SendMailMutationVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type SendMailMutation = { sendMail: boolean };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1126,6 +1164,37 @@ export function useDeleteMailMutation(baseOptions?: Apollo.MutationHookOptions<D
 export type DeleteMailMutationHookResult = ReturnType<typeof useDeleteMailMutation>;
 export type DeleteMailMutationResult = Apollo.MutationResult<DeleteMailMutation>;
 export type DeleteMailMutationOptions = Apollo.BaseMutationOptions<DeleteMailMutation, DeleteMailMutationVariables>;
+export const SendMailDocument = gql`
+    mutation sendMail($id: String!) {
+  sendMail(id: $id)
+}
+    `;
+export type SendMailMutationFn = Apollo.MutationFunction<SendMailMutation, SendMailMutationVariables>;
+
+/**
+ * __useSendMailMutation__
+ *
+ * To run a mutation, you first call `useSendMailMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSendMailMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [sendMailMutation, { data, loading, error }] = useSendMailMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useSendMailMutation(baseOptions?: Apollo.MutationHookOptions<SendMailMutation, SendMailMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SendMailMutation, SendMailMutationVariables>(SendMailDocument, options);
+      }
+export type SendMailMutationHookResult = ReturnType<typeof useSendMailMutation>;
+export type SendMailMutationResult = Apollo.MutationResult<SendMailMutation>;
+export type SendMailMutationOptions = Apollo.BaseMutationOptions<SendMailMutation, SendMailMutationVariables>;
 export const MeDocument = gql`
     query me {
   me {

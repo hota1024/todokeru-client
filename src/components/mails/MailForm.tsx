@@ -1,3 +1,4 @@
+import { useConfirm } from '@/atoms/confirm'
 import { Group, GroupsQuery, Mail } from '@/graphql/generated'
 import { MailSchema, mailSchema } from '@/schemas/mailSchema'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -137,7 +138,7 @@ export const MailForm: React.VFC<MailFormProps> = (props) => {
               color="secondary"
               loading={loading}
             >
-              配信を始める
+              配信を準備する
             </LoadingButton>
           </Link>
         )}
@@ -147,7 +148,7 @@ export const MailForm: React.VFC<MailFormProps> = (props) => {
           disableElevation
           loading={loading}
         >
-          保存する(配信はされません)
+          保存する
         </LoadingButton>
       </CardActions>
     </Card>
