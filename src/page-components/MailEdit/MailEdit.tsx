@@ -134,6 +134,7 @@ export const MailEdit: React.VFC<MailEditProps> = (props) => {
           onSubmit={onSubmit}
           onDelete={onDelete}
           loading={loading}
+          wasSent={mail.wasSent}
         />
       ) : (
         <LinearProgress />

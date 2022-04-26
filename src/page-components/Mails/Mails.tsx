@@ -1,7 +1,7 @@
 import { useMailsQuery } from '@/graphql/generated'
 import { AdminLayout } from '@/layouts/AdminLayout/AdminLayout'
 import { formatDateTime } from '@/utils/formatDateTime'
-import { Mail } from '@mui/icons-material'
+import { Add, Mail } from '@mui/icons-material'
 import {
   Avatar,
   Button,
@@ -113,8 +113,22 @@ export const Mails: React.VFC<MailsProps> = (props) => {
   return (
     <AdminLayout>
       <AdminHeader title="メール" />
+      <Box mb={3}>
+        <Link href="/admin/mails/new" passHref>
+          <Button
+            component="a"
+            size="large"
+            variant="contained"
+            disableElevation
+            startIcon={<Add />}
+          >
+            メールを作成する
+          </Button>
+        </Link>
+      </Box>
       <Box width="100%" height={600}>
         <DataGrid
+          loading={mailsLoading}
           rows={mails}
           columns={columns}
           pageSize={50}

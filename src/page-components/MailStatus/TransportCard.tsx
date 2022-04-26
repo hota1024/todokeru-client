@@ -71,7 +71,7 @@ export const TransportCard: React.VFC<TransportCardProps> = (props) => {
       subheader = `${formatDateTime(
         new Date(transport.readAt)
       )}に開封されました。`
-      color = '#2196F3'
+      color = '#4CAF50'
       avatar = (
         <Avatar sx={{ bgcolor: color }}>
           <Drafts />
@@ -80,7 +80,7 @@ export const TransportCard: React.VFC<TransportCardProps> = (props) => {
     } else {
       status = '配信済み'
       subheader = `配信済みのメールです。`
-      color = '#4CAF50'
+      color = '#2196F3'
       avatar = (
         <Avatar sx={{ bgcolor: color }}>
           <Mail />

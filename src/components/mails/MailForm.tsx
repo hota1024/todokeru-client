@@ -98,7 +98,7 @@ export const MailForm: React.VFC<MailFormProps> = (props) => {
                     ? (errors.groupIds as unknown as FieldError).message
                     : ''
                 }
-                disabled={loading}
+                disabled={loading || wasSent}
               />
             )}
           />

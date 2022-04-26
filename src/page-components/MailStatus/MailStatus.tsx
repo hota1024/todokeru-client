@@ -1,8 +1,9 @@
 import { useMailWithTransportsLazyQuery } from '@/graphql/generated'
 import { useInterval } from '@/hooks/useInterval'
 import { AdminLayout } from '@/layouts/AdminLayout/AdminLayout'
-import { Alert, Grid, LinearProgress } from '@mui/material'
+import { Alert, Button, Grid, LinearProgress } from '@mui/material'
 import { Box } from '@mui/system'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect } from 'react'
 import { AdminHeader } from '../AdminHeader'
@@ -42,8 +43,8 @@ export const MailStatus: React.VFC<MailStatusProps> = (props) => {
     <AdminLayout>
       <AdminHeader
         title={mail ? `「${mail.subject}」の配信状況` : 'メールの配信状況'}
-        previousHref={`/admin/mails`}
-        previousText="メール一覧へ"
+        previousHref={`/admin/mails/${mail?.id}`}
+        previousText={`「${mail?.subject}」へ`}
       />
       {mail ? (
         mail.wasSent ? (
@@ -66,7 +67,23 @@ export const MailStatus: React.VFC<MailStatusProps> = (props) => {
             </Grid>
           </>
         ) : (
-          <Alert severity="info">このメールは配信されていません。</Alert>
+          <Alert
+            severity="info"
+            action={
+              <Link href={`/admin/mails/${mail.id}/send`} passHref>
+                <Button
+                  component="a"
+                  variant="contained"
+                  disableElevation
+                  color="secondary"
+                >
+                  配信準備をする
+                </Button>
+              </Link>
+            }
+          >
+            このメールは配信されていません。
+          </Alert>
         )
       ) : (
         <LinearProgress />
