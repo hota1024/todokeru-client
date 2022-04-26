@@ -74,7 +74,11 @@ export const MailSend: React.VFC<MailSendProps> = (props) => {
 
   return (
     <AdminLayout>
-      <AdminHeader title="メールの配信" />
+      <AdminHeader
+        title="メールの配信"
+        previousHref={`/admin/mails/${mail?.id}`}
+        previousText={`「${mail?.subject}」へ`}
+      />
       {mail ? (
         mail?.wasSent ? (
           <Alert severity="info">このメールはすでに配信されています。</Alert>

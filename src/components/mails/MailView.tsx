@@ -1,10 +1,10 @@
-import { MailQuery } from '@/graphql/generated'
+import { MailQuery, ReadTransportMutation } from '@/graphql/generated'
 
 /**
  * MailView props.
  */
 export type MailViewProps = {
-  mail: MailQuery['mail']
+  mail: MailQuery['mail'] | ReadTransportMutation['readTransport']['mail']
   isPreview?: boolean
 }
 
@@ -39,7 +39,7 @@ export const MailView: React.VFC<MailViewProps> = (props) => {
             こちらのメールは下記を対象に送信されています。
             <ul>
               {mail.groups.map((g) => (
-                <li key={g.id}>{g.name}</li>
+                <li key={g.name}>{g.name}</li>
               ))}
             </ul>
           </div>

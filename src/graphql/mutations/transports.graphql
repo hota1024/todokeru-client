@@ -1,0 +1,15 @@
+mutation readTransport($id: String!) {
+  readTransport(id: $id) {
+    mail {
+      subject
+      body
+      groups {
+        name
+      }
+    }
+    students {
+      surname
+      name
+    }
+  }
+}

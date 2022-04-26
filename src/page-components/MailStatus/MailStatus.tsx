@@ -2,9 +2,12 @@ import { useMailWithTransportsLazyQuery } from '@/graphql/generated'
 import { useInterval } from '@/hooks/useInterval'
 import { AdminLayout } from '@/layouts/AdminLayout/AdminLayout'
 import { Alert, Grid, LinearProgress } from '@mui/material'
+import { Box } from '@mui/system'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect } from 'react'
 import { AdminHeader } from '../AdminHeader'
+import { ProgressCard } from './ProgressCard'
+import { ReadDatesCard } from './ReadDatesCard'
 import { TransportCard } from './TransportCard'
 
 /**
@@ -39,16 +42,29 @@ export const MailStatus: React.VFC<MailStatusProps> = (props) => {
     <AdminLayout>
       <AdminHeader
         title={mail ? `「${mail.subject}」の配信状況` : 'メールの配信状況'}
+        previousHref={`/admin/mails`}
+        previousText="メール一覧へ"
       />
       {mail ? (
         mail.wasSent ? (
-          <Grid container>
-            {mail.transports.map((transport) => (
-              <Grid item xs={12} sm={6} md={4} key={transport.id}>
-                <TransportCard transport={transport} />
+          <>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <ProgressCard transports={mail.transports} />
               </Grid>
-            ))}
-          </Grid>
+              <Grid item xs={12} sm={6}>
+                <ReadDatesCard transports={mail.transports} />
+              </Grid>
+            </Grid>
+            <Box my={4} />
+            <Grid container spacing={2}>
+              {mail.transports.map((transport) => (
+                <Grid item xs={12} sm={6} md={4} key={transport.id}>
+                  <TransportCard transport={transport} />
+                </Grid>
+              ))}
+            </Grid>
+          </>
         ) : (
           <Alert severity="info">このメールは配信されていません。</Alert>
         )

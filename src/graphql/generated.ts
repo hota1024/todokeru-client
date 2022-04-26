@@ -126,6 +126,7 @@ export type Mutation = {
   deleteUserEmail: Scalars['Boolean'];
   endRegisterReception: RegisterationStatus;
   read: Transport;
+  readTransport: Transport;
   sendMail: Scalars['Boolean'];
   startRegisterReception: RegisterationStatus;
   updateGroup: Group;
@@ -208,6 +209,11 @@ export type MutationReadArgs = {
 };
 
 
+export type MutationReadTransportArgs = {
+  id: Scalars['String'];
+};
+
+
 export type MutationSendMailArgs = {
   id: Scalars['String'];
 };
@@ -271,6 +277,7 @@ export type Query = {
   registerationStatus: RegisterationStatus;
   student: Student;
   students: Array<Student>;
+  transport: Transport;
   users: Array<User>;
 };
 
@@ -291,6 +298,11 @@ export type QueryMailAccountArgs = {
 
 
 export type QueryStudentArgs = {
+  id: Scalars['String'];
+};
+
+
+export type QueryTransportArgs = {
   id: Scalars['String'];
 };
 
@@ -535,6 +547,13 @@ export type DeleteStudentMutationVariables = Exact<{
 
 export type DeleteStudentMutation = { deleteStudent: boolean };
 
+export type ReadTransportMutationVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type ReadTransportMutation = { readTransport: { mail: { subject: string, body: string, groups: Array<{ name: string }> }, students: Array<{ surname: string, name: string }> } };
+
 export type UpdateMailAccountMutationVariables = Exact<{
   id: Scalars['String'];
   data: UpdateEmailAccountDto;
@@ -626,6 +645,13 @@ export type StudentQueryVariables = Exact<{
 
 
 export type StudentQuery = { student: { id: string, name: string, surname: string, group: { id: string, name: string }, user: { id: string } } };
+
+export type TransportQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type TransportQuery = { transport: { id: string, status: TransportStatus, sendStartedAt?: string | null, sentAt?: string | null, readAt?: string | null, rejectedReason?: string | null, createdAt: string, updatedAt: string, mail: { id: string, subject: string, body: string, groups: Array<{ id: string, name: string }> }, students: Array<{ id: string, name: string, surname: string, user: { emails: Array<{ address: string }> }, group: { id: string, name: string } }>, mailAccount: { id: string, host: string, user: string } } };
 
 export type HasAdminQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1387,6 +1413,49 @@ export function useDeleteStudentMutation(baseOptions?: Apollo.MutationHookOption
 export type DeleteStudentMutationHookResult = ReturnType<typeof useDeleteStudentMutation>;
 export type DeleteStudentMutationResult = Apollo.MutationResult<DeleteStudentMutation>;
 export type DeleteStudentMutationOptions = Apollo.BaseMutationOptions<DeleteStudentMutation, DeleteStudentMutationVariables>;
+export const ReadTransportDocument = gql`
+    mutation readTransport($id: String!) {
+  readTransport(id: $id) {
+    mail {
+      subject
+      body
+      groups {
+        name
+      }
+    }
+    students {
+      surname
+      name
+    }
+  }
+}
+    `;
+export type ReadTransportMutationFn = Apollo.MutationFunction<ReadTransportMutation, ReadTransportMutationVariables>;
+
+/**
+ * __useReadTransportMutation__
+ *
+ * To run a mutation, you first call `useReadTransportMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useReadTransportMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [readTransportMutation, { data, loading, error }] = useReadTransportMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useReadTransportMutation(baseOptions?: Apollo.MutationHookOptions<ReadTransportMutation, ReadTransportMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ReadTransportMutation, ReadTransportMutationVariables>(ReadTransportDocument, options);
+      }
+export type ReadTransportMutationHookResult = ReturnType<typeof useReadTransportMutation>;
+export type ReadTransportMutationResult = Apollo.MutationResult<ReadTransportMutation>;
+export type ReadTransportMutationOptions = Apollo.BaseMutationOptions<ReadTransportMutation, ReadTransportMutationVariables>;
 export const UpdateMailAccountDocument = gql`
     mutation updateMailAccount($id: String!, $data: UpdateEmailAccountDto!) {
   updateMailAccount(id: $id, data: $data) {
@@ -1999,6 +2068,76 @@ export function useStudentLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<St
 export type StudentQueryHookResult = ReturnType<typeof useStudentQuery>;
 export type StudentLazyQueryHookResult = ReturnType<typeof useStudentLazyQuery>;
 export type StudentQueryResult = Apollo.QueryResult<StudentQuery, StudentQueryVariables>;
+export const TransportDocument = gql`
+    query transport($id: String!) {
+  transport(id: $id) {
+    id
+    mail {
+      id
+      subject
+      body
+      groups {
+        id
+        name
+      }
+    }
+    students {
+      id
+      name
+      surname
+      user {
+        emails {
+          address
+        }
+      }
+      group {
+        id
+        name
+      }
+    }
+    mailAccount {
+      id
+      host
+      user
+    }
+    status
+    sendStartedAt
+    sentAt
+    readAt
+    rejectedReason
+    createdAt
+    updatedAt
+  }
+}
+    `;
+
+/**
+ * __useTransportQuery__
+ *
+ * To run a query within a React component, call `useTransportQuery` and pass it any options that fit your needs.
+ * When your component renders, `useTransportQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTransportQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useTransportQuery(baseOptions: Apollo.QueryHookOptions<TransportQuery, TransportQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<TransportQuery, TransportQueryVariables>(TransportDocument, options);
+      }
+export function useTransportLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<TransportQuery, TransportQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<TransportQuery, TransportQueryVariables>(TransportDocument, options);
+        }
+export type TransportQueryHookResult = ReturnType<typeof useTransportQuery>;
+export type TransportLazyQueryHookResult = ReturnType<typeof useTransportLazyQuery>;
+export type TransportQueryResult = Apollo.QueryResult<TransportQuery, TransportQueryVariables>;
 export const HasAdminDocument = gql`
     query hasAdmin {
   hasAdmin

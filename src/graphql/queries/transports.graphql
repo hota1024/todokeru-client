@@ -1,0 +1,40 @@
+query transport($id: String!) {
+  transport(id: $id) {
+    id
+    mail {
+      id
+      subject
+      body
+      groups {
+        id
+        name
+      }
+    }
+    students {
+      id
+      name
+      surname
+      user {
+        emails {
+          address
+        }
+      }
+      group {
+        id
+        name
+      }
+    }
+    mailAccount {
+      id
+      host
+      user
+    }
+    status
+    sendStartedAt
+    sentAt
+    readAt
+    rejectedReason
+    createdAt
+    updatedAt
+  }
+}
