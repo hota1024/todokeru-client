@@ -129,7 +129,7 @@ export const MailForm: React.VFC<MailFormProps> = (props) => {
           </LoadingButton>
         )}
         <Box flexGrow={1} />
-        {!wasSent && (
+        {!isNew && !wasSent && (
           <Link href={`/admin/mails/${defaults?.id}/send`} passHref>
             <LoadingButton
               component="a"

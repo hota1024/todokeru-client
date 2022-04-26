@@ -60,6 +60,7 @@ export const MailSend: React.VFC<MailSendProps> = (props) => {
               id: router.query.id,
             },
           })
+          await router.push(`/admin/mails/${router.query.id}/status`)
         } catch (e) {
           if (e instanceof Error) {
             enqueueSnackbar(e.message, { variant: 'error' })

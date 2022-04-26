@@ -125,6 +125,7 @@ export type Mutation = {
   deleteStudent: Scalars['Boolean'];
   deleteUserEmail: Scalars['Boolean'];
   endRegisterReception: RegisterationStatus;
+  read: Transport;
   sendMail: Scalars['Boolean'];
   startRegisterReception: RegisterationStatus;
   updateGroup: Group;
@@ -198,6 +199,11 @@ export type MutationDeleteStudentArgs = {
 
 
 export type MutationDeleteUserEmailArgs = {
+  id: Scalars['String'];
+};
+
+
+export type MutationReadArgs = {
   id: Scalars['String'];
 };
 
@@ -596,6 +602,13 @@ export type MailQueryVariables = Exact<{
 
 
 export type MailQuery = { mail: { id: string, subject: string, body: string, wasSent: boolean, createdAt: string, groups: Array<{ id: string, name: string }> } };
+
+export type MailWithTransportsQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type MailWithTransportsQuery = { mail: { id: string, subject: string, body: string, wasSent: boolean, createdAt: string, groups: Array<{ id: string, name: string }>, transports: Array<{ id: string, status: TransportStatus, sendStartedAt?: string | null, sentAt?: string | null, readAt?: string | null, rejectedReason?: string | null, students: Array<{ id: string, name: string, surname: string, group: { id: string, name: string } }>, mailAccount: { id: string, host: string, user: string } }> } };
 
 export type RegisterationStatusQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1796,6 +1809,71 @@ export function useMailLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MailQ
 export type MailQueryHookResult = ReturnType<typeof useMailQuery>;
 export type MailLazyQueryHookResult = ReturnType<typeof useMailLazyQuery>;
 export type MailQueryResult = Apollo.QueryResult<MailQuery, MailQueryVariables>;
+export const MailWithTransportsDocument = gql`
+    query mailWithTransports($id: String!) {
+  mail(id: $id) {
+    id
+    subject
+    body
+    groups {
+      id
+      name
+    }
+    wasSent
+    createdAt
+    transports {
+      id
+      status
+      sendStartedAt
+      sentAt
+      readAt
+      rejectedReason
+      students {
+        id
+        name
+        surname
+        group {
+          id
+          name
+        }
+      }
+      mailAccount {
+        id
+        host
+        user
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useMailWithTransportsQuery__
+ *
+ * To run a query within a React component, call `useMailWithTransportsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMailWithTransportsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMailWithTransportsQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useMailWithTransportsQuery(baseOptions: Apollo.QueryHookOptions<MailWithTransportsQuery, MailWithTransportsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<MailWithTransportsQuery, MailWithTransportsQueryVariables>(MailWithTransportsDocument, options);
+      }
+export function useMailWithTransportsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MailWithTransportsQuery, MailWithTransportsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<MailWithTransportsQuery, MailWithTransportsQueryVariables>(MailWithTransportsDocument, options);
+        }
+export type MailWithTransportsQueryHookResult = ReturnType<typeof useMailWithTransportsQuery>;
+export type MailWithTransportsLazyQueryHookResult = ReturnType<typeof useMailWithTransportsLazyQuery>;
+export type MailWithTransportsQueryResult = Apollo.QueryResult<MailWithTransportsQuery, MailWithTransportsQueryVariables>;
 export const RegisterationStatusDocument = gql`
     query registerationStatus {
   registerationStatus {

@@ -3,6 +3,7 @@ import { useCreateMailMutation, useGroupsQuery } from '@/graphql/generated'
 import { AdminLayout } from '@/layouts/AdminLayout/AdminLayout'
 import { MailSchema } from '@/schemas/mailSchema'
 import { LinearProgress } from '@mui/material'
+import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { SubmitHandler } from 'react-hook-form'
 import { AdminHeader } from '../AdminHeader'
@@ -23,16 +24,18 @@ export const MailNew: React.VFC<MailNewProps> = (props) => {
 
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const router = useRouter()
 
   const onSubmit: SubmitHandler<MailSchema> = async (data) => {
     setLoading(true)
 
     try {
-      await createMail({
+      const { data: createMailData } = await createMail({
         variables: {
           data,
         },
       })
+      await router.push(`/admin/mails/${createMailData?.createMail.id}`)
     } catch (e) {
       if (e instanceof Error) {
         setError(e.message)

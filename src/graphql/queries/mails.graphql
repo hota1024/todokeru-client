@@ -25,3 +25,39 @@ query mail($id: String!) {
     createdAt
   }
 }
+
+query mailWithTransports($id: String!) {
+  mail(id: $id) {
+    id
+    subject
+    body
+    groups {
+      id
+      name
+    }
+    wasSent
+    createdAt
+    transports {
+      id
+      status
+      sendStartedAt
+      sentAt
+      readAt
+      rejectedReason
+      students {
+        id
+        name
+        surname
+        group {
+          id
+          name
+        }
+      }
+      mailAccount {
+        id
+        host
+        user
+      }
+    }
+  }
+}
