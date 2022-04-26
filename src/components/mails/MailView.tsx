@@ -1,10 +1,17 @@
-import { MailQuery, ReadTransportMutation } from '@/graphql/generated'
+import {
+  MailQuery,
+  ReadTransportMutation,
+  TransportQuery,
+} from '@/graphql/generated'
 
 /**
  * MailView props.
  */
 export type MailViewProps = {
-  mail: MailQuery['mail'] | ReadTransportMutation['readTransport']['mail']
+  mail:
+    | MailQuery['mail']
+    | ReadTransportMutation['readTransport']['mail']
+    | TransportQuery['transport']['mail']
   isPreview?: boolean
 }
 

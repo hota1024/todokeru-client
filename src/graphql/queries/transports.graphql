@@ -15,9 +15,7 @@ query transport($id: String!) {
       name
       surname
       user {
-        emails {
-          address
-        }
+        id
       }
       group {
         id

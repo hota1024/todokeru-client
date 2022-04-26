@@ -127,6 +127,7 @@ export type Mutation = {
   endRegisterReception: RegisterationStatus;
   read: Transport;
   readTransport: Transport;
+  resendTransport: Scalars['Boolean'];
   sendMail: Scalars['Boolean'];
   startRegisterReception: RegisterationStatus;
   updateGroup: Group;
@@ -210,6 +211,11 @@ export type MutationReadArgs = {
 
 
 export type MutationReadTransportArgs = {
+  id: Scalars['String'];
+};
+
+
+export type MutationResendTransportArgs = {
   id: Scalars['String'];
 };
 
@@ -554,6 +560,13 @@ export type ReadTransportMutationVariables = Exact<{
 
 export type ReadTransportMutation = { readTransport: { mail: { subject: string, body: string, groups: Array<{ name: string }> }, students: Array<{ surname: string, name: string }> } };
 
+export type ResendTransportMutationVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type ResendTransportMutation = { resendTransport: boolean };
+
 export type UpdateMailAccountMutationVariables = Exact<{
   id: Scalars['String'];
   data: UpdateEmailAccountDto;
@@ -651,7 +664,7 @@ export type TransportQueryVariables = Exact<{
 }>;
 
 
-export type TransportQuery = { transport: { id: string, status: TransportStatus, sendStartedAt?: string | null, sentAt?: string | null, readAt?: string | null, rejectedReason?: string | null, createdAt: string, updatedAt: string, mail: { id: string, subject: string, body: string, groups: Array<{ id: string, name: string }> }, students: Array<{ id: string, name: string, surname: string, user: { emails: Array<{ address: string }> }, group: { id: string, name: string } }>, mailAccount: { id: string, host: string, user: string } } };
+export type TransportQuery = { transport: { id: string, status: TransportStatus, sendStartedAt?: string | null, sentAt?: string | null, readAt?: string | null, rejectedReason?: string | null, createdAt: string, updatedAt: string, mail: { id: string, subject: string, body: string, groups: Array<{ id: string, name: string }> }, students: Array<{ id: string, name: string, surname: string, user: { id: string }, group: { id: string, name: string } }>, mailAccount: { id: string, host: string, user: string } } };
 
 export type HasAdminQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1456,6 +1469,37 @@ export function useReadTransportMutation(baseOptions?: Apollo.MutationHookOption
 export type ReadTransportMutationHookResult = ReturnType<typeof useReadTransportMutation>;
 export type ReadTransportMutationResult = Apollo.MutationResult<ReadTransportMutation>;
 export type ReadTransportMutationOptions = Apollo.BaseMutationOptions<ReadTransportMutation, ReadTransportMutationVariables>;
+export const ResendTransportDocument = gql`
+    mutation resendTransport($id: String!) {
+  resendTransport(id: $id)
+}
+    `;
+export type ResendTransportMutationFn = Apollo.MutationFunction<ResendTransportMutation, ResendTransportMutationVariables>;
+
+/**
+ * __useResendTransportMutation__
+ *
+ * To run a mutation, you first call `useResendTransportMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useResendTransportMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [resendTransportMutation, { data, loading, error }] = useResendTransportMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useResendTransportMutation(baseOptions?: Apollo.MutationHookOptions<ResendTransportMutation, ResendTransportMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ResendTransportMutation, ResendTransportMutationVariables>(ResendTransportDocument, options);
+      }
+export type ResendTransportMutationHookResult = ReturnType<typeof useResendTransportMutation>;
+export type ResendTransportMutationResult = Apollo.MutationResult<ResendTransportMutation>;
+export type ResendTransportMutationOptions = Apollo.BaseMutationOptions<ResendTransportMutation, ResendTransportMutationVariables>;
 export const UpdateMailAccountDocument = gql`
     mutation updateMailAccount($id: String!, $data: UpdateEmailAccountDto!) {
   updateMailAccount(id: $id, data: $data) {
@@ -2086,9 +2130,7 @@ export const TransportDocument = gql`
       name
       surname
       user {
-        emails {
-          address
-        }
+        id
       }
       group {
         id

@@ -13,3 +13,7 @@ mutation readTransport($id: String!) {
     }
   }
 }
+
+mutation resendTransport($id: String!) {
+  resendTransport(id: $id)
+}

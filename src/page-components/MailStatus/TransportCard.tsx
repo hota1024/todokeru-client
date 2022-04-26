@@ -9,6 +9,7 @@ import {
 import {
   Avatar,
   Card,
+  CardActionArea,
   CardHeader,
   CircularProgress,
   Divider,
@@ -18,6 +19,7 @@ import {
   ListSubheader,
 } from '@mui/material'
 import { Box } from '@mui/system'
+import Link from 'next/link'
 
 /**
  * TransportCard props.
@@ -92,21 +94,25 @@ export const TransportCard: React.VFC<TransportCardProps> = (props) => {
   return (
     <>
       <Card variant="outlined" sx={{ border: `1px solid ${color}` }}>
-        <CardHeader avatar={avatar} title={status} subheader={subheader} />
-        <Divider />
-        <List>
-          {students.map((student, index) => (
-            <Box key={student.id}>
-              <ListItem>
-                <ListItemText
-                  primary={`${student.surname} ${student.name}`}
-                  secondary={student.group.name}
-                />
-              </ListItem>
-              {index < students.length - 1 && <Divider />}
-            </Box>
-          ))}
-        </List>
+        <Link href={`/admin/transports/${transport.id}`} passHref>
+          <CardActionArea component="a">
+            <CardHeader avatar={avatar} title={status} subheader={subheader} />
+            <Divider />
+            <List>
+              {students.map((student, index) => (
+                <Box key={student.id}>
+                  <ListItem>
+                    <ListItemText
+                      primary={`${student.surname} ${student.name}`}
+                      secondary={student.group.name}
+                    />
+                  </ListItem>
+                  {index < students.length - 1 && <Divider />}
+                </Box>
+              ))}
+            </List>
+          </CardActionArea>
+        </Link>
       </Card>
     </>
   )
