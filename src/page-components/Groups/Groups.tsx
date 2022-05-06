@@ -17,6 +17,7 @@ import {
   ListItem,
   ListItemText,
   ListSubheader,
+  Stack,
 } from '@mui/material'
 import { arrayMoveImmutable } from 'array-move'
 import Link from 'next/link'
@@ -101,10 +102,15 @@ export const Groups: React.VFC<GroupsProps> = (props) => {
 
   return (
     <AdminLayout>
-      <AdminHeader title="クラスの管理" />
+      <AdminHeader
+        title="クラスの管理"
+        previousText="クラス一覧へ"
+        previousHref="/admin/groups"
+      />
       <Card variant="outlined">
         {loadingData && <LinearProgress />}
         <List subheader={<ListSubheader>クラス一覧</ListSubheader>}>
+          <Divider />
           {orderEditable ? (
             <>
               <ListItem>
@@ -128,9 +134,20 @@ export const Groups: React.VFC<GroupsProps> = (props) => {
               </Container>
             </>
           ) : (
-            groups.map((group) => (
-              <Link href={`/admin/groups/${group.id}`} passHref key={group.id}>
-                <ListItem component="a" button>
+            groups.map((group, index) => (
+              <Box key={group.id}>
+                <ListItem
+                  secondaryAction={
+                    <Stack direction="row" spacing={1}>
+                      <Link href={`/admin/groups/${group.id}`} passHref>
+                        <Button color="success">編集する</Button>
+                      </Link>
+                      <Link href={`/admin/groups/${group.id}/users`} passHref>
+                        <Button>所属者一覧</Button>
+                      </Link>
+                    </Stack>
+                  }
+                >
                   <ListItemText
                     primary={group.name}
                     secondary={`${group.students.length}人が所属中・${
@@ -138,7 +155,8 @@ export const Groups: React.VFC<GroupsProps> = (props) => {
                     }`}
                   />
                 </ListItem>
-              </Link>
+                {index !== groups.length - 1 && <Divider />}
+              </Box>
             ))
           )}
         </List>

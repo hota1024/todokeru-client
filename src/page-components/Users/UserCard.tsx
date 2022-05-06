@@ -35,7 +35,9 @@ export const UserCard: React.VFC<UserCardProps> = (props) => {
             ? `${surnames}(${user.students.length}人が登録済み)`
             : '名無し'
         }
-        subheader={user.emails.map((e) => e.address).join(', ')}
+        subheader={`${user.emails[0].address}${
+          user.emails.length > 1 ? `(+${user.emails.length - 1})` : ''
+        }`}
         avatar={
           <Avatar sx={{ bgcolor: 'primary.main' }}>
             <AccountCircle />
