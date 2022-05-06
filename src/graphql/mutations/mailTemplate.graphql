@@ -1,0 +1,4 @@
+mutation updateMailTemplate($subject: String!, $body: String!) {
+  updateSubjectTemplate(template: $subject)
+  updateBodyTemplate(template: $body)
+}
