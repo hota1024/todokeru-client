@@ -6,5 +6,7 @@ mutation createFirstPrimaryMailAccount($data: CreateEmailAccountDto!) {
     secure
     user
     isPrimary
+    sendRate
+    fromAddress
   }
 }

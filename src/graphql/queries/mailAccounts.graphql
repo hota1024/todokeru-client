@@ -7,6 +7,7 @@ query mailAccounts {
     user
     isPrimary
     sendRate
+    fromAddress
     updatedAt
     createdAt
   }
@@ -21,6 +22,7 @@ query mailAccount($id: String!) {
     user
     isPrimary
     sendRate
+    fromAddress
     updatedAt
     createdAt
   }

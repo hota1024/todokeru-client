@@ -18,6 +18,7 @@ export type Scalars = {
 };
 
 export type CreateEmailAccountDto = {
+  fromAddress: Scalars['String'];
   host: Scalars['String'];
   isPrimary: Scalars['Boolean'];
   password: Scalars['String'];
@@ -97,6 +98,7 @@ export type Mail = {
 
 export type MailAccount = {
   createdAt: Scalars['DateTime'];
+  fromAddress: Scalars['String'];
   host: Scalars['String'];
   id: Scalars['ID'];
   isPrimary: Scalars['Boolean'];
@@ -351,6 +353,7 @@ export enum TransportStatus {
 }
 
 export type UpdateEmailAccountDto = {
+  fromAddress?: InputMaybe<Scalars['String']>;
   host?: InputMaybe<Scalars['String']>;
   isPrimary?: InputMaybe<Scalars['Boolean']>;
   password?: InputMaybe<Scalars['String']>;
@@ -488,7 +491,7 @@ export type CreateFirstPrimaryMailAccountMutationVariables = Exact<{
 }>;
 
 
-export type CreateFirstPrimaryMailAccountMutation = { createFirstPrimaryMailAccount: { id: string, host: string, port: string, secure: boolean, user: string, isPrimary: boolean } };
+export type CreateFirstPrimaryMailAccountMutation = { createFirstPrimaryMailAccount: { id: string, host: string, port: string, secure: boolean, user: string, isPrimary: boolean, sendRate: number, fromAddress: string } };
 
 export type CreateMailMutationVariables = Exact<{
   data: CreateMailDto;
@@ -609,14 +612,14 @@ export type IsRegisterationReceptableQuery = { isRegisterationReceptable: boolea
 export type MailAccountsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MailAccountsQuery = { mailAccounts: Array<{ id: string, host: string, port: string, secure: boolean, user: string, isPrimary: boolean, sendRate: number, updatedAt: string, createdAt: string }> };
+export type MailAccountsQuery = { mailAccounts: Array<{ id: string, host: string, port: string, secure: boolean, user: string, isPrimary: boolean, sendRate: number, fromAddress: string, updatedAt: string, createdAt: string }> };
 
 export type MailAccountQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
 
 
-export type MailAccountQuery = { mailAccount: { id: string, host: string, port: string, secure: boolean, user: string, isPrimary: boolean, sendRate: number, updatedAt: string, createdAt: string } };
+export type MailAccountQuery = { mailAccount: { id: string, host: string, port: string, secure: boolean, user: string, isPrimary: boolean, sendRate: number, fromAddress: string, updatedAt: string, createdAt: string } };
 
 export type HasPrimaryMailAccountQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1089,6 +1092,8 @@ export const CreateFirstPrimaryMailAccountDocument = gql`
     secure
     user
     isPrimary
+    sendRate
+    fromAddress
   }
 }
     `;
@@ -1730,6 +1735,7 @@ export const MailAccountsDocument = gql`
     user
     isPrimary
     sendRate
+    fromAddress
     updatedAt
     createdAt
   }
@@ -1772,6 +1778,7 @@ export const MailAccountDocument = gql`
     user
     isPrimary
     sendRate
+    fromAddress
     updatedAt
     createdAt
   }

@@ -47,6 +47,7 @@ export const MailAccountEdit: React.VFC<MailAccountEditProps> = (props) => {
       password: data.password,
       isPrimary: data.isPrimary,
       sendRate: data.sendRate,
+      fromAddress: data.fromAddress,
     }
     setError(null)
     setLoading(true)

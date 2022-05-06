@@ -9,6 +9,10 @@ export const mailAccountSchema = yup.object({
   secure: yup.boolean().required('入力してください。'),
   isPrimary: yup.boolean().required('入力してください。'),
   user: yup.string().required('入力してください。'),
+  fromAddress: yup
+    .string()
+    .required('入力してください。')
+    .email('メールアドレスを入力してください。'),
   password: yup.string().required('入力してください。'),
   sendRate: yup.number().required('入力してください。'),
 })
@@ -24,6 +28,10 @@ export const mailAccountEditSchema = yup.object({
   secure: yup.boolean().required('入力してください。'),
   isPrimary: yup.boolean().required('入力してください。'),
   user: yup.string().required('入力してください。'),
+  fromAddress: yup
+    .string()
+    .required('入力してください。')
+    .email('メールアドレスを入力してください。'),
   sendRate: yup
     .number()
     .min(0.1, '最小値は0.1秒です。')

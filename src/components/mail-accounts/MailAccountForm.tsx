@@ -128,6 +128,17 @@ export const MailAccountForm: React.VFC<MailAccountFormProps> = (props) => {
               disabled={loading}
               {...register('password')}
             />
+            <TextField
+              label="送信元アドレス"
+              type="email"
+              error={!!errors.fromAddress}
+              helperText={
+                errors.fromAddress?.message ??
+                'メール配信時に使用される from のアドレスです。'
+              }
+              disabled={loading}
+              {...register('fromAddress')}
+            />
             <Controller
               control={control}
               defaultValue={false}
