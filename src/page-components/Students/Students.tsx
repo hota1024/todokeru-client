@@ -22,7 +22,7 @@ export const Students: React.VFC<StudentsProps> = (props) => {
 
   return (
     <AdminLayout>
-      <AdminHeader title="生徒一覧" />
+      <AdminHeader title="園児等一覧" />
       <Grid container spacing={2}>
         {studentsLoading &&
           [...Array(24)].map((_, key) => (
