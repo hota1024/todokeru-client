@@ -308,6 +308,8 @@ export type Query = {
   subjectTemplate: Scalars['String'];
   transport: Transport;
   users: Array<User>;
+  usersWithStudents: Array<User>;
+  usersWithStudentsByGroup: Array<User>;
 };
 
 
@@ -333,6 +335,11 @@ export type QueryStudentArgs = {
 
 export type QueryTransportArgs = {
   id: Scalars['String'];
+};
+
+
+export type QueryUsersWithStudentsByGroupArgs = {
+  groupId: Scalars['String'];
 };
 
 export type RegisterationStatus = {
@@ -723,6 +730,18 @@ export type HasAdminQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type HasAdminQuery = { hasAdmin: boolean };
+
+export type UsersWithStudentsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type UsersWithStudentsQuery = { usersWithStudents: Array<{ emails: Array<{ address: string }>, students: Array<{ surname: string, name: string, group: { name: string } }> }> };
+
+export type UsersWithStudentsByGroupQueryVariables = Exact<{
+  groupId: Scalars['String'];
+}>;
+
+
+export type UsersWithStudentsByGroupQuery = { usersWithStudentsByGroup: Array<{ emails: Array<{ address: string }>, students: Array<{ surname: string, name: string, group: { name: string } }> }> };
 
 
 export const CheckTempUserAliveDocument = gql`
@@ -2398,3 +2417,90 @@ export function useHasAdminLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<H
 export type HasAdminQueryHookResult = ReturnType<typeof useHasAdminQuery>;
 export type HasAdminLazyQueryHookResult = ReturnType<typeof useHasAdminLazyQuery>;
 export type HasAdminQueryResult = Apollo.QueryResult<HasAdminQuery, HasAdminQueryVariables>;
+export const UsersWithStudentsDocument = gql`
+    query usersWithStudents {
+  usersWithStudents {
+    emails {
+      address
+    }
+    students {
+      surname
+      name
+      group {
+        name
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useUsersWithStudentsQuery__
+ *
+ * To run a query within a React component, call `useUsersWithStudentsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUsersWithStudentsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUsersWithStudentsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useUsersWithStudentsQuery(baseOptions?: Apollo.QueryHookOptions<UsersWithStudentsQuery, UsersWithStudentsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UsersWithStudentsQuery, UsersWithStudentsQueryVariables>(UsersWithStudentsDocument, options);
+      }
+export function useUsersWithStudentsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UsersWithStudentsQuery, UsersWithStudentsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UsersWithStudentsQuery, UsersWithStudentsQueryVariables>(UsersWithStudentsDocument, options);
+        }
+export type UsersWithStudentsQueryHookResult = ReturnType<typeof useUsersWithStudentsQuery>;
+export type UsersWithStudentsLazyQueryHookResult = ReturnType<typeof useUsersWithStudentsLazyQuery>;
+export type UsersWithStudentsQueryResult = Apollo.QueryResult<UsersWithStudentsQuery, UsersWithStudentsQueryVariables>;
+export const UsersWithStudentsByGroupDocument = gql`
+    query usersWithStudentsByGroup($groupId: String!) {
+  usersWithStudentsByGroup(groupId: $groupId) {
+    emails {
+      address
+    }
+    students {
+      surname
+      name
+      group {
+        name
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useUsersWithStudentsByGroupQuery__
+ *
+ * To run a query within a React component, call `useUsersWithStudentsByGroupQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUsersWithStudentsByGroupQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUsersWithStudentsByGroupQuery({
+ *   variables: {
+ *      groupId: // value for 'groupId'
+ *   },
+ * });
+ */
+export function useUsersWithStudentsByGroupQuery(baseOptions: Apollo.QueryHookOptions<UsersWithStudentsByGroupQuery, UsersWithStudentsByGroupQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UsersWithStudentsByGroupQuery, UsersWithStudentsByGroupQueryVariables>(UsersWithStudentsByGroupDocument, options);
+      }
+export function useUsersWithStudentsByGroupLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UsersWithStudentsByGroupQuery, UsersWithStudentsByGroupQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UsersWithStudentsByGroupQuery, UsersWithStudentsByGroupQueryVariables>(UsersWithStudentsByGroupDocument, options);
+        }
+export type UsersWithStudentsByGroupQueryHookResult = ReturnType<typeof useUsersWithStudentsByGroupQuery>;
+export type UsersWithStudentsByGroupLazyQueryHookResult = ReturnType<typeof useUsersWithStudentsByGroupLazyQuery>;
+export type UsersWithStudentsByGroupQueryResult = Apollo.QueryResult<UsersWithStudentsByGroupQuery, UsersWithStudentsByGroupQueryVariables>;

@@ -38,7 +38,7 @@ export const AdminDrawer: React.VFC<AdminDrawerProps> = (props) => {
     {
       icon: <People />,
       text: '園児等',
-      href: '/admin/students',
+      href: '/admin/users',
     },
     {
       icon: <Mail />,

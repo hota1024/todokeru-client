@@ -1,3 +1,34 @@
 query hasAdmin {
   hasAdmin
 }
+
+query usersWithStudents {
+  usersWithStudents {
+    emails {
+      address
+    }
+    students {
+      surname
+      name
+      group {
+        name
+      }
+    }
+  }
+}
+
+
+query usersWithStudentsByGroup($groupId: String!) {
+  usersWithStudentsByGroup(groupId: $groupId) {
+    emails {
+      address
+    }
+    students {
+      surname
+      name
+      group {
+        name
+      }
+    }
+  }
+}
