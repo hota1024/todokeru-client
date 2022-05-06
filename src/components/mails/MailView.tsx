@@ -13,13 +13,14 @@ export type MailViewProps = {
     | ReadTransportMutation['readTransport']['mail']
     | TransportQuery['transport']['mail']
   isPreview?: boolean
+  orgName?: string
 }
 
 /**
  * MailView component.
  */
 export const MailView: React.VFC<MailViewProps> = (props) => {
-  const { mail, isPreview } = props
+  const { mail, isPreview, orgName } = props
 
   let body = mail.body
 
@@ -27,6 +28,7 @@ export const MailView: React.VFC<MailViewProps> = (props) => {
     <>
       <div className="mail-container">
         <div className="mail-content">
+          <h2 className="mail-from">{orgName}</h2>
           <h1 className="mail-title">{mail.subject}</h1>
           <div className="mail-body">
             {body.split(/\n/g).map((l, key) => (
@@ -75,6 +77,7 @@ export const MailView: React.VFC<MailViewProps> = (props) => {
         .mail-from {
           font-size: 0.8rem;
           color: #606060;
+          font-weight: bold;
           margin: 0;
         }
         .mail-title {

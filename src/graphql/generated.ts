@@ -136,6 +136,7 @@ export type Mutation = {
   updateGroupOrder: Scalars['Boolean'];
   updateMail: Mail;
   updateMailAccount: MailAccount;
+  updateOrg: Scalars['Boolean'];
   updateStudent: Student;
   validateEmailAuthCode: LoginResult;
   validateRegisterationToken: Scalars['Boolean'];
@@ -256,6 +257,11 @@ export type MutationUpdateMailAccountArgs = {
 };
 
 
+export type MutationUpdateOrgArgs = {
+  data: UpdateOrgDto;
+};
+
+
 export type MutationUpdateStudentArgs = {
   data: UpdateStudentDto;
   id: Scalars['String'];
@@ -282,6 +288,7 @@ export type Query = {
   mailAccounts: Array<MailAccount>;
   mails: Array<Mail>;
   me: User;
+  orgName: Scalars['String'];
   registerationStatus: RegisterationStatus;
   student: Student;
   students: Array<Student>;
@@ -376,6 +383,10 @@ export type UpdateMailDto = {
   body: Scalars['String'];
   groupIds: Array<Scalars['String']>;
   subject: Scalars['String'];
+};
+
+export type UpdateOrgDto = {
+  orgName?: InputMaybe<Scalars['String']>;
 };
 
 export type UpdateStudentDto = {
@@ -527,6 +538,13 @@ export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type MeQuery = { me: { id: string, role: UserRole, emails: Array<{ id: string, address: string, lastConfirmedAt?: string | null }>, students: Array<{ id: string, surname: string, name: string, group: { name: string } }> } };
 
+export type UpdateOrgMutationVariables = Exact<{
+  data: UpdateOrgDto;
+}>;
+
+
+export type UpdateOrgMutation = { updateOrg: boolean };
+
 export type StartRegisterReceptionMutationVariables = Exact<{
   token?: InputMaybe<Scalars['String']>;
 }>;
@@ -644,6 +662,11 @@ export type MailWithTransportsQueryVariables = Exact<{
 
 
 export type MailWithTransportsQuery = { mail: { id: string, subject: string, body: string, wasSent: boolean, createdAt: string, groups: Array<{ id: string, name: string }>, transports: Array<{ id: string, status: TransportStatus, sendStartedAt?: string | null, sentAt?: string | null, readAt?: string | null, rejectedReason?: string | null, students: Array<{ id: string, name: string, surname: string, group: { id: string, name: string } }>, mailAccount: { id: string, host: string, user: string } }> } };
+
+export type OrgNameQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type OrgNameQuery = { orgName: string };
 
 export type RegisterationStatusQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1300,6 +1323,37 @@ export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
+export const UpdateOrgDocument = gql`
+    mutation updateOrg($data: UpdateOrgDto!) {
+  updateOrg(data: $data)
+}
+    `;
+export type UpdateOrgMutationFn = Apollo.MutationFunction<UpdateOrgMutation, UpdateOrgMutationVariables>;
+
+/**
+ * __useUpdateOrgMutation__
+ *
+ * To run a mutation, you first call `useUpdateOrgMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateOrgMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateOrgMutation, { data, loading, error }] = useUpdateOrgMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useUpdateOrgMutation(baseOptions?: Apollo.MutationHookOptions<UpdateOrgMutation, UpdateOrgMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateOrgMutation, UpdateOrgMutationVariables>(UpdateOrgDocument, options);
+      }
+export type UpdateOrgMutationHookResult = ReturnType<typeof useUpdateOrgMutation>;
+export type UpdateOrgMutationResult = Apollo.MutationResult<UpdateOrgMutation>;
+export type UpdateOrgMutationOptions = Apollo.BaseMutationOptions<UpdateOrgMutation, UpdateOrgMutationVariables>;
 export const StartRegisterReceptionDocument = gql`
     mutation startRegisterReception($token: String) {
   startRegisterReception(token: $token) {
@@ -1994,6 +2048,38 @@ export function useMailWithTransportsLazyQuery(baseOptions?: Apollo.LazyQueryHoo
 export type MailWithTransportsQueryHookResult = ReturnType<typeof useMailWithTransportsQuery>;
 export type MailWithTransportsLazyQueryHookResult = ReturnType<typeof useMailWithTransportsLazyQuery>;
 export type MailWithTransportsQueryResult = Apollo.QueryResult<MailWithTransportsQuery, MailWithTransportsQueryVariables>;
+export const OrgNameDocument = gql`
+    query orgName {
+  orgName
+}
+    `;
+
+/**
+ * __useOrgNameQuery__
+ *
+ * To run a query within a React component, call `useOrgNameQuery` and pass it any options that fit your needs.
+ * When your component renders, `useOrgNameQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useOrgNameQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useOrgNameQuery(baseOptions?: Apollo.QueryHookOptions<OrgNameQuery, OrgNameQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<OrgNameQuery, OrgNameQueryVariables>(OrgNameDocument, options);
+      }
+export function useOrgNameLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<OrgNameQuery, OrgNameQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<OrgNameQuery, OrgNameQueryVariables>(OrgNameDocument, options);
+        }
+export type OrgNameQueryHookResult = ReturnType<typeof useOrgNameQuery>;
+export type OrgNameLazyQueryHookResult = ReturnType<typeof useOrgNameLazyQuery>;
+export type OrgNameQueryResult = Apollo.QueryResult<OrgNameQuery, OrgNameQueryVariables>;
 export const RegisterationStatusDocument = gql`
     query registerationStatus {
   registerationStatus {

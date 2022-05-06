@@ -1,5 +1,5 @@
 import { AdminLayout } from '@/layouts/AdminLayout/AdminLayout'
-import { PersonAdd, Storage } from '@mui/icons-material'
+import { Groups, Mail, PersonAdd, Storage } from '@mui/icons-material'
 import {
   Card,
   Divider,
@@ -22,6 +22,18 @@ export type SettingsProps = {}
 export const Settings: React.VFC<SettingsProps> = (props) => {
   const menuItems = [
     {
+      icon: <Groups />,
+      text: '組織設定',
+      description: '組織の名称や情報を設定します。',
+      href: '/admin/settings/org',
+    },
+    {
+      icon: <Mail />,
+      text: 'メール設定',
+      description: 'メールの件名や本文に関する設定します。',
+      href: '/admin/settings/mail',
+    },
+    {
       icon: <PersonAdd />,
       text: '受付設定',
       description: '受付を開始したり終了したりすることが出来ます。',
@@ -41,9 +53,18 @@ export const Settings: React.VFC<SettingsProps> = (props) => {
       <AdminHeader title="設定" />
       <Card variant="outlined">
         <List sx={{ p: 0 }}>
-          {menuItems.map((item) => (
+          {menuItems.map((item, index) => (
             <Link href={item.href} passHref key={item.href}>
-              <ListItem component="a" button>
+              <ListItem
+                component="a"
+                button
+                sx={{
+                  borderBottom:
+                    index === menuItems.length - 1
+                      ? void 0
+                      : '1px solid rgba(0, 0, 0, 0.1)',
+                }}
+              >
                 <ListItemIcon>{item.icon}</ListItemIcon>
                 <ListItemText
                   primary={item.text}

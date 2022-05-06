@@ -1,0 +1,3 @@
+mutation updateOrg($data: UpdateOrgDto!) {
+  updateOrg(data: $data)
+}

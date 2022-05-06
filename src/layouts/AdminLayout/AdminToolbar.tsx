@@ -1,4 +1,5 @@
 import { useLogout } from '@/atoms/auth'
+import { useOrgName } from '@/atoms/org'
 import { Add, Logout, Menu } from '@mui/icons-material'
 import {
   AppBar,
@@ -24,6 +25,7 @@ export type AdminToolbarProps = {
 export const AdminToolbar: React.VFC<AdminToolbarProps> = (props) => {
   const { toggleDrawer } = props
   const logout = useLogout()
+  const [orgName] = useOrgName()
   const router = useRouter()
 
   return (
@@ -40,7 +42,7 @@ export const AdminToolbar: React.VFC<AdminToolbarProps> = (props) => {
         >
           <Menu />
         </IconButton>
-        <Typography variant="h6">Todokeru</Typography>
+        <Typography variant="h6">{orgName ? orgName : 'Todokeru'}</Typography>
         <Box sx={{ margin: 2 }} />
         <Link href="/admin/mails/new" passHref>
           <Button
