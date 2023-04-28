@@ -23,3 +23,12 @@ mutation updateGroupOrder($id: String!, $data: UpdateGroupOrderDto!) {
 mutation deleteGroup($id: String!) {
   deleteGroup(id: $id)
 }
+
+mutation integrateGroup($id: String!, $otherId: String!) {
+  integrateGroup(id: $id, otherId: $otherId) {
+    id
+    name
+    createdAt
+    updatedAt
+  }
+}

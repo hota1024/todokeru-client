@@ -2,12 +2,31 @@ query hasAdmin {
   hasAdmin
 }
 
-query usersWithStudents {
-  usersWithStudents {
+query user($id: String!) {
+  user(id: $id) {
+    id
     emails {
       address
     }
     students {
+      id
+      surname
+      name
+      group {
+        name
+      }
+    }
+  }
+}
+
+query usersWithStudents {
+  usersWithStudents {
+    id
+    emails {
+      address
+    }
+    students {
+      id
       surname
       name
       group {
@@ -20,10 +39,12 @@ query usersWithStudents {
 
 query usersWithStudentsByGroup($groupId: String!) {
   usersWithStudentsByGroup(groupId: $groupId) {
+    id
     emails {
       address
     }
     students {
+      id
       surname
       name
       group {
