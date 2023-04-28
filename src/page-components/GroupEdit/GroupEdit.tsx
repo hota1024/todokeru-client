@@ -64,7 +64,10 @@ export const GroupEdit: React.VFC<GroupEdit> = (props) => {
       await updateGroup({
         variables: {
           id: groupData.group.id,
-          data,
+          data: {
+            name: data.name,
+            isPrivate: data.isPrivate,
+          },
         },
       })
       await refetch()

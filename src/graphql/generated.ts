@@ -127,6 +127,7 @@ export type Mutation = {
   deleteStudent: Scalars['Boolean'];
   deleteUserEmail: Scalars['Boolean'];
   endRegisterReception: RegisterationStatus;
+  integrateGroup: Group;
   read: Transport;
   readTransport: Transport;
   resendTransport: Scalars['Boolean'];
@@ -207,6 +208,12 @@ export type MutationDeleteStudentArgs = {
 
 export type MutationDeleteUserEmailArgs = {
   id: Scalars['String'];
+};
+
+
+export type MutationIntegrateGroupArgs = {
+  id: Scalars['String'];
+  otherId: Scalars['String'];
 };
 
 
@@ -307,6 +314,7 @@ export type Query = {
   students: Array<Student>;
   subjectTemplate: Scalars['String'];
   transport: Transport;
+  user: User;
   users: Array<User>;
   usersWithStudents: Array<User>;
   usersWithStudentsByGroup: Array<User>;
@@ -334,6 +342,11 @@ export type QueryStudentArgs = {
 
 
 export type QueryTransportArgs = {
+  id: Scalars['String'];
+};
+
+
+export type QueryUserArgs = {
   id: Scalars['String'];
 };
 
@@ -517,6 +530,14 @@ export type DeleteGroupMutationVariables = Exact<{
 
 
 export type DeleteGroupMutation = { deleteGroup: boolean };
+
+export type IntegrateGroupMutationVariables = Exact<{
+  id: Scalars['String'];
+  otherId: Scalars['String'];
+}>;
+
+
+export type IntegrateGroupMutation = { integrateGroup: { id: string, name: string, createdAt: string, updatedAt: string } };
 
 export type CreateFirstPrimaryMailAccountMutationVariables = Exact<{
   data: CreateEmailAccountDto;
@@ -731,17 +752,24 @@ export type HasAdminQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type HasAdminQuery = { hasAdmin: boolean };
 
+export type UserQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type UserQuery = { user: { id: string, emails: Array<{ address: string }>, students: Array<{ id: string, surname: string, name: string, group: { name: string } }> } };
+
 export type UsersWithStudentsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type UsersWithStudentsQuery = { usersWithStudents: Array<{ emails: Array<{ address: string }>, students: Array<{ surname: string, name: string, group: { name: string } }> }> };
+export type UsersWithStudentsQuery = { usersWithStudents: Array<{ id: string, emails: Array<{ address: string }>, students: Array<{ id: string, surname: string, name: string, group: { name: string } }> }> };
 
 export type UsersWithStudentsByGroupQueryVariables = Exact<{
   groupId: Scalars['String'];
 }>;
 
 
-export type UsersWithStudentsByGroupQuery = { usersWithStudentsByGroup: Array<{ emails: Array<{ address: string }>, students: Array<{ surname: string, name: string, group: { name: string } }> }> };
+export type UsersWithStudentsByGroupQuery = { usersWithStudentsByGroup: Array<{ id: string, emails: Array<{ address: string }>, students: Array<{ id: string, surname: string, name: string, group: { name: string } }> }> };
 
 
 export const CheckTempUserAliveDocument = gql`
@@ -1152,6 +1180,43 @@ export function useDeleteGroupMutation(baseOptions?: Apollo.MutationHookOptions<
 export type DeleteGroupMutationHookResult = ReturnType<typeof useDeleteGroupMutation>;
 export type DeleteGroupMutationResult = Apollo.MutationResult<DeleteGroupMutation>;
 export type DeleteGroupMutationOptions = Apollo.BaseMutationOptions<DeleteGroupMutation, DeleteGroupMutationVariables>;
+export const IntegrateGroupDocument = gql`
+    mutation integrateGroup($id: String!, $otherId: String!) {
+  integrateGroup(id: $id, otherId: $otherId) {
+    id
+    name
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export type IntegrateGroupMutationFn = Apollo.MutationFunction<IntegrateGroupMutation, IntegrateGroupMutationVariables>;
+
+/**
+ * __useIntegrateGroupMutation__
+ *
+ * To run a mutation, you first call `useIntegrateGroupMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useIntegrateGroupMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [integrateGroupMutation, { data, loading, error }] = useIntegrateGroupMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      otherId: // value for 'otherId'
+ *   },
+ * });
+ */
+export function useIntegrateGroupMutation(baseOptions?: Apollo.MutationHookOptions<IntegrateGroupMutation, IntegrateGroupMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<IntegrateGroupMutation, IntegrateGroupMutationVariables>(IntegrateGroupDocument, options);
+      }
+export type IntegrateGroupMutationHookResult = ReturnType<typeof useIntegrateGroupMutation>;
+export type IntegrateGroupMutationResult = Apollo.MutationResult<IntegrateGroupMutation>;
+export type IntegrateGroupMutationOptions = Apollo.BaseMutationOptions<IntegrateGroupMutation, IntegrateGroupMutationVariables>;
 export const CreateFirstPrimaryMailAccountDocument = gql`
     mutation createFirstPrimaryMailAccount($data: CreateEmailAccountDto!) {
   createFirstPrimaryMailAccount(data: $data) {
@@ -2417,13 +2482,61 @@ export function useHasAdminLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<H
 export type HasAdminQueryHookResult = ReturnType<typeof useHasAdminQuery>;
 export type HasAdminLazyQueryHookResult = ReturnType<typeof useHasAdminLazyQuery>;
 export type HasAdminQueryResult = Apollo.QueryResult<HasAdminQuery, HasAdminQueryVariables>;
-export const UsersWithStudentsDocument = gql`
-    query usersWithStudents {
-  usersWithStudents {
+export const UserDocument = gql`
+    query user($id: String!) {
+  user(id: $id) {
+    id
     emails {
       address
     }
     students {
+      id
+      surname
+      name
+      group {
+        name
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useUserQuery__
+ *
+ * To run a query within a React component, call `useUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useUserQuery(baseOptions: Apollo.QueryHookOptions<UserQuery, UserQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UserQuery, UserQueryVariables>(UserDocument, options);
+      }
+export function useUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserQuery, UserQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UserQuery, UserQueryVariables>(UserDocument, options);
+        }
+export type UserQueryHookResult = ReturnType<typeof useUserQuery>;
+export type UserLazyQueryHookResult = ReturnType<typeof useUserLazyQuery>;
+export type UserQueryResult = Apollo.QueryResult<UserQuery, UserQueryVariables>;
+export const UsersWithStudentsDocument = gql`
+    query usersWithStudents {
+  usersWithStudents {
+    id
+    emails {
+      address
+    }
+    students {
+      id
       surname
       name
       group {
@@ -2463,10 +2576,12 @@ export type UsersWithStudentsQueryResult = Apollo.QueryResult<UsersWithStudentsQ
 export const UsersWithStudentsByGroupDocument = gql`
     query usersWithStudentsByGroup($groupId: String!) {
   usersWithStudentsByGroup(groupId: $groupId) {
+    id
     emails {
       address
     }
     students {
+      id
       surname
       name
       group {

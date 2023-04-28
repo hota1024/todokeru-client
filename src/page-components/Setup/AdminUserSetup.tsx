@@ -32,15 +32,20 @@ export const AdminUserSetup: React.VFC<AdminUserSetupProps> = (props) => {
   const [wait, waiting] = useWait()
   const [error, setError] = useState<string | null>()
   const [codeId, setCodeId] = useState<string>()
+
   const [wasSentOtc, setWasSentOtc] = useState(false)
   const [emailConfirmed, setEmailConfirmed] = useState(false)
+
+  const [tempEmailLoading, setTempEmailLoading] = useState(false)
+
   const [createTempUserMutation, { loading: tempUserLoading }] =
     useCreateTempUserMutation()
-  const [createTempEmail, { loading: tempEmailLoading }] =
-    useCreateTempEmailMutation()
+  const [createTempEmail] = useCreateTempEmailMutation()
   const [checkTempUserAlive] = useCheckTempUserAliveMutation()
-  const [validateEmailAuthCode, { loading: validateEmailAuthCodeLoading }] =
-    useValidateEmailAuthCodeMutation()
+
+  const [validateEmailAuthCodeLoading, setValidateEmailAuthCodeLoading] =
+    useState(false)
+  const [validateEmailAuthCode] = useValidateEmailAuthCodeMutation()
 
   const checkAlive = useCallback(async () => {
     setError(null)
@@ -68,6 +73,8 @@ export const AdminUserSetup: React.VFC<AdminUserSetupProps> = (props) => {
     setError(null)
     await wait(1000)
 
+    setTempEmailLoading(true)
+
     try {
       const email = await createTempEmail({ variables: { data } })
       setCodeId(email.data?.createTempEmail.codeId)
@@ -78,6 +85,8 @@ export const AdminUserSetup: React.VFC<AdminUserSetupProps> = (props) => {
         setTempUserId(void 0)
       }
     }
+
+    setTempEmailLoading(false)
   }
 
   useEffect(() => {
@@ -112,6 +121,8 @@ export const AdminUserSetup: React.VFC<AdminUserSetupProps> = (props) => {
 
     await wait(1000)
 
+    setValidateEmailAuthCodeLoading(true)
+
     try {
       const result = await validateEmailAuthCode({
         variables: {
@@ -133,11 +144,21 @@ export const AdminUserSetup: React.VFC<AdminUserSetupProps> = (props) => {
         setError(e.message)
       }
     }
+
+    setValidateEmailAuthCodeLoading(false)
   }
 
   const handleComplete = () => {
     props.onSetup()
   }
+
+  console.log({
+    tempUserLoading,
+    checkingAlive,
+    tempEmailLoading,
+    waiting,
+    validateEmailAuthCodeLoading,
+  })
 
   return (
     <SetupLayout>

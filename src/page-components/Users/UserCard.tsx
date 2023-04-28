@@ -4,12 +4,15 @@ import {
   Avatar,
   Box,
   Card,
+  CardActionArea,
   CardHeader,
   Divider,
   List,
   ListItem,
+  ListItemButton,
   ListItemText,
 } from '@mui/material'
+import Link from 'next/link'
 
 /**
  * UserCard props.
@@ -27,24 +30,30 @@ export const UserCard: React.VFC<UserCardProps> = (props) => {
     ...new Set(user.students.map((student) => student.surname)),
   ].join(', ')
 
+  console.log(user)
+
   return (
     <Card variant="outlined">
-      <CardHeader
-        title={
-          surnames
-            ? `${surnames}(${user.students.length}人が登録済み)`
-            : '名無し'
-        }
-        subheader={`${user.emails[0].address}${
-          user.emails.length > 1 ? `(+${user.emails.length - 1})` : ''
-        }`}
-        avatar={
-          <Avatar sx={{ bgcolor: 'primary.main' }}>
-            <AccountCircle />
-          </Avatar>
-        }
-        sx={{ minHeight: 86 }}
-      />
+      <Link href={`/admin/users/${user.id}`} passHref>
+        <CardActionArea>
+          <CardHeader
+            title={
+              surnames
+                ? `${surnames}(${user.students.length}人が登録済み)`
+                : '名無し'
+            }
+            subheader={`${
+              user.emails[0]?.address ?? 'メールアドレスが登録されていません'
+            }${user.emails.length > 1 ? `(+${user.emails.length - 1})` : ''}`}
+            avatar={
+              <Avatar sx={{ bgcolor: 'primary.main' }}>
+                <AccountCircle />
+              </Avatar>
+            }
+            sx={{ minHeight: 86 }}
+          />
+        </CardActionArea>
+      </Link>
       <Divider />
       <List sx={{ height: 160, overflowY: 'scroll' }}>
         {user.students.length === 0 && (
@@ -54,11 +63,15 @@ export const UserCard: React.VFC<UserCardProps> = (props) => {
         )}
         {user.students.map((student, key) => (
           <Box key={key}>
-            <ListItem>
-              <ListItemText
-                primary={`${student.surname} ${student.name}`}
-                secondary={student.group.name}
-              />
+            <ListItem disablePadding>
+              <Link href={`/admin/students/${student.id}`} passHref>
+                <ListItemButton component="a">
+                  <ListItemText
+                    primary={`${student.surname} ${student.name}`}
+                    secondary={student.group.name}
+                  />
+                </ListItemButton>
+              </Link>
             </ListItem>
             {key !== user.students.length - 1 && <Divider />}
           </Box>

@@ -182,6 +182,11 @@ export const Groups: React.VFC<GroupsProps> = (props) => {
             </>
           ) : (
             <>
+              <Link href="/admin/groups/bulk-edit" passHref>
+                <Button component="a" color="success">
+                  クラスの一括編集
+                </Button>
+              </Link>
               <Button color="success" onClick={() => setOrderEditable(true)}>
                 クラスの並び順を編集
               </Button>

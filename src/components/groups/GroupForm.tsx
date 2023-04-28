@@ -3,6 +3,7 @@ import { groupSchema, GroupSchema } from '@/schemas/groupSchema'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { LoadingButton } from '@mui/lab'
 import {
+  Alert,
   Box,
   Button,
   Card,
@@ -54,6 +55,7 @@ export const GroupForm: React.VFC<GroupFormProps> = (props) => {
       sx={{ maxWidth: 400 }}
       onSubmit={handleSubmit(onSubmit)}
     >
+      {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
       <CardContent>
         <TextField
           label="クラス名"
